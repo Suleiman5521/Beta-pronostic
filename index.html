@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BÊTA PRONOSTIC</title>
+<style>
+:root{--bleu-nuit:#0a0f1d;--bleu-electrique:#1e3a8a;--or:#d4af37;--or-clair:#fbbf24;--blanc:#fff;--gris-texte:#9ca3af;--violet:#7c3aed;--rouge:#dc2626;--vert:#10b981;--fond-carte:#111827;--bordure:#1f2937}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Roboto,sans-serif;-webkit-tap-highlight-color:transparent}
+body{background:var(--bleu-nuit);color:var(--blanc);display:flex;justify-content:center;min-height:100vh}
+.app-container{width:100%;max-width:420px;background:var(--bleu-nuit);position:relative;display:flex;flex-direction:column;min-height:100vh}
+.header{padding:15px 20px;display:flex;justify-content:space-between;align-items:center;background:var(--bleu-nuit);z-index:10;border-bottom:1px solid var(--bordure);position:sticky;top:0}
+.logo-header{display:flex;align-items:center;gap:8px}.logo-icon{font-size:24px;color:var(--or);font-weight:bold}.logo-text{font-size:14px;font-weight:800}.logo-text span{color:var(--or)}
+.header-actions{display:flex;gap:5px;align-items:center}.lang-btn{background:rgba(255,255,255,.1);border:1px solid var(--bordure);color:#fff;padding:4px 7px;border-radius:5px;font-size:9px;cursor:pointer;font-weight:bold}.lang-btn.active{background:var(--or);color:var(--bleu-nuit);border-color:var(--or)}
+.admin-btn{background:var(--or);color:var(--bleu-nuit);padding:6px 10px;border-radius:5px;font-size:10px;font-weight:bold;cursor:pointer;border:none}
+.main-content{flex:1;overflow-y:auto;padding-bottom:80px}.main-content::-webkit-scrollbar{display:none}
+.page{display:none;padding:20px;animation:fadeIn .3s ease}.page.active{display:block}@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.hero-logo{text-align:center;margin:20px 0 30px}.big-b{font-size:70px;color:var(--or);font-weight:900;text-shadow:0 0 30px rgba(212,175,55,.4);line-height:1}.subtitle{font-size:12px;letter-spacing:3px;margin-top:5px;opacity:.8}
+.daily-prono{background:linear-gradient(135deg,var(--bleu-electrique),#0f172a);border:1px solid var(--or);border-radius:15px;padding:20px;text-align:center;margin-bottom:25px}.daily-prono h3{color:var(--or);font-size:12px;text-transform:uppercase;margin-bottom:10px}.match-info{font-size:18px;font-weight:bold;margin-bottom:10px}.prono-info{color:var(--or);font-size:12px;margin-bottom:15px}
+.btn-gold{background:linear-gradient(90deg,var(--or),var(--or-clair));color:var(--bleu-nuit);border:none;padding:12px 25px;border-radius:30px;font-weight:800;font-size:13px;cursor:pointer;width:100%;text-transform:uppercase}
+.section-title{font-size:16px;font-weight:700;margin-bottom:15px}.categories-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.cat-card{background:var(--fond-carte);border-radius:15px;padding:18px;text-align:center;cursor:pointer;border:1px solid var(--bordure)}.cat-card .icon{font-size:26px;margin-bottom:8px;display:block}.cat-card h4{font-size:14px;margin-bottom:4px}.cat-card p{color:var(--gris-texte);font-size:11px}
+.coupon-item{background:var(--fond-carte);border-radius:12px;padding:15px;margin-bottom:15px;border-left:4px solid var(--or)}.coupon-item.vip{border-left-color:var(--violet)}.coupon-item.risque{border-left-color:var(--rouge)}.coupon-item.modere{border-left-color:var(--bleu-electrique)}.coupon-item.gratuit{border-left-color:var(--vert)}
+.coupon-header-row,.coupon-footer-row{display:flex;justify-content:space-between;align-items:center}.coupon-header-row{margin-bottom:8px}.coupon-competition{color:var(--gris-texte);font-size:11px}.coupon-date{color:var(--or);font-size:11px;font-weight:bold}.coupon-match-title{font-size:16px;font-weight:700;margin-bottom:6px}.coupon-market{color:var(--gris-texte);font-size:12px;margin-bottom:10px}.coupon-footer-row{padding-top:8px;border-top:1px solid var(--bordure)}.coupon-prono{color:var(--or);font-weight:bold;font-size:14px}.coupon-cote{font-weight:900;font-size:18px;background:rgba(212,175,55,.15);padding:4px 10px;border-radius:8px}.coupon-locked{text-align:center;padding:20px;color:var(--gris-texte);font-size:13px}
+.total-cote-box{background:linear-gradient(135deg,var(--or),var(--or-clair));color:var(--bleu-nuit);border-radius:12px;padding:15px;text-align:center;margin-top:20px;font-weight:900}.total-cote-box .label{font-size:11px;text-transform:uppercase;letter-spacing:1px}.total-cote-box .value{font-size:28px}
+.vip-header{text-align:center;margin-bottom:25px}.vip-header h2{color:var(--violet);font-size:26px}.vip-card{background:linear-gradient(135deg,#1e1b4b,#0f172a);border:1px solid var(--violet);border-radius:15px;padding:20px;margin-bottom:20px}.vip-price{color:var(--or);font-size:22px;font-weight:800;margin-bottom:15px}.payment-methods{display:flex;gap:8px;flex-wrap:wrap}.pay-btn{flex:1;background:rgba(255,255,255,.05);border:1px solid var(--bordure);color:#fff;padding:10px 5px;border-radius:8px;font-size:11px;cursor:pointer;text-align:center;min-width:80px}
+.admin-panel{background:#0f172a;border-radius:15px;padding:20px;border:1px solid var(--or)}.admin-panel h3{color:var(--or);margin-bottom:15px;font-size:15px}.form-group{margin-bottom:12px}.form-group label{display:block;color:var(--gris-texte);font-size:11px;margin-bottom:4px}.form-group input,.form-group select{width:100%;padding:10px;background:var(--bleu-nuit);border:1px solid var(--bordure);border-radius:8px;color:#fff;font-size:13px}.btn-admin{background:var(--or);color:var(--bleu-nuit);border:none;padding:12px;border-radius:8px;font-weight:bold;width:100%;cursor:pointer;margin-top:10px;font-size:13px}
+.admin-status{font-size:11px;color:var(--gris-texte);margin-bottom:12px}.danger{background:var(--rouge);color:#fff}.bottom-nav{position:fixed;bottom:0;left:0;right:0;max-width:420px;margin:0 auto;background:rgba(10,15,29,.98);border-top:1px solid var(--bordure);display:flex;justify-content:space-around;padding:10px 0 15px;z-index:100}.nav-item{display:flex;flex-direction:column;align-items:center;color:var(--gris-texte);font-size:10px;cursor:pointer;width:20%}.nav-icon{font-size:18px;margin-bottom:3px}.nav-item.active{color:var(--or)}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.8);display:none;justify-content:center;align-items:center;z-index:200;padding:20px}.modal-overlay.active{display:flex}.modal-content{background:var(--fond-carte);border-radius:15px;padding:25px;width:100%;max-width:320px;border:1px solid var(--or);text-align:center}.modal-content h3{color:var(--or);margin-bottom:15px}.modal-content p{font-size:13px;margin-bottom:20px}.modal-actions{display:flex;gap:10px}.modal-actions button{flex:1;padding:10px;border-radius:8px;border:none;font-weight:bold;cursor:pointer;font-size:13px}.btn-cancel{background:var(--bordure);color:#fff}.btn-confirm{background:var(--or);color:var(--bleu-nuit)}.login-input{width:100%;padding:12px;background:var(--bleu-nuit);border:1px solid var(--bordure);border-radius:8px;color:#fff;font-size:14px;margin-bottom:15px;text-align:center}
+.hidden{display:none!important}.notice{padding:10px;border-radius:8px;background:rgba(212,175,55,.1);color:var(--gris-texte);font-size:11px;margin-bottom:12px}
+</style>
+</head>
+<body>
+<div class="app-container">
+<header class="header">
+  <div class="logo-header"><div class="logo-icon">β</div><div class="logo-text">BÊTA <span>PRONOSTIC</span></div></div>
+  <div class="header-actions">
+    <button class="lang-btn active" onclick="setLanguage('fr',this)">FR</button>
+    <button class="lang-btn" onclick="setLanguage('pt',this)">PT</button>
+    <button class="lang-btn" onclick="setLanguage('en',this)">EN</button>
+    <button class="admin-btn" onclick="openAdmin()">Admin</button>
+  </div>
+</header>
+
+<main class="main-content">
+<section class="page active" id="page-accueil">
+  <div class="hero-logo"><div class="big-b">β</div><div class="subtitle">BÊTA PRONOSTIC</div></div>
+  <div class="daily-prono">
+    <h3 data-i18n="daily_title">🔥 Le Pronostic du Jour</h3>
+    <div class="match-info" id="daily-match-info">Chargement...</div>
+    <div class="prono-info" id="daily-prono-info">—</div>
+    <button class="btn-gold" data-i18n="btn_free_coupon" onclick="showPage('page-coupons')">Voir le coupon gratuit</button>
+  </div>
+  <div class="section-title" data-i18n="categories_title">Nos Catégories</div>
+  <div class="categories-grid">
+    <div class="cat-card" onclick="filterCoupons('gratuit')"><span class="icon">🆓</span><h4 data-i18n="cat_free">GRATUIT</h4><p>Sans abonnement</p></div>
+    <div class="cat-card" onclick="filterCoupons('modere')"><span class="icon">📊</span><h4>MODÉRÉ</h4><p>5 matchs</p></div>
+    <div class="cat-card" onclick="filterCoupons('risque')"><span class="icon">⚠️</span><h4>RISQUE</h4><p>10 matchs</p></div>
+    <div class="cat-card" onclick="filterCoupons('vip')"><span class="icon">👑</span><h4>VIP</h4><p>2 matchs</p></div>
+  </div>
+</section>
+
+<section class="page" id="page-coupons">
+  <div class="section-title" data-i18n="coupons_title">Coupons Disponibles</div>
+  <div id="coupon-list-container"></div><div id="total-cote-container"></div>
+</section>
+
+<section class="page" id="page-vip">
+  <div class="vip-header"><h2>👑 BÊTA VIP</h2><p>Accédez aux pronostics premium.</p></div>
+  <div class="vip-card"><h3>VIP 7 JOURS</h3><div class="vip-price">5 000 CFA</div>
+    <div class="payment-methods"><div class="pay-btn" onclick="openPayment('Wave','7 jours')">🌊 Wave</div><div class="pay-btn" onclick="openPayment('Orange Money','7 jours')">🟠 Orange</div><div class="pay-btn" onclick="openPayment('Carte Visa','7 jours')">💳 Visa</div></div>
+  </div>
+  <div class="vip-card"><h3>VIP 30 JOURS</h3><div class="vip-price">15 000 CFA</div>
+    <div class="payment-methods"><div class="pay-btn" onclick="openPayment('Wave','30 jours')">🌊 Wave</div><div class="pay-btn" onclick="openPayment('Orange Money','30 jours')">🟠 Orange</div><div class="pay-btn" onclick="openPayment('Carte Visa','30 jours')">💳 Visa</div></div>
+  </div>
+</section>
+
+<section class="page" id="page-admin">
+  <div class="admin-panel">
+    <h3>⚙️ Dashboard Admin</h3>
+    <div class="notice" id="admin-notice">Connexion administrateur requise.</div>
+    <div id="admin-form" class="hidden">
+      <div class="form-group"><label>Compétition</label><input id="admin-competition" placeholder="Ex: Ligue des Champions"></div>
+      <div class="form-group"><label>Pays</label><input id="admin-country" placeholder="Ex: Europe"></div>
+      <div class="form-group"><label>Équipe Domicile</label><input id="admin-home" placeholder="Ex: Real Madrid"></div>
+      <div class="form-group"><label>Équipe Extérieur</label><input id="admin-away" placeholder="Ex: Barcelone"></div>
+      <div class="form-group"><label>Date et Heure</label><input type="datetime-local" id="admin-date"></div>
+      <div class="form-group"><label>Marché</label><input id="admin-market" placeholder="Ex: 1X2"></div>
+      <div class="form-group"><label>Pronostic</label><input id="admin-prono" placeholder="Ex: V1"></div>
+      <div class="form-group"><label>Cote</label><input type="number" id="admin-cote" step="0.001" min="1" placeholder="Ex: 2.100"></div>
+      <div class="form-group"><label>Catégorie</label><select id="admin-category"><option value="gratuit">🆓 Gratuit</option><option value="modere">📊 Modéré</option><option value="risque">⚠️ Risque</option><option value="vip">👑 VIP</option></select></div>
+      <button class="btn-admin" onclick="addMatch()">Ajouter le Match</button>
+      <button class="btn-admin danger" onclick="adminLogout()">Se déconnecter</button>
+      <div style="margin-top:15px"><h4 style="font-size:12px;margin-bottom:8px">Matchs ajoutés :</h4><div id="admin-match-list"></div></div>
+    </div>
+  </div>
+</section>
+</main>
+
+<nav class="bottom-nav">
+  <div class="nav-item active" onclick="showPage('page-accueil',this)"><span class="nav-icon">🏠</span>Accueil</div>
+  <div class="nav-item" onclick="showPage('page-coupons',this)"><span class="nav-icon">📋</span>Coupons</div>
+  <div class="nav-item" onclick="showPage('page-vip',this)"><span class="nav-icon">👑</span>VIP</div>
+  <div class="nav-item" onclick="openAdmin()"><span class="nav-icon">⚙️</span>Admin</div>
+  <div class="nav-item" onclick="openLogin()"><span class="nav-icon">👤</span>Compte</div>
+</nav>
+
+<div class="modal-overlay" id="loginModal"><div class="modal-content">
+  <h3>🔐 Connexion Membre</h3><p>Entrez votre numéro pour la connexion. L'authentification Firebase sera activée à l'étape suivante.</p>
+  <input type="tel" id="login-phone" class="login-input" placeholder="+245 XX XXX XX XX">
+  <div class="modal-actions"><button class="btn-cancel" onclick="closeLogin()">Annuler</button><button class="btn-confirm" onclick="startMemberLogin()">Continuer</button></div>
+</div></div>
+
+<div class="modal-overlay" id="adminLoginModal"><div class="modal-content">
+  <h3>🔐 Admin</h3><p>Cette zone sera protégée par Firebase Authentication. Aucun mot de passe n'est stocké dans le code.</p>
+  <div class="notice">Étape suivante : création du compte administrateur Firebase et attribution du rôle ADMIN.</div>
+  <div class="modal-actions"><button class="btn-cancel" onclick="closeAdminLogin()">Fermer</button><button class="btn-confirm" onclick="alert('Nous allons configurer Firebase à l’étape suivante.')">Configurer</button></div>
+</div></div>
+
+<div class="modal-overlay" id="paymentModal"><div class="modal-content">
+  <h3>💳 Paiement</h3><p id="payment-text">Le paiement réel sera connecté après la configuration du fournisseur.</p>
+  <div class="modal-actions"><button class="btn-cancel" onclick="closePayment()">Annuler</button><button class="btn-confirm" onclick="confirmPayment()">Continuer</button></div>
+</div></div>
+</div>
+
+<script>
+// ============================================================
+// BÊTA PRONOSTIC — VERSION PRÉPARÉE POUR FIREBASE
+// IMPORTANT : aucune donnée secrète, numéro VIP ou mot de passe
+// n'est stocké ici. Les vraies données seront dans Firebase.
+// ============================================================
+
+let currentUser = null;
+let currentFilter = 'all';
+
+// Données de démonstration uniquement.
+// À l'étape Firebase, elles seront remplacées par Firestore.
+let allCoupons = [
+  {id:'demo-1',competition:'Ligue des Nations UEFA',country:'Europe',home:'Real Madrid',away:'Barcelone',
+   date:'2026-10-05T20:00',market:'1X2',prono:'V1 (Real Madrid)',cote:'2.100',category:'gratuit'}
+];
+
+const translations={
+ fr:{daily_title:"🔥 Le Pronostic du Jour",btn_free_coupon:"Voir le coupon gratuit",categories_title:"Nos Catégories",coupons_title:"Coupons Disponibles",locked_msg:"🔒 Contenu réservé aux membres VIP.",total_cote:"Cote Totale du Coupon"},
+ pt:{daily_title:"🔥 O Prognóstico do Dia",btn_free_coupon:"Ver o cupom grátis",categories_title:"Nossas Categorias",coupons_title:"Cupons Disponíveis",locked_msg:"🔒 Conteúdo reservado aos membros VIP.",total_cote:"Cota Total do Cupom"},
+ en:{daily_title:"🔥 Today's Prediction",btn_free_coupon:"See free coupon",categories_title:"Our Categories",coupons_title:"Available Coupons",locked_msg:"🔒 Content reserved for VIP members.",total_cote:"Total Coupon Odds"}
+};
+let currentLang='fr';
+
+function setLanguage(lang,btn){
+ currentLang=lang;
+ document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
+ if(btn)btn.classList.add('active');
+ document.querySelectorAll('[data-i18n]').forEach(el=>{
+   const key=el.dataset.i18n;if(translations[lang][key])el.innerText=translations[lang][key];
+ });
+ renderCoupons(currentFilter);
+}
+
+function showPage(pageId,element){
+ document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+ const page=document.getElementById(pageId);if(page)page.classList.add('active');
+ if(element){
+   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));element.classList.add('active');
+ }
+ if(pageId==='page-coupons')renderCoupons(currentFilter);
+}
+
+function filterCoupons(cat){currentFilter=cat;showPage('page-coupons');renderCoupons(cat)}
+
+function renderCoupons(filter='all'){
+ currentFilter=filter;
+ const container=document.getElementById('coupon-list-container'),total=document.getElementById('total-cote-container');
+ container.innerHTML='';total.innerHTML='';
+ let filtered=filter==='all'?allCoupons:allCoupons.filter(c=>c.category===filter);
+ if(!filtered.length){container.innerHTML='<p style="text-align:center;color:#9ca3af">Aucun coupon disponible.</p>';return}
+ let totalCote=1,allUnlocked=true;
+ filtered.forEach(c=>{
+   const locked=c.category!=='gratuit'&&!currentUser;if(locked)allUnlocked=false;
+   const div=document.createElement('div');div.className=`coupon-item ${c.category}`;
+   const d=c.date?new Date(c.date):null;
+   const dateStr=d&&!isNaN(d)?d.toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit',year:'numeric'})+' à '+d.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'}):'Date non définie';
+   if(!locked){
+     if(c.cote)totalCote*=Number(c.cote);
+     div.innerHTML=`<div class="coupon-header-row"><div class="coupon-competition">🏆 ${escapeHtml(c.competition||'Compétition')} • ${escapeHtml(c.country||'Pays')}</div><div class="coupon-date">${dateStr}</div></div>
+     <div class="coupon-match-title">${escapeHtml(c.home)} - ${escapeHtml(c.away)}</div>
+     <div class="coupon-market">${escapeHtml(c.market||'1X2')} : ${escapeHtml(c.prono)}</div>
+     <div class="coupon-footer-row"><div class="coupon-prono">✅ ${escapeHtml(c.prono)}</div><div class="coupon-cote">@ ${escapeHtml(c.cote)}</div></div>`;
+   }else{
+     div.innerHTML=`<div class="coupon-header-row"><div class="coupon-competition">🏆 ${escapeHtml(c.competition||'Compétition')}</div><div class="coupon-date">${dateStr}</div></div>
+     <div class="coupon-match-title">🔒 ${escapeHtml(c.home)} vs ${escapeHtml(c.away)}</div><div class="coupon-locked">${translations[currentLang].locked_msg}</div>`;
+     div.onclick=openLogin;
+   }
+   container.appendChild(div);
+ });
+ if(allUnlocked&&filtered.length>1)total.innerHTML=`<div class="total-cote-box"><div class="label">${translations[currentLang].total_cote}</div><div class="value">${totalCote.toFixed(3)}</div></div>`;
+}
+
+function escapeHtml(value){
+ return String(value??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
+}
+
+function updateDaily(){
+ const free=allCoupons.find(c=>c.category==='gratuit');
+ document.getElementById('daily-match-info').innerText=free?`${free.home} vs ${free.away}`:'Aucun pronostic gratuit';
+ document.getElementById('daily-prono-info').innerText=free?`${free.market||'1X2'} - ${free.prono} @ ${free.cote}`:'—';
+}
+
+function addMatch(){
+ // À l'étape Firebase, cette fonction fera addDoc() dans Firestore.
+ const fields=['competition','country','home','away','date','market','prono','cote','category'];
+ const data={};fields.forEach(k=>data[k]=document.getElementById('admin-'+k).value.trim());
+ if(!data.home||!data.away||!data.prono||!data.cote){alert('Veuillez remplir les équipes, le pronostic et la cote.');return}
+ data.id='local-'+Date.now();
+ allCoupons.push(data);updateDaily();renderCoupons(currentFilter);
+ const item=document.createElement('div');item.style.cssText='margin-bottom:5px;padding:8px;background:rgba(212,175,55,.1);border-radius:5px;font-size:12px';
+ item.innerText=`✅ [${data.category.toUpperCase()}] ${data.home} vs ${data.away} — ${data.prono} @ ${data.cote}`;
+ document.getElementById('admin-match-list').appendChild(item);
+ fields.forEach(k=>document.getElementById('admin-'+k).value='');
+ alert('Match ajouté localement. La sauvegarde permanente sera activée avec Firebase.');
+}
+
+function openLogin(){document.getElementById('loginModal').classList.add('active')}
+function closeLogin(){document.getElementById('loginModal').classList.remove('active')}
+function startMemberLogin(){
+ const phone=document.getElementById('login-phone').value.trim();
+ if(!phone){alert('Veuillez entrer votre numéro.');return}
+ alert('Le numéro sera utilisé par Firebase Authentication après la configuration. Vous ne devez pas enregistrer de liste de numéros VIP dans le JavaScript.');
+}
+function openAdmin(){
+ if(document.getElementById('admin-form').classList.contains('hidden'))document.getElementById('adminLoginModal').classList.add('active');
+ else showPage('page-admin');
+}
+function closeAdminLogin(){document.getElementById('adminLoginModal').classList.remove('active')}
+function adminLogout(){
+ document.getElementById('admin-form').classList.add('hidden');
+ document.getElementById('admin-notice').innerText='Connexion administrateur requise.';
+ showPage('page-accueil');
+}
+let currentPaymentMethod='',currentPlan='';
+function openPayment(method,plan){currentPaymentMethod=method;currentPlan=plan;document.getElementById('payment-text').innerText=`Plan ${plan} — ${method}. Le paiement réel sera connecté après configuration.`;document.getElementById('paymentModal').classList.add('active')}
+function closePayment(){document.getElementById('paymentModal').classList.remove('active')}
+function confirmPayment(){alert('Aucun paiement réel n’est effectué dans cette version. Le fournisseur de paiement sera connecté après validation de Firebase.');closePayment()}
+
+updateDaily();renderCoupons();
+</script>
+</body>
+</html>
