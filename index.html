@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bêta Pronostic - Gagnons ensemble</title>
+<title>Beta Pronostic - Gagnons ensemble</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
 :root{--bleu-nuit:#0a0f1d;--bleu-electrique:#1e3a8a;--or:#d4af37;--violet:#7c3aed;--vert:#22c55e;--rouge:#ef4444;--jaune:#eab308;--gris:#94a3b8;--carte:#111827;--bordure:#1f2937;}
@@ -18,8 +18,8 @@ header{background:linear-gradient(135deg,#0a0f1d 0%,#1e3a8a 100%);padding:16px;d
 .badge-admin{position:fixed;top:16px;right:16px;background:var(--or);color:#0a0f1d;padding:4px 10px;border-radius:20px;font-size:10px;font-weight:800;z-index:150;display:none;}
 .toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%);background:var(--or);color:#0a0f1d;padding:10px 20px;border-radius:30px;font-size:12px;font-weight:700;z-index:999;display:none;}
 .toast.active{display:block;}
-.btn-admin-secret{position:fixed;bottom:110px;right:12px;width:22px;height:22px;border-radius:50%;background:rgba(212,175,55,.15);border:1px solid rgba(212,175,55,.3);z-index:999;cursor:pointer;-webkit-tap-highlight-color:transparent;}
-.btn-admin-secret:active{background:rgba(212,175,55,.5);}
+.btn-admin-secret{position:fixed;bottom:110px;right:12px;width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#d4af37,#f5d76e 50%,#b8860b);color:#0a0f1d;font-weight:900;font-size:14px;letter-spacing:1px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(212,175,55,.5);z-index:999;cursor:pointer;-webkit-tap-highlight-color:transparent;font-family:Arial,sans-serif;transition:transform .15s;}
+.btn-admin-secret:active{transform:scale(.9);}
 nav.tabs{display:flex;background:#0f172a;border-bottom:1px solid var(--bordure);overflow-x:auto;}
 nav.tabs button{flex:1;padding:12px 8px;background:none;border:none;color:var(--gris);font-size:11px;font-weight:600;cursor:pointer;white-space:nowrap;border-bottom:3px solid transparent;}
 nav.tabs button.active{color:var(--or);border-bottom-color:var(--or);}
@@ -63,17 +63,16 @@ section.active{display:block;}
 .selection .match{color:#e2e8f0;font-weight:600;margin-bottom:2px;}
 .selection .pronostic{color:var(--or);font-size:11px;}
 .selection .cote{background:#0f172a;color:#fff;padding:6px 10px;border-radius:8px;font-weight:800;font-size:13px;border:1px solid var(--bordure);min-width:56px;text-align:center;}
-.selection .statut-icone{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;}
-.statut-icone.encours{background:rgba(234,179,8,.2);border:1.5px solid var(--jaune);}
-.statut-icone.gagne{background:rgba(34,197,94,.2);border:1.5px solid var(--vert);}
-.statut-icone.perdu{background:rgba(239,68,68,.2);border:1.5px solid var(--rouge);}
-.statut-icone.reporte{background:rgba(148,163,184,.2);border:1.5px solid var(--gris);}
+.selection .statut-icone{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;font-weight:900;}
+.statut-icone.encours{background:rgba(234,179,8,.2);border:1.5px solid var(--jaune);color:var(--jaune);}
+.statut-icone.gagne{background:rgba(34,197,94,.2);border:1.5px solid var(--vert);color:var(--vert);}
+.statut-icone.perdu{background:rgba(239,68,68,.2);border:1.5px solid var(--rouge);color:var(--rouge);}
+.statut-icone.reporte{background:rgba(148,163,184,.2);border:1.5px solid var(--gris);color:var(--gris);}
 .cote-totale{margin-top:12px;padding-top:12px;border-top:2px solid var(--or);display:flex;justify-content:space-between;align-items:center;}
 .cote-totale span:first-child{font-size:12px;color:var(--gris);}
 .cote-totale span:last-child{font-size:22px;font-weight:900;color:var(--or);}
 .btn-affiche{margin-top:12px;width:100%;background:linear-gradient(135deg,var(--or),#b8860b);color:#0a0f1d;border:none;padding:12px;border-radius:10px;font-weight:800;font-size:13px;cursor:pointer;}
 .vip-verrouille{background:var(--carte);border:1px solid var(--violet);border-radius:14px;padding:20px;text-align:center;position:relative;}
-.vip-verrouille::before{content:'';position:absolute;top:10px;right:14px;font-size:20px;}
 .vip-verrouille h3{color:var(--violet);font-size:14px;margin-bottom:14px;}
 .match-flou{background:linear-gradient(90deg,#1f2937 0%,#374151 50%,#1f2937 100%);height:14px;border-radius:6px;margin:8px auto;}
 .match-flou.large{width:80%;}
@@ -113,25 +112,19 @@ section.active{display:block;}
 .btn-suppr{background:var(--rouge);color:#fff;}
 .selection-edit{background:#0f172a;border:1px solid var(--bordure);border-radius:8px;padding:10px;margin-bottom:8px;position:relative;}
 .selection-edit .btn-x{position:absolute;top:6px;right:6px;background:var(--rouge);color:#fff;border:none;width:24px;height:24px;border-radius:50%;cursor:pointer;font-weight:800;}
-.selection-edit .statut-row{display:flex;gap:4px;margin-top:8px;}
-.selection-edit .statut-row button{flex:1;padding:6px;font-size:10px;border:1px solid var(--bordure);background:#1a2332;color:var(--gris);border-radius:6px;cursor:pointer;font-weight:700;}
-.selection-edit .statut-row button.actif-encours{background:rgba(234,179,8,.2);color:var(--jaune);border-color:var(--jaune);}
-.selection-edit .statut-row button.actif-gagne{background:rgba(34,197,94,.2);color:var(--vert);border-color:var(--vert);}
-.selection-edit .statut-row button.actif-perdu{background:rgba(239,68,68,.2);color:var(--rouge);border-color:var(--rouge);}
-.selection-edit .statut-row button.actif-reporte{background:rgba(148,163,184,.2);color:var(--gris);border-color:var(--gris);}
 </style>
 </head>
 <body>
 
-<span class="badge-admin" id="badge-admin"> MODE ADMIN</span>
-<div class="toast" id="toast">Clique encore...</div>
-<div class="btn-admin-secret" id="btn-admin-secret"></div>
+<span class="badge-admin" id="badge-admin">ADMIN</span>
+<div class="toast" id="toast"></div>
+<div class="btn-admin-secret" id="btn-admin-secret">BP</div>
 
 <header>
-  <div class="logo-b" id="logo-clic"></div>
+  <div class="logo-b" id="logo-clic">Î²</div>
   <div>
-    <div class="titre-app">BÊTA <span>PRONOSTIC</span></div>
-    <div class="slogan-header">Gagnons ensemble avec Bêta Pronostic</div>
+    <div class="titre-app">BETA <span>PRONOSTIC</span></div>
+    <div class="slogan-header">Gagnons ensemble avec Beta Pronostic</div>
   </div>
 </header>
 
@@ -145,24 +138,24 @@ section.active{display:block;}
 
 <section id="accueil" class="active">
   <div class="hero">
-    <h2>Bienvenue sur <span>Bêta Pronostic</span></h2>
-    <p>Gagnons ensemble avec Bêta Pronostic</p>
-    <a href="https://wa.me/245956184838" class="btn-wa" target="_blank"> Contacter sur WhatsApp</a>
+    <h2>Bienvenue sur <span>Beta Pronostic</span></h2>
+    <p>Gagnons ensemble avec Beta Pronostic</p>
+    <a href="https://wa.me/245956184838" class="btn-wa" target="_blank">Contacter sur WhatsApp</a>
   </div>
-  <div class="banniere-info"> Pronostics gratuits chaque jour — VIP à partir de 5 000 CFA</div>
-  <div class="section-titre"> Statistiques</div>
+  <div class="banniere-info">Pronostics gratuits chaque jour - VIP a partir de 5 000 CFA</div>
+  <div class="section-titre">Statistiques</div>
   <div class="stats-grid" id="zone-stats"></div>
-  <div class="section-titre"> Pronostics gratuits du jour</div>
+  <div class="section-titre">Pronostics gratuits du jour</div>
   <div id="zone-coupons-gratuits"></div>
-  <div class="section-titre"> Aperçu VIP</div>
+  <div class="section-titre">Apercu VIP</div>
   <div class="vip-verrouille">
-    <h3> COUPON VIP - ACCÈS RÉSERVÉ</h3>
+    <h3>COUPON VIP - ACCES RESERVE</h3>
     <div class="match-flou large"></div>
     <div class="match-flou moyen"></div>
     <div class="match-flou large"></div>
     <div class="match-flou court"></div>
     <p style="font-size:11px;color:var(--gris);margin-top:14px;">2 coupons VIP par jour (matin + soir)</p>
-    <button class="btn-debloquer" onclick="ouvrirModalCode()"> SAISIR MON CODE VIP</button>
+    <button class="btn-debloquer" onclick="ouvrirModalCode()">SAISIR MON CODE VIP</button>
   </div>
 </section>
 
@@ -173,49 +166,49 @@ section.active{display:block;}
 
 <section id="historique">
   <div class="hero">
-    <h2> <span>Historique</span></h2>
-    <p>Résultats de nos pronostics passés</p>
+    <h2>Historique</h2>
+    <p>Resultats de nos pronostics passes</p>
   </div>
   <div class="stats-grid" id="zone-stats-2"></div>
-  <div class="section-titre"> Tous les coupons terminés</div>
+  <div class="section-titre">Tous les coupons termines</div>
   <div id="zone-historique"></div>
 </section>
 
 <section id="vip">
   <div class="hero">
-    <h2>Accès <span>VIP</span></h2>
-    <p>Débloquez les coupons premium avec votre code</p>
+    <h2>Acces <span>VIP</span></h2>
+    <p>Debloquez les coupons premium avec votre code</p>
   </div>
   <div id="zone-vip-debloquee" style="display:none;">
-    <div class="section-titre"> Coupons VIP débloqués</div>
+    <div class="section-titre">Coupons VIP debloques</div>
     <div id="zone-coupons-vip"></div>
   </div>
   <div id="zone-vip-verrouillee">
     <div class="vip-verrouille" style="margin-bottom:16px;">
-      <h3> Coupon VIP du jour</h3>
+      <h3>Coupon VIP du jour</h3>
       <div class="match-flou large"></div>
       <div class="match-flou moyen"></div>
       <div class="match-flou large"></div>
       <div class="match-flou court"></div>
       <div class="match-flou moyen"></div>
       <p style="font-size:11px;color:var(--gris);margin-top:14px;">2 coupons VIP par jour (matin + soir)</p>
-      <button class="btn-debloquer" onclick="ouvrirModalCode()"> SAISIR MON CODE VIP</button>
+      <button class="btn-debloquer" onclick="ouvrirModalCode()">SAISIR MON CODE VIP</button>
     </div>
   </div>
-  <div class="section-titre"> Nos offres VIP</div>
+  <div class="section-titre">Nos offres VIP</div>
   <div class="coupon vip" style="text-align:center;">
-    <h3 style="font-size:16px;"> Pack 7 coupons</h3>
-    <p style="color:var(--gris);font-size:12px;margin:8px 0;">Accès à 7 coupons VIP au choix</p>
+    <h3 style="font-size:16px;">Pack 7 coupons</h3>
+    <p style="color:var(--gris);font-size:12px;margin:8px 0;">Acces a 7 coupons VIP au choix</p>
     <p style="color:var(--or);font-weight:800;font-size:22px;margin:10px 0;">5 000 CFA</p>
   </div>
   <div class="coupon vip" style="text-align:center;">
-    <h3 style="font-size:16px;"> VIP 1 mois</h3>
-    <p style="color:var(--gris);font-size:12px;margin:8px 0;">Accès à tous les coupons VIP pendant 30 jours</p>
+    <h3 style="font-size:16px;">VIP 1 mois</h3>
+    <p style="color:var(--gris);font-size:12px;margin:8px 0;">Acces a tous les coupons VIP pendant 30 jours</p>
     <p style="color:var(--or);font-weight:800;font-size:22px;margin:10px 0;">15 000 CFA</p>
   </div>
   <div class="banniere-info" style="margin-top:16px;">
-     Paiement par <strong>Orange Money</strong> ou <strong>Wave</strong><br>
-     Envoyez le paiement puis contactez-nous :<br>
+    Paiement par <strong>Orange Money</strong> ou <strong>Wave</strong><br>
+    Envoyez le paiement puis contactez-nous :<br>
     <a href="https://wa.me/245956184838" style="color:var(--or);font-weight:700;font-size:14px;">+245 956 184 838</a>
   </div>
 </section>
@@ -223,47 +216,47 @@ section.active{display:block;}
 <section id="codes">
   <div class="hero">
     <h2>Mon <span>code VIP</span></h2>
-    <p>Saisissez le code reçu pour débloquer l'accès</p>
+    <p>Saisissez le code recu pour debloquer l'acces</p>
   </div>
   <div class="coupon">
-    <h3 style="margin-bottom:14px;"> Activer mon code</h3>
+    <h3 style="margin-bottom:14px;">Activer mon code</h3>
     <input type="text" id="input-code-principal" placeholder="BETA-XXXX-XXXX"
       style="width:100%;padding:14px;border-radius:10px;border:1px solid var(--bordure);background:#0f172a;color:#fff;font-size:14px;margin-bottom:10px;text-transform:uppercase;text-align:center;font-weight:700;letter-spacing:2px;">
     <div id="msg-principal" style="text-align:center;font-size:12px;margin-bottom:10px;"></div>
-    <button class="btn-debloquer" onclick="verifierCode()"> Activer mon code</button>
+    <button class="btn-debloquer" onclick="verifierCode()">Activer mon code</button>
   </div>
-  <div class="banniere-info"> <strong>Astuce :</strong> cliquez sur le lien que nous vous avons envoyé pour activer automatiquement votre code.</div>
+  <div class="banniere-info">Astuce : cliquez sur le lien que nous vous avons envoye pour activer automatiquement votre code.</div>
 </section>
 
 <div class="bottom-nav">
   <a href="#" class="active" onclick="afficher('accueil',document.querySelectorAll('.tabs button')[0]);return false;">
-    <span class="ico"></span>Accueil
+    <span class="ico">A</span>Accueil
   </a>
   <a href="#" onclick="afficher('coupons',document.querySelectorAll('.tabs button')[1]);return false;">
-    <span class="ico"></span>Coupons
+    <span class="ico">C</span>Coupons
   </a>
   <a href="#" onclick="afficher('historique',document.querySelectorAll('.tabs button')[2]);return false;">
-    <span class="ico"></span>Historique
+    <span class="ico">H</span>Historique
   </a>
   <a href="#" onclick="afficher('vip',document.querySelectorAll('.tabs button')[3]);return false;">
-    <span class="ico"></span>VIP
+    <span class="ico">V</span>VIP
   </a>
   <a href="https://wa.me/245956184838" target="_blank">
-    <span class="ico"></span>WhatsApp
+    <span class="ico">W</span>WhatsApp
   </a>
 </div><div class="modal" id="modal-code">
   <div class="modal-content">
-    <h3> Saisir un code VIP</h3>
+    <h3>Saisir un code VIP</h3>
     <input type="text" id="input-modal" placeholder="BETA-XXXX-XXXX" maxlength="25">
     <div id="msg-modal" style="text-align:center;font-size:12px;margin-bottom:10px;"></div>
-    <button class="btn-valider" onclick="validerCodeModal()"> Valider</button>
+    <button class="btn-valider" onclick="validerCodeModal()">Valider</button>
     <button class="btn-gris" onclick="fermerModalCode()">Annuler</button>
   </div>
 </div>
 
 <div class="modal" id="modal-admin-login">
   <div class="modal-content" style="border-color:var(--or);">
-    <h3 style="color:var(--or);"> ACCÈS ADMIN</h3>
+    <h3 style="color:var(--or);">ACCES ADMIN</h3>
     <input type="password" id="input-admin-pwd" placeholder="Mot de passe">
     <div id="msg-admin-login" style="text-align:center;font-size:12px;margin-bottom:10px;"></div>
     <button class="btn-or" onclick="verifierAdminLogin()">Valider</button>
@@ -273,41 +266,41 @@ section.active{display:block;}
 
 <div class="modal" id="modal-admin-panel">
   <div class="modal-content" style="border-color:var(--or);max-width:600px;">
-    <h3 style="color:var(--or);"> BÊTA CONTROL</h3>
+    <h3 style="color:var(--or);">BETA CONTROL</h3>
     <div class="admin-tabs">
-      <button class="active" onclick="adminTab('creer',this)"> Créer</button>
-      <button onclick="adminTab('resultats',this)"> Résultats</button>
-      <button onclick="adminTab('codes',this)"> Codes</button>
-      <button onclick="adminTab('coupons',this)"> Coupons</button>
+      <button class="active" onclick="adminTab('creer',this)">Creer</button>
+      <button onclick="adminTab('resultats',this)">Resultats</button>
+      <button onclick="adminTab('codes',this)">Codes</button>
+      <button onclick="adminTab('coupons',this)">Coupons</button>
     </div>
 
     <div id="admin-creer">
-      <label>Catégorie</label>
+      <label>Categorie</label>
       <select id="new-categorie">
-        <option value="gratuit"> Gratuit</option>
-        <option value="modere"> Modéré</option>
-        <option value="risque"> Risqué</option>
-        <option value="vip" selected> VIP</option>
+        <option value="gratuit">Gratuit</option>
+        <option value="modere">Modere</option>
+        <option value="risque">Risque</option>
+        <option value="vip" selected>VIP</option>
       </select>
       <label>Titre du coupon</label>
       <input type="text" id="new-titre" placeholder="Ex: Coupon VIP du matin">
-      <label>Sélections (minimum 1)</label>
+      <label>Selections (minimum 1)</label>
       <div id="new-selections"></div>
-      <button class="btn-gris" onclick="ajouterSelectionEdit()" style="margin-bottom:14px;"> Ajouter une sélection</button>
+      <button class="btn-gris" onclick="ajouterSelectionEdit()" style="margin-bottom:14px;">+ Ajouter une selection</button>
       <div style="background:#0f172a;border:1px solid var(--or);border-radius:8px;padding:12px;margin-bottom:14px;text-align:center;">
         <div style="font-size:11px;color:var(--gris);">COTE TOTALE</div>
         <div id="new-cote-totale" style="font-size:26px;font-weight:900;color:var(--or);">1.00</div>
       </div>
-      <button class="btn-or" onclick="enregistrerCoupon()"> Enregistrer le coupon</button>
+      <button class="btn-or" onclick="enregistrerCoupon()">Enregistrer le coupon</button>
     </div>
 
     <div id="admin-resultats" style="display:none;">
-      <p style="font-size:12px;color:var(--gris);margin-bottom:14px;text-align:center;">Cliquez sur un statut pour mettre à jour chaque match.</p>
+      <p style="font-size:12px;color:var(--gris);margin-bottom:14px;text-align:center;">Cliquez sur un statut pour mettre a jour chaque match.</p>
       <div id="liste-resultats"></div>
     </div>
 
     <div id="admin-codes" style="display:none;">
-      <button class="btn-or" onclick="genererNouveauCode()" style="margin-bottom:14px;"> GÉNÉRER UN CODE VIP</button>
+      <button class="btn-or" onclick="genererNouveauCode()" style="margin-bottom:14px;">GENERER UN CODE VIP</button>
       <div id="liste-codes"></div>
     </div>
 
@@ -315,14 +308,14 @@ section.active{display:block;}
       <div id="liste-coupons"></div>
     </div>
 
-    <button class="btn-rouge" onclick="quitterAdmin()" style="margin-top:14px;"> Quitter le mode admin</button>
+    <button class="btn-rouge" onclick="quitterAdmin()" style="margin-top:14px;">Quitter le mode admin</button>
   </div>
 </div>
 
 <div class="modal" id="modal-gen-code">
   <div class="modal-content">
-    <h3> Nouveau code VIP</h3>
-    <label>Type d'accès</label>
+    <h3>Nouveau code VIP</h3>
+    <label>Type d'acces</label>
     <select id="code-type">
       <option value="7jours">7 coupons (5 000 CFA)</option>
       <option value="mois">1 mois complet (15 000 CFA)</option>
@@ -331,24 +324,24 @@ section.active{display:block;}
     <input type="date" id="code-expire">
     <label>Nom du client (optionnel)</label>
     <input type="text" id="code-client" placeholder="Ex: Jean Dupont">
-    <button class="btn-or" onclick="creerCode()"> Générer le code</button>
+    <button class="btn-or" onclick="creerCode()">Generer le code</button>
     <button class="btn-gris" onclick="document.getElementById('modal-gen-code').classList.remove('active')">Annuler</button>
   </div>
 </div>
 
 <div class="modal" id="modal-code-genere">
   <div class="modal-content" style="border-color:var(--vert);">
-    <h3 style="color:var(--vert);"> Code généré !</h3>
+    <h3 style="color:var(--vert);">Code genere !</h3>
     <div style="background:#0f172a;border:2px dashed var(--or);border-radius:10px;padding:20px;text-align:center;margin-bottom:14px;">
       <div style="font-size:11px;color:var(--gris);margin-bottom:6px;">CODE VIP</div>
       <div id="code-genere-affichage" style="font-size:24px;font-weight:900;color:var(--or);letter-spacing:2px;"></div>
     </div>
     <div style="background:#0f172a;border:1px solid var(--bordure);border-radius:10px;padding:14px;margin-bottom:14px;">
-      <div style="font-size:11px;color:var(--gris);margin-bottom:8px;"> Message WhatsApp :</div>
+      <div style="font-size:11px;color:var(--gris);margin-bottom:8px;">Message WhatsApp :</div>
       <div id="message-whatsapp" style="font-size:12px;color:#e2e8f0;white-space:pre-wrap;line-height:1.6;"></div>
     </div>
-    <button class="btn-or" onclick="copierMessage()"> Copier le message</button>
-    <button class="btn-valider" onclick="copierLien()"> Copier le lien magique</button>
+    <button class="btn-or" onclick="copierMessage()">Copier le message</button>
+    <button class="btn-valider" onclick="copierLien()">Copier le lien magique</button>
     <button class="btn-gris" onclick="document.getElementById('modal-code-genere').classList.remove('active')">Fermer</button>
   </div>
 </div>
@@ -357,9 +350,9 @@ section.active{display:block;}
 
 <script>
 var MOT_DE_PASSE_ADMIN = "F@llou55212";
-var CLE_COUPONS = "beta_coupons_v3";
-var CLE_CODES = "beta_codes_v3";
-var CLE_VIP = "beta_vip_actif_v3";
+var CLE_COUPONS = "beta_coupons_v4";
+var CLE_CODES = "beta_codes_v4";
+var CLE_VIP = "beta_vip_actif_v4";
 var adminConnecte = false;
 var compteurClicLogo = 0;
 var timerClicLogo = null;
@@ -378,8 +371,25 @@ function initialiserDonnees(){
     if(!existant){
       var demo = [
         {
-          id: "c1", categorie: "gratuit", titre: "Coupon découverte du jour",
+          id: "c1", categorie: "gratuit", titre: "Coupon decouverte du jour",
           selections: [
             { ligue:"Bundesliga (Allemagne)", match:"Union Berlin - Elversberg", pronostic:"Corners : +7,5", cote:"1.325", statut:"en_cours" },
-            { ligue:"Bundesliga (Allemagne)", match:"Hoffenheim - Hambourg", pronostic:"1ère MT : +1,5 but", cote:"2.01", statut:"en_cours" },
-            { ligue:"Bundesliga (Allemagne)", match:"Mayence - Leverkusen", pronostic:"1X2
+            { ligue:"Bundesliga (Allemagne)", match:"Hoffenheim - Hambourg", pronostic:"1ere MT : +1,5 but", cote:"2.01", statut:"en_cours" },
+            { ligue:"Bundesliga (Allemagne)", match:"Mayence - Leverkusen", pronostic:"1X2 : Victoire Leverkusen", cote:"3.14", statut:"en_cours" },
+            { ligue:"Bundesliga (Allemagne)", match:"Augsbourg - Bayern Munich", pronostic:"1X2 : Victoire Bayern", cote:"1.155", statut:"en_cours" }
+          ],
+          date: new Date().toISOString()
+        },
+        {
+          id: "c2", categorie: "modere", titre: "Combine securite",
+          selections: [
+            { ligue:"Premier League", match:"Manchester City - Liverpool", pronostic:"Plus de 1,5 but", cote:"1.25", statut:"en_cours" },
+            { ligue:"Bundesliga (Allemagne)", match:"Bayern - Dortmund", pronostic:"Les 2 equipes marquent", cote:"1.55", statut:"en_cours" }
+          ],
+          date: new Date().toISOString()
+        },
+        {
+          id: "c3", categorie: "vip", titre: "Coupon VIP du matin",
+          selections: [
+            { ligue:"Bundesliga (Allemagne)", match:"Mayence - Leverkusen", pronostic:"1X2 : Victoire Mayence", cote:"3.14", statut:"en_cours" },
+            { ligue:"Bundesliga (Allemagne)", match:"Augsbourg - Bayern Munich", pronostic
