@@ -3,245 +3,381 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BÊTA PRONOSTIC</title>
+<title>Bêta Pronostic - Gagnons ensemble</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
-:root{--bleu-nuit:#0a0f1d;--bleu-electrique:#1e3a8a;--or:#d4af37;--or-clair:#fbbf24;--blanc:#fff;--gris-texte:#9ca3af;--violet:#7c3aed;--rouge:#dc2626;--vert:#10b981;--fond-carte:#111827;--bordure:#1f2937}
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Roboto,sans-serif;-webkit-tap-highlight-color:transparent}
-body{background:var(--bleu-nuit);color:var(--blanc);display:flex;justify-content:center;min-height:100vh}
-.app-container{width:100%;max-width:420px;background:var(--bleu-nuit);position:relative;display:flex;flex-direction:column;min-height:100vh}
-.header{padding:15px 20px;display:flex;justify-content:space-between;align-items:center;background:var(--bleu-nuit);z-index:10;border-bottom:1px solid var(--bordure);position:sticky;top:0}
-.logo-header{display:flex;align-items:center;gap:8px}.logo-icon{font-size:24px;color:var(--or);font-weight:bold}.logo-text{font-size:14px;font-weight:800}.logo-text span{color:var(--or)}
-.header-actions{display:flex;gap:5px;align-items:center}.lang-btn{background:rgba(255,255,255,.1);border:1px solid var(--bordure);color:#fff;padding:4px 7px;border-radius:5px;font-size:9px;cursor:pointer;font-weight:bold}.lang-btn.active{background:var(--or);color:var(--bleu-nuit);border-color:var(--or)}
-.admin-btn{background:var(--or);color:var(--bleu-nuit);padding:6px 10px;border-radius:5px;font-size:10px;font-weight:bold;cursor:pointer;border:none}
-.main-content{flex:1;overflow-y:auto;padding-bottom:80px}.main-content::-webkit-scrollbar{display:none}
-.page{display:none;padding:20px;animation:fadeIn .3s ease}.page.active{display:block}@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-.hero-logo{text-align:center;margin:20px 0 30px}.big-b{font-size:70px;color:var(--or);font-weight:900;text-shadow:0 0 30px rgba(212,175,55,.4);line-height:1}.subtitle{font-size:12px;letter-spacing:3px;margin-top:5px;opacity:.8}
-.daily-prono{background:linear-gradient(135deg,var(--bleu-electrique),#0f172a);border:1px solid var(--or);border-radius:15px;padding:20px;text-align:center;margin-bottom:25px}.daily-prono h3{color:var(--or);font-size:12px;text-transform:uppercase;margin-bottom:10px}.match-info{font-size:18px;font-weight:bold;margin-bottom:10px}.prono-info{color:var(--or);font-size:12px;margin-bottom:15px}
-.btn-gold{background:linear-gradient(90deg,var(--or),var(--or-clair));color:var(--bleu-nuit);border:none;padding:12px 25px;border-radius:30px;font-weight:800;font-size:13px;cursor:pointer;width:100%;text-transform:uppercase}
-.section-title{font-size:16px;font-weight:700;margin-bottom:15px}.categories-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.cat-card{background:var(--fond-carte);border-radius:15px;padding:18px;text-align:center;cursor:pointer;border:1px solid var(--bordure)}.cat-card .icon{font-size:26px;margin-bottom:8px;display:block}.cat-card h4{font-size:14px;margin-bottom:4px}.cat-card p{color:var(--gris-texte);font-size:11px}
-.coupon-item{background:var(--fond-carte);border-radius:12px;padding:15px;margin-bottom:15px;border-left:4px solid var(--or)}.coupon-item.vip{border-left-color:var(--violet)}.coupon-item.risque{border-left-color:var(--rouge)}.coupon-item.modere{border-left-color:var(--bleu-electrique)}.coupon-item.gratuit{border-left-color:var(--vert)}
-.coupon-header-row,.coupon-footer-row{display:flex;justify-content:space-between;align-items:center}.coupon-header-row{margin-bottom:8px}.coupon-competition{color:var(--gris-texte);font-size:11px}.coupon-date{color:var(--or);font-size:11px;font-weight:bold}.coupon-match-title{font-size:16px;font-weight:700;margin-bottom:6px}.coupon-market{color:var(--gris-texte);font-size:12px;margin-bottom:10px}.coupon-footer-row{padding-top:8px;border-top:1px solid var(--bordure)}.coupon-prono{color:var(--or);font-weight:bold;font-size:14px}.coupon-cote{font-weight:900;font-size:18px;background:rgba(212,175,55,.15);padding:4px 10px;border-radius:8px}.coupon-locked{text-align:center;padding:20px;color:var(--gris-texte);font-size:13px}
-.total-cote-box{background:linear-gradient(135deg,var(--or),var(--or-clair));color:var(--bleu-nuit);border-radius:12px;padding:15px;text-align:center;margin-top:20px;font-weight:900}.total-cote-box .label{font-size:11px;text-transform:uppercase;letter-spacing:1px}.total-cote-box .value{font-size:28px}
-.vip-header{text-align:center;margin-bottom:25px}.vip-header h2{color:var(--violet);font-size:26px}.vip-card{background:linear-gradient(135deg,#1e1b4b,#0f172a);border:1px solid var(--violet);border-radius:15px;padding:20px;margin-bottom:20px}.vip-price{color:var(--or);font-size:22px;font-weight:800;margin-bottom:15px}.payment-methods{display:flex;gap:8px;flex-wrap:wrap}.pay-btn{flex:1;background:rgba(255,255,255,.05);border:1px solid var(--bordure);color:#fff;padding:10px 5px;border-radius:8px;font-size:11px;cursor:pointer;text-align:center;min-width:80px}
-.admin-panel{background:#0f172a;border-radius:15px;padding:20px;border:1px solid var(--or)}.admin-panel h3{color:var(--or);margin-bottom:15px;font-size:15px}.form-group{margin-bottom:12px}.form-group label{display:block;color:var(--gris-texte);font-size:11px;margin-bottom:4px}.form-group input,.form-group select{width:100%;padding:10px;background:var(--bleu-nuit);border:1px solid var(--bordure);border-radius:8px;color:#fff;font-size:13px}.btn-admin{background:var(--or);color:var(--bleu-nuit);border:none;padding:12px;border-radius:8px;font-weight:bold;width:100%;cursor:pointer;margin-top:10px;font-size:13px}
-.admin-status{font-size:11px;color:var(--gris-texte);margin-bottom:12px}.danger{background:var(--rouge);color:#fff}.bottom-nav{position:fixed;bottom:0;left:0;right:0;max-width:420px;margin:0 auto;background:rgba(10,15,29,.98);border-top:1px solid var(--bordure);display:flex;justify-content:space-around;padding:10px 0 15px;z-index:100}.nav-item{display:flex;flex-direction:column;align-items:center;color:var(--gris-texte);font-size:10px;cursor:pointer;width:20%}.nav-icon{font-size:18px;margin-bottom:3px}.nav-item.active{color:var(--or)}
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.8);display:none;justify-content:center;align-items:center;z-index:200;padding:20px}.modal-overlay.active{display:flex}.modal-content{background:var(--fond-carte);border-radius:15px;padding:25px;width:100%;max-width:320px;border:1px solid var(--or);text-align:center}.modal-content h3{color:var(--or);margin-bottom:15px}.modal-content p{font-size:13px;margin-bottom:20px}.modal-actions{display:flex;gap:10px}.modal-actions button{flex:1;padding:10px;border-radius:8px;border:none;font-weight:bold;cursor:pointer;font-size:13px}.btn-cancel{background:var(--bordure);color:#fff}.btn-confirm{background:var(--or);color:var(--bleu-nuit)}.login-input{width:100%;padding:12px;background:var(--bleu-nuit);border:1px solid var(--bordure);border-radius:8px;color:#fff;font-size:14px;margin-bottom:15px;text-align:center}
-.hidden{display:none!important}.notice{padding:10px;border-radius:8px;background:rgba(212,175,55,.1);color:var(--gris-texte);font-size:11px;margin-bottom:12px}
+:root{--bleu-nuit:#0a0f1d;--bleu-electrique:#1e3a8a;--or:#d4af37;--violet:#7c3aed;--vert:#22c55e;--rouge:#ef4444;--jaune:#eab308;--gris:#94a3b8;--carte:#111827;--bordure:#1f2937;}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Roboto,Arial,sans-serif;}
+body{background:var(--bleu-nuit);color:#fff;padding-bottom:90px;}
+header{background:linear-gradient(135deg,#0a0f1d 0%,#1e3a8a 100%);padding:16px;display:flex;align-items:center;gap:12px;border-bottom:2px solid var(--or);position:sticky;top:0;z-index:100;}
+.logo-b{width:48px;height:48px;background:linear-gradient(135deg,#d4af37,#f5d76e 50%,#b8860b);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:bold;color:#0a0f1d;box-shadow:0 4px 20px rgba(212,175,55,.4);font-family:Georgia,serif;cursor:pointer;user-select:none;transition:transform .15s;}
+.logo-b:active{transform:scale(.92);}
+.titre-app{font-size:18px;font-weight:800;letter-spacing:1px;}
+.titre-app span{color:var(--or);}
+.slogan-header{font-size:10px;color:var(--gris);font-style:italic;margin-top:2px;}
+.badge-admin{position:fixed;top:16px;right:16px;background:var(--or);color:#0a0f1d;padding:4px 10px;border-radius:20px;font-size:10px;font-weight:800;z-index:150;display:none;}
+.toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%);background:var(--or);color:#0a0f1d;padding:10px 20px;border-radius:30px;font-size:12px;font-weight:700;z-index:999;display:none;}
+.toast.active{display:block;}
+nav.tabs{display:flex;background:#0f172a;border-bottom:1px solid var(--bordure);overflow-x:auto;}
+nav.tabs button{flex:1;padding:12px 8px;background:none;border:none;color:var(--gris);font-size:11px;font-weight:600;cursor:pointer;white-space:nowrap;border-bottom:3px solid transparent;}
+nav.tabs button.active{color:var(--or);border-bottom-color:var(--or);}
+section{padding:16px;display:none;}
+section.active{display:block;}
+.hero{background:linear-gradient(135deg,#1e3a8a 0%,#0a0f1d 100%);border-radius:16px;padding:20px;text-align:center;margin-bottom:20px;border:1px solid rgba(212,175,55,.3);}
+.hero h2{font-size:20px;margin-bottom:6px;}
+.hero h2 span{color:var(--or);}
+.hero p{color:var(--gris);font-size:13px;margin-bottom:14px;}
+.btn-wa{display:inline-flex;align-items:center;gap:8px;background:#25d366;color:#fff;text-decoration:none;padding:10px 22px;border-radius:50px;font-weight:700;font-size:13px;}
+.section-titre{font-size:15px;font-weight:700;margin:20px 0 12px;display:flex;align-items:center;gap:8px;}
+.section-titre::before{content:'';width:4px;height:16px;background:var(--or);border-radius:2px;}
+.stats-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:16px;}
+.stat-card{background:var(--carte);border:1px solid var(--bordure);border-radius:12px;padding:14px 8px;text-align:center;}
+.stat-card .valeur{font-size:22px;font-weight:900;margin-bottom:4px;}
+.stat-card .label{font-size:10px;color:var(--gris);text-transform:uppercase;letter-spacing:.5px;}
+.stat-card.vert .valeur{color:var(--vert);}
+.stat-card.rouge .valeur{color:var(--rouge);}
+.stat-card.or .valeur{color:var(--or);}
+.coupon{background:var(--carte);border:1px solid var(--bordure);border-radius:14px;padding:16px;margin-bottom:14px;position:relative;}
+.coupon.gratuit{border-left:4px solid var(--vert);}
+.coupon.modere{border-left:4px solid #3b82f6;}
+.coupon.risque{border-left:4px solid var(--rouge);}
+.coupon.vip{border-left:4px solid var(--violet);}
+.coupon.statut-gagne{background:linear-gradient(135deg,rgba(34,197,94,.12),rgba(17,24,39,.9));border-color:var(--vert);}
+.coupon.statut-perdu{background:linear-gradient(135deg,rgba(239,68,68,.12),rgba(17,24,39,.9));border-color:var(--rouge);}
+.coupon-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:6px;}
+.badge{font-size:10px;font-weight:800;padding:4px 10px;border-radius:20px;text-transform:uppercase;letter-spacing:.5px;}
+.badge.gratuit{background:rgba(34,197,94,.15);color:var(--vert);}
+.badge.modere{background:rgba(59,130,246,.15);color:#3b82f6;}
+.badge.risque{background:rgba(239,68,68,.15);color:var(--rouge);}
+.badge.vip{background:rgba(124,58,237,.15);color:var(--violet);}
+.badge.statut-gagne{background:rgba(34,197,94,.25);color:var(--vert);border:1px solid var(--vert);}
+.badge.statut-perdu{background:rgba(239,68,68,.25);color:var(--rouge);border:1px solid var(--rouge);}
+.badge.statut-encours{background:rgba(234,179,8,.15);color:var(--jaune);}
+.coupon h3{font-size:14px;margin-bottom:10px;color:#e2e8f0;}
+.selection{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px dashed #1f2937;font-size:12px;gap:8px;}
+.selection:last-of-type{border-bottom:none;}
+.selection .info{flex:1;padding-right:4px;min-width:0;}
+.selection .ligue{color:#64748b;font-size:10px;margin-bottom:2px;}
+.selection .match{color:#e2e8f0;font-weight:600;margin-bottom:2px;}
+.selection .pronostic{color:var(--or);font-size:11px;}
+.selection .cote{background:#0f172a;color:#fff;padding:6px 10px;border-radius:8px;font-weight:800;font-size:13px;border:1px solid var(--bordure);min-width:56px;text-align:center;}
+.selection .statut-icone{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;}
+.statut-icone.encours{background:rgba(234,179,8,.2);border:1.5px solid var(--jaune);}
+.statut-icone.gagne{background:rgba(34,197,94,.2);border:1.5px solid var(--vert);}
+.statut-icone.perdu{background:rgba(239,68,68,.2);border:1.5px solid var(--rouge);}
+.statut-icone.reporte{background:rgba(148,163,184,.2);border:1.5px solid var(--gris);}
+.cote-totale{margin-top:12px;padding-top:12px;border-top:2px solid var(--or);display:flex;justify-content:space-between;align-items:center;}
+.cote-totale span:first-child{font-size:12px;color:var(--gris);}
+.cote-totale span:last-child{font-size:22px;font-weight:900;color:var(--or);}
+.btn-affiche{margin-top:12px;width:100%;background:linear-gradient(135deg,var(--or),#b8860b);color:#0a0f1d;border:none;padding:12px;border-radius:10px;font-weight:800;font-size:13px;cursor:pointer;}
+.vip-verrouille{background:var(--carte);border:1px solid var(--violet);border-radius:14px;padding:20px;text-align:center;position:relative;}
+.vip-verrouille::before{content:'🔒';position:absolute;top:10px;right:14px;font-size:20px;}
+.vip-verrouille h3{color:var(--violet);font-size:14px;margin-bottom:14px;}
+.match-flou{background:linear-gradient(90deg,#1f2937 0%,#374151 50%,#1f2937 100%);height:14px;border-radius:6px;margin:8px auto;}
+.match-flou.large{width:80%;}
+.match-flou.moyen{width:60%;}
+.match-flou.court{width:40%;}
+.btn-debloquer{margin-top:16px;background:linear-gradient(135deg,var(--violet),#a855f7);color:#fff;border:none;padding:14px;border-radius:50px;font-weight:800;font-size:14px;cursor:pointer;width:100%;}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#0f172a;border-top:2px solid var(--or);display:flex;justify-content:space-around;padding:8px 0;z-index:200;}
+.bottom-nav a{color:var(--gris);text-decoration:none;font-size:10px;text-align:center;flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;}
+.bottom-nav a.active{color:var(--or);}
+.bottom-nav a .ico{font-size:20px;}
+.banniere-info{background:rgba(212,175,55,.1);border:1px solid rgba(212,175,55,.3);border-radius:10px;padding:12px;font-size:12px;color:#fde68a;margin-bottom:16px;text-align:center;}
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:300;align-items:center;justify-content:center;padding:20px;overflow-y:auto;}
+.modal.active{display:flex;}
+.modal-content{background:var(--carte);border:2px solid var(--violet);border-radius:16px;padding:24px;max-width:440px;width:100%;max-height:90vh;overflow-y:auto;}
+.modal-content h3{color:var(--violet);margin-bottom:14px;text-align:center;}
+.modal-content input, .modal-content select{width:100%;padding:12px;border-radius:10px;border:1px solid var(--bordure);background:#0f172a;color:#fff;font-size:14px;margin-bottom:10px;}
+.modal-content label{font-size:12px;color:var(--gris);display:block;margin-bottom:4px;}
+.modal-content button{width:100%;padding:14px;border:none;border-radius:10px;font-weight:800;font-size:14px;cursor:pointer;margin-bottom:8px;}
+.btn-valider{background:linear-gradient(135deg,var(--violet),#a855f7);color:#fff;}
+.btn-or{background:linear-gradient(135deg,var(--or),#b8860b);color:#0a0f1d;}
+.btn-rouge{background:linear-gradient(135deg,#dc2626,#ef4444);color:#fff;}
+.btn-gris{background:transparent;color:var(--gris);border:1px solid var(--bordure);}
+.btn-vert{background:linear-gradient(135deg,#16a34a,#22c55e);color:#fff;}
+.btn-jaune{background:linear-gradient(135deg,#ca8a04,#eab308);color:#0a0f1d;}
+.msg-erreur{color:var(--rouge);font-size:12px;text-align:center;margin-bottom:8px;}
+.msg-succes{color:var(--vert);font-size:12px;text-align:center;margin-bottom:8px;}
+#affiche-capture{position:fixed;left:-9999px;top:0;}
+.admin-tabs{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;}
+.admin-tabs button{flex:1;min-width:80px;padding:10px 6px;background:#0f172a;color:var(--gris);border:1px solid var(--bordure);border-radius:8px;font-size:10px;font-weight:700;cursor:pointer;}
+.admin-tabs button.active{background:var(--or);color:#0a0f1d;border-color:var(--or);}
+.liste-code{background:#0f172a;border:1px solid var(--bordure);border-radius:8px;padding:10px;margin-bottom:8px;font-size:12px;}
+.liste-code .code{font-weight:800;color:var(--or);font-size:14px;letter-spacing:1px;margin-bottom:4px;}
+.liste-code .detail{color:var(--gris);font-size:10px;margin-bottom:6px;}
+.liste-code .actions{display:flex;gap:6px;flex-wrap:wrap;}
+.liste-code .actions button{flex:1;min-width:60px;padding:6px;font-size:10px;border-radius:6px;border:none;cursor:pointer;font-weight:700;}
+.btn-copier{background:var(--vert);color:#fff;}
+.btn-suppr{background:var(--rouge);color:#fff;}
+.selection-edit{background:#0f172a;border:1px solid var(--bordure);border-radius:8px;padding:10px;margin-bottom:8px;position:relative;}
+.selection-edit .btn-x{position:absolute;top:6px;right:6px;background:var(--rouge);color:#fff;border:none;width:24px;height:24px;border-radius:50%;cursor:pointer;font-weight:800;}
+.selection-edit .statut-row{display:flex;gap:4px;margin-top:8px;}
+.selection-edit .statut-row button{flex:1;padding:6px;font-size:10px;border:1px solid var(--bordure);background:#1a2332;color:var(--gris);border-radius:6px;cursor:pointer;font-weight:700;}
+.selection-edit .statut-row button.actif-encours{background:rgba(234,179,8,.2);color:var(--jaune);border-color:var(--jaune);}
+.selection-edit .statut-row button.actif-gagne{background:rgba(34,197,94,.2);color:var(--vert);border-color:var(--vert);}
+.selection-edit .statut-row button.actif-perdu{background:rgba(239,68,68,.2);color:var(--rouge);border-color:var(--rouge);}
+.selection-edit .statut-row button.actif-reporte{background:rgba(148,163,184,.2);color:var(--gris);border-color:var(--gris);}
 </style>
 </head>
 <body>
-<div class="app-container">
-<header class="header">
-  <div class="logo-header"><div class="logo-icon">β</div><div class="logo-text">BÊTA <span>PRONOSTIC</span></div></div>
-  <div class="header-actions">
-    <button class="lang-btn active" onclick="setLanguage('fr',this)">FR</button>
-    <button class="lang-btn" onclick="setLanguage('pt',this)">PT</button>
-    <button class="lang-btn" onclick="setLanguage('en',this)">EN</button>
-    <button class="admin-btn" onclick="openAdmin()">Admin</button>
+
+<span class="badge-admin" id="badge-admin">👑 MODE ADMIN</span>
+<div class="toast" id="toast">Clique encore...</div>
+
+<header>
+  <div class="logo-b" id="logo-clic">β</div>
+  <div>
+    <div class="titre-app">BÊTA <span>PRONOSTIC</span></div>
+    <div class="slogan-header">Gagnons ensemble avec Bêta Pronostic</div>
   </div>
 </header>
 
-<main class="main-content">
-<section class="page active" id="page-accueil">
-  <div class="hero-logo"><div class="big-b">β</div><div class="subtitle">BÊTA PRONOSTIC</div></div>
-  <div class="daily-prono">
-    <h3 data-i18n="daily_title">🔥 Le Pronostic du Jour</h3>
-    <div class="match-info" id="daily-match-info">Chargement...</div>
-    <div class="prono-info" id="daily-prono-info">—</div>
-    <button class="btn-gold" data-i18n="btn_free_coupon" onclick="showPage('page-coupons')">Voir le coupon gratuit</button>
-  </div>
-  <div class="section-title" data-i18n="categories_title">Nos Catégories</div>
-  <div class="categories-grid">
-    <div class="cat-card" onclick="filterCoupons('gratuit')"><span class="icon">🆓</span><h4 data-i18n="cat_free">GRATUIT</h4><p>Sans abonnement</p></div>
-    <div class="cat-card" onclick="filterCoupons('modere')"><span class="icon">📊</span><h4>MODÉRÉ</h4><p>5 matchs</p></div>
-    <div class="cat-card" onclick="filterCoupons('risque')"><span class="icon">⚠️</span><h4>RISQUE</h4><p>10 matchs</p></div>
-    <div class="cat-card" onclick="filterCoupons('vip')"><span class="icon">👑</span><h4>VIP</h4><p>2 matchs</p></div>
-  </div>
-</section>
-
-<section class="page" id="page-coupons">
-  <div class="section-title" data-i18n="coupons_title">Coupons Disponibles</div>
-  <div id="coupon-list-container"></div><div id="total-cote-container"></div>
-</section>
-
-<section class="page" id="page-vip">
-  <div class="vip-header"><h2>👑 BÊTA VIP</h2><p>Accédez aux pronostics premium.</p></div>
-  <div class="vip-card"><h3>VIP 7 JOURS</h3><div class="vip-price">5 000 CFA</div>
-    <div class="payment-methods"><div class="pay-btn" onclick="openPayment('Wave','7 jours')">🌊 Wave</div><div class="pay-btn" onclick="openPayment('Orange Money','7 jours')">🟠 Orange</div><div class="pay-btn" onclick="openPayment('Carte Visa','7 jours')">💳 Visa</div></div>
-  </div>
-  <div class="vip-card"><h3>VIP 30 JOURS</h3><div class="vip-price">15 000 CFA</div>
-    <div class="payment-methods"><div class="pay-btn" onclick="openPayment('Wave','30 jours')">🌊 Wave</div><div class="pay-btn" onclick="openPayment('Orange Money','30 jours')">🟠 Orange</div><div class="pay-btn" onclick="openPayment('Carte Visa','30 jours')">💳 Visa</div></div>
-  </div>
-</section>
-
-<section class="page" id="page-admin">
-  <div class="admin-panel">
-    <h3>⚙️ Dashboard Admin</h3>
-    <div class="notice" id="admin-notice">Connexion administrateur requise.</div>
-    <div id="admin-form" class="hidden">
-      <div class="form-group"><label>Compétition</label><input id="admin-competition" placeholder="Ex: Ligue des Champions"></div>
-      <div class="form-group"><label>Pays</label><input id="admin-country" placeholder="Ex: Europe"></div>
-      <div class="form-group"><label>Équipe Domicile</label><input id="admin-home" placeholder="Ex: Real Madrid"></div>
-      <div class="form-group"><label>Équipe Extérieur</label><input id="admin-away" placeholder="Ex: Barcelone"></div>
-      <div class="form-group"><label>Date et Heure</label><input type="datetime-local" id="admin-date"></div>
-      <div class="form-group"><label>Marché</label><input id="admin-market" placeholder="Ex: 1X2"></div>
-      <div class="form-group"><label>Pronostic</label><input id="admin-prono" placeholder="Ex: V1"></div>
-      <div class="form-group"><label>Cote</label><input type="number" id="admin-cote" step="0.001" min="1" placeholder="Ex: 2.100"></div>
-      <div class="form-group"><label>Catégorie</label><select id="admin-category"><option value="gratuit">🆓 Gratuit</option><option value="modere">📊 Modéré</option><option value="risque">⚠️ Risque</option><option value="vip">👑 VIP</option></select></div>
-      <button class="btn-admin" onclick="addMatch()">Ajouter le Match</button>
-      <button class="btn-admin danger" onclick="adminLogout()">Se déconnecter</button>
-      <div style="margin-top:15px"><h4 style="font-size:12px;margin-bottom:8px">Matchs ajoutés :</h4><div id="admin-match-list"></div></div>
-    </div>
-  </div>
-</section>
-</main>
-
-<nav class="bottom-nav">
-  <div class="nav-item active" onclick="showPage('page-accueil',this)"><span class="nav-icon">🏠</span>Accueil</div>
-  <div class="nav-item" onclick="showPage('page-coupons',this)"><span class="nav-icon">📋</span>Coupons</div>
-  <div class="nav-item" onclick="showPage('page-vip',this)"><span class="nav-icon">👑</span>VIP</div>
-  <div class="nav-item" onclick="openAdmin()"><span class="nav-icon">⚙️</span>Admin</div>
-  <div class="nav-item" onclick="openLogin()"><span class="nav-icon">👤</span>Compte</div>
+<nav class="tabs" id="tabs-public">
+  <button class="active" onclick="afficher('accueil',this)">Accueil</button>
+  <button onclick="afficher('coupons',this)">Coupons</button>
+  <button onclick="afficher('historique',this)">Historique</button>
+  <button onclick="afficher('vip',this)">VIP</button>
+  <button onclick="afficher('codes',this)">Mon code</button>
 </nav>
 
-<div class="modal-overlay" id="loginModal"><div class="modal-content">
-  <h3>🔐 Connexion Membre</h3><p>Entrez votre numéro pour la connexion. L'authentification Firebase sera activée à l'étape suivante.</p>
-  <input type="tel" id="login-phone" class="login-input" placeholder="+245 XX XXX XX XX">
-  <div class="modal-actions"><button class="btn-cancel" onclick="closeLogin()">Annuler</button><button class="btn-confirm" onclick="startMemberLogin()">Continuer</button></div>
-</div></div>
+<section id="accueil" class="active">
+  <div class="hero">
+    <h2>Bienvenue sur <span>Bêta Pronostic</span></h2>
+    <p>Gagnons ensemble avec Bêta Pronostic</p>
+    <a href="https://wa.me/245956184838" class="btn-wa" target="_blank">💬 Contacter sur WhatsApp</a>
+  </div>
+  <div class="banniere-info">🎁 Pronostics gratuits chaque jour — VIP à partir de 5 000 CFA</div>
+  <div class="section-titre">📊 Statistiques</div>
+  <div class="stats-grid" id="zone-stats"></div>
+  <div class="section-titre">🟢 Pronostics gratuits du jour</div>
+  <div id="zone-coupons-gratuits"></div>
+  <div class="section-titre">🟣 Aperçu VIP</div>
+  <div class="vip-verrouille">
+    <h3>🔒 COUPON VIP - ACCÈS RÉSERVÉ</h3>
+    <div class="match-flou large"></div>
+    <div class="match-flou moyen"></div>
+    <div class="match-flou large"></div>
+    <div class="match-flou court"></div>
+    <p style="font-size:11px;color:var(--gris);margin-top:14px;">2 coupons VIP par jour (matin + soir)</p>
+    <button class="btn-debloquer" onclick="ouvrirModalCode()">🔓 SAISIR MON CODE VIP</button>
+  </div>
+</section>
 
-<div class="modal-overlay" id="adminLoginModal"><div class="modal-content">
-  <h3>🔐 Admin</h3><p>Cette zone sera protégée par Firebase Authentication. Aucun mot de passe n'est stocké dans le code.</p>
-  <div class="notice">Étape suivante : création du compte administrateur Firebase et attribution du rôle ADMIN.</div>
-  <div class="modal-actions"><button class="btn-cancel" onclick="closeAdminLogin()">Fermer</button><button class="btn-confirm" onclick="alert('Nous allons configurer Firebase à l’étape suivante.')">Configurer</button></div>
-</div></div>
+<section id="coupons">
+  <div class="section-titre">Tous les coupons</div>
+  <div id="zone-coupons-tous"></div>
+</section>
 
-<div class="modal-overlay" id="paymentModal"><div class="modal-content">
-  <h3>💳 Paiement</h3><p id="payment-text">Le paiement réel sera connecté après la configuration du fournisseur.</p>
-  <div class="modal-actions"><button class="btn-cancel" onclick="closePayment()">Annuler</button><button class="btn-confirm" onclick="confirmPayment()">Continuer</button></div>
-</div></div>
+<section id="historique">
+  <div class="hero">
+    <h2>📊 <span>Historique</span></h2>
+    <p>Résultats de nos pronostics passés</p>
+  </div>
+  <div class="stats-grid" id="zone-stats-2"></div>
+  <div class="section-titre">📋 Tous les coupons terminés</div>
+  <div id="zone-historique"></div>
+</section>
+
+<section id="vip">
+  <div class="hero">
+    <h2>Accès <span>VIP</span></h2>
+    <p>Débloquez les coupons premium avec votre code</p>
+  </div>
+  <div id="zone-vip-debloquee" style="display:none;">
+    <div class="section-titre">✅ Coupons VIP débloqués</div>
+    <div id="zone-coupons-vip"></div>
+  </div>
+  <div id="zone-vip-verrouillee">
+    <div class="vip-verrouille" style="margin-bottom:16px;">
+      <h3>🔒 Coupon VIP du jour</h3>
+      <div class="match-flou large"></div>
+      <div class="match-flou moyen"></div>
+      <div class="match-flou large"></div>
+      <div class="match-flou court"></div>
+      <div class="match-flou moyen"></div>
+      <p style="font-size:11px;color:var(--gris);margin-top:14px;">2 coupons VIP par jour (matin + soir)</p>
+      <button class="btn-debloquer" onclick="ouvrirModalCode()">🔓 SAISIR MON CODE VIP</button>
+    </div>
+  </div>
+  <div class="section-titre">💳 Nos offres VIP</div>
+  <div class="coupon vip" style="text-align:center;">
+    <h3 style="font-size:16px;">🎫 Pack 7 coupons</h3>
+    <p style="color:var(--gris);font-size:12px;margin:8px 0;">Accès à 7 coupons VIP au choix</p>
+    <p style="color:var(--or);font-weight:800;font-size:22px;margin:10px 0;">5 000 CFA</p>
+  </div>
+  <div class="coupon vip" style="text-align:center;">
+    <h3 style="font-size:16px;">👑 VIP 1 mois</h3>
+    <p style="color:var(--gris);font-size:12px;margin:8px 0;">Accès à tous les coupons VIP pendant 30 jours</p>
+    <p style="color:var(--or);font-weight:800;font-size:22px;margin:10px 0;">15 000 CFA</p>
+  </div>
+  <div class="banniere-info" style="margin-top:16px;">
+    💳 Paiement par <strong>Orange Money</strong> ou <strong>Wave</strong><br>
+    📱 Envoyez le paiement puis contactez-nous :<br>
+    <a href="https://wa.me/245956184838" style="color:var(--or);font-weight:700;font-size:14px;">+245 956 184 838</a>
+  </div>
+</section>
+
+<section id="codes">
+  <div class="hero">
+    <h2>Mon <span>code VIP</span></h2>
+    <p>Saisissez le code reçu pour débloquer l'accès</p>
+  </div>
+  <div class="coupon">
+    <h3 style="margin-bottom:14px;">🎫 Activer mon code</h3>
+    <input type="text" id="input-code-principal" placeholder="BETA-XXXX-XXXX"
+      style="width:100%;padding:14px;border-radius:10px;border:1px solid var(--bordure);background:#0f172a;color:#fff;font-size:14px;margin-bottom:10px;text-transform:uppercase;text-align:center;font-weight:700;letter-spacing:2px;">
+    <div id="msg-principal" style="text-align:center;font-size:12px;margin-bottom:10px;"></div>
+    <button class="btn-debloquer" onclick="verifierCode()">✅ Activer mon code</button>
+  </div>
+  <div class="banniere-info">💡 <strong>Astuce :</strong> cliquez sur le lien que nous vous avons envoyé pour activer automatiquement votre code.</div>
+</section>
+
+<div class="bottom-nav">
+  <a href="#" class="active" onclick="afficher('accueil',document.querySelectorAll('.tabs button')[0]);return false;">
+    <span class="ico">🏠</span>Accueil
+  </a>
+  <a href="#" onclick="afficher('coupons',document.querySelectorAll('.tabs button')[1]);return false;">
+    <span class="ico">🎯</span>Coupons
+  </a>
+  <a href="#" onclick="afficher('historique',document.querySelectorAll('.tabs button')[2]);return false;">
+    <span class="ico">📊</span>Historique
+  </a>
+  <a href="#" onclick="afficher('vip',document.querySelectorAll('.tabs button')[3]);return false;">
+    <span class="ico">⭐</span>VIP
+  </a>
+  <a href="https://wa.me/245956184838" target="_blank">
+    <span class="ico">💬</span>WhatsApp
+  </a>
+</div><div class="modal" id="modal-code">
+  <div class="modal-content">
+    <h3>🔓 Saisir un code VIP</h3>
+    <input type="text" id="input-modal" placeholder="BETA-XXXX-XXXX" maxlength="25">
+    <div id="msg-modal" style="text-align:center;font-size:12px;margin-bottom:10px;"></div>
+    <button class="btn-valider" onclick="validerCodeModal()">✅ Valider</button>
+    <button class="btn-gris" onclick="fermerModalCode()">Annuler</button>
+  </div>
 </div>
 
+<div class="modal" id="modal-admin-login">
+  <div class="modal-content" style="border-color:var(--or);">
+    <h3 style="color:var(--or);">🔐 ACCÈS ADMIN</h3>
+    <input type="password" id="input-admin-pwd" placeholder="Mot de passe">
+    <div id="msg-admin-login" style="text-align:center;font-size:12px;margin-bottom:10px;"></div>
+    <button class="btn-or" onclick="verifierAdminLogin()">Valider</button>
+    <button class="btn-gris" onclick="document.getElementById('modal-admin-login').classList.remove('active')">Annuler</button>
+  </div>
+</div>
+
+<div class="modal" id="modal-admin-panel">
+  <div class="modal-content" style="border-color:var(--or);max-width:600px;">
+    <h3 style="color:var(--or);">👑 BÊTA CONTROL</h3>
+    <div class="admin-tabs">
+      <button class="active" onclick="adminTab('creer',this)">➕ Créer</button>
+      <button onclick="adminTab('resultats',this)">🎯 Résultats</button>
+      <button onclick="adminTab('codes',this)">🎫 Codes</button>
+      <button onclick="adminTab('coupons',this)">📋 Coupons</button>
+    </div>
+
+    <div id="admin-creer">
+      <label>Catégorie</label>
+      <select id="new-categorie">
+        <option value="gratuit">🟢 Gratuit</option>
+        <option value="modere">🔵 Modéré</option>
+        <option value="risque">🔴 Risqué</option>
+        <option value="vip" selected>🟣 VIP</option>
+      </select>
+      <label>Titre du coupon</label>
+      <input type="text" id="new-titre" placeholder="Ex: Coupon VIP du matin">
+      <label>Sélections (minimum 1)</label>
+      <div id="new-selections"></div>
+      <button class="btn-gris" onclick="ajouterSelectionEdit()" style="margin-bottom:14px;">➕ Ajouter une sélection</button>
+      <div style="background:#0f172a;border:1px solid var(--or);border-radius:8px;padding:12px;margin-bottom:14px;text-align:center;">
+        <div style="font-size:11px;color:var(--gris);">COTE TOTALE</div>
+        <div id="new-cote-totale" style="font-size:26px;font-weight:900;color:var(--or);">1.00</div>
+      </div>
+      <button class="btn-or" onclick="enregistrerCoupon()">💾 Enregistrer le coupon</button>
+    </div>
+
+    <div id="admin-resultats" style="display:none;">
+      <p style="font-size:12px;color:var(--gris);margin-bottom:14px;text-align:center;">Cliquez sur un statut pour mettre à jour chaque match.</p>
+      <div id="liste-resultats"></div>
+    </div>
+
+    <div id="admin-codes" style="display:none;">
+      <button class="btn-or" onclick="genererNouveauCode()" style="margin-bottom:14px;">🎫 GÉNÉRER UN CODE VIP</button>
+      <div id="liste-codes"></div>
+    </div>
+
+    <div id="admin-coupons" style="display:none;">
+      <div id="liste-coupons"></div>
+    </div>
+
+    <button class="btn-rouge" onclick="quitterAdmin()" style="margin-top:14px;">🚪 Quitter le mode admin</button>
+  </div>
+</div>
+
+<div class="modal" id="modal-gen-code">
+  <div class="modal-content">
+    <h3>🎫 Nouveau code VIP</h3>
+    <label>Type d'accès</label>
+    <select id="code-type">
+      <option value="7jours">7 coupons (5 000 CFA)</option>
+      <option value="mois">1 mois complet (15 000 CFA)</option>
+    </select>
+    <label>Date d'expiration</label>
+    <input type="date" id="code-expire">
+    <label>Nom du client (optionnel)</label>
+    <input type="text" id="code-client" placeholder="Ex: Jean Dupont">
+    <button class="btn-or" onclick="creerCode()">✅ Générer le code</button>
+    <button class="btn-gris" onclick="document.getElementById('modal-gen-code').classList.remove('active')">Annuler</button>
+  </div>
+</div>
+
+<div class="modal" id="modal-code-genere">
+  <div class="modal-content" style="border-color:var(--vert);">
+    <h3 style="color:var(--vert);">✅ Code généré !</h3>
+    <div style="background:#0f172a;border:2px dashed var(--or);border-radius:10px;padding:20px;text-align:center;margin-bottom:14px;">
+      <div style="font-size:11px;color:var(--gris);margin-bottom:6px;">CODE VIP</div>
+      <div id="code-genere-affichage" style="font-size:24px;font-weight:900;color:var(--or);letter-spacing:2px;"></div>
+    </div>
+    <div style="background:#0f172a;border:1px solid var(--bordure);border-radius:10px;padding:14px;margin-bottom:14px;">
+      <div style="font-size:11px;color:var(--gris);margin-bottom:8px;">📋 Message WhatsApp :</div>
+      <div id="message-whatsapp" style="font-size:12px;color:#e2e8f0;white-space:pre-wrap;line-height:1.6;"></div>
+    </div>
+    <button class="btn-or" onclick="copierMessage()">📋 Copier le message</button>
+    <button class="btn-valider" onclick="copierLien()">🔗 Copier le lien magique</button>
+    <button class="btn-gris" onclick="document.getElementById('modal-code-genere').classList.remove('active')">Fermer</button>
+  </div>
+</div>
+
+<div id="affiche-capture"></div>
+
 <script>
-// ============================================================
-// BÊTA PRONOSTIC — VERSION PRÉPARÉE POUR FIREBASE
-// IMPORTANT : aucune donnée secrète, numéro VIP ou mot de passe
-// n'est stocké ici. Les vraies données seront dans Firebase.
-// ============================================================
+var MOT_DE_PASSE_ADMIN = "F@llou55212";
+var CLE_COUPONS = "beta_coupons_v3";
+var CLE_CODES = "beta_codes_v3";
+var CLE_VIP = "beta_vip_actif_v3";
+var adminConnecte = false;
+var compteurClicLogo = 0;
+var timerClicLogo = null;
 
-let currentUser = null;
-let currentFilter = 'all';
-
-// Données de démonstration uniquement.
-// À l'étape Firebase, elles seront remplacées par Firestore.
-let allCoupons = [
-  {id:'demo-1',competition:'Ligue des Nations UEFA',country:'Europe',home:'Real Madrid',away:'Barcelone',
-   date:'2026-10-05T20:00',market:'1X2',prono:'V1 (Real Madrid)',cote:'2.100',category:'gratuit'}
-];
-
-const translations={
- fr:{daily_title:"🔥 Le Pronostic du Jour",btn_free_coupon:"Voir le coupon gratuit",categories_title:"Nos Catégories",coupons_title:"Coupons Disponibles",locked_msg:"🔒 Contenu réservé aux membres VIP.",total_cote:"Cote Totale du Coupon"},
- pt:{daily_title:"🔥 O Prognóstico do Dia",btn_free_coupon:"Ver o cupom grátis",categories_title:"Nossas Categorias",coupons_title:"Cupons Disponíveis",locked_msg:"🔒 Conteúdo reservado aos membros VIP.",total_cote:"Cota Total do Cupom"},
- en:{daily_title:"🔥 Today's Prediction",btn_free_coupon:"See free coupon",categories_title:"Our Categories",coupons_title:"Available Coupons",locked_msg:"🔒 Content reserved for VIP members.",total_cote:"Total Coupon Odds"}
-};
-let currentLang='fr';
-
-function setLanguage(lang,btn){
- currentLang=lang;
- document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
- if(btn)btn.classList.add('active');
- document.querySelectorAll('[data-i18n]').forEach(el=>{
-   const key=el.dataset.i18n;if(translations[lang][key])el.innerText=translations[lang][key];
- });
- renderCoupons(currentFilter);
+function afficherToast(msg){
+  var t = document.getElementById("toast");
+  t.innerText = msg;
+  t.classList.add("active");
+  clearTimeout(t._timer);
+  t._timer = setTimeout(function(){ t.classList.remove("active"); }, 1500);
 }
 
-function showPage(pageId,element){
- document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
- const page=document.getElementById(pageId);if(page)page.classList.add('active');
- if(element){
-   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));element.classList.add('active');
- }
- if(pageId==='page-coupons')renderCoupons(currentFilter);
-}
-
-function filterCoupons(cat){currentFilter=cat;showPage('page-coupons');renderCoupons(cat)}
-
-function renderCoupons(filter='all'){
- currentFilter=filter;
- const container=document.getElementById('coupon-list-container'),total=document.getElementById('total-cote-container');
- container.innerHTML='';total.innerHTML='';
- let filtered=filter==='all'?allCoupons:allCoupons.filter(c=>c.category===filter);
- if(!filtered.length){container.innerHTML='<p style="text-align:center;color:#9ca3af">Aucun coupon disponible.</p>';return}
- let totalCote=1,allUnlocked=true;
- filtered.forEach(c=>{
-   const locked=c.category!=='gratuit'&&!currentUser;if(locked)allUnlocked=false;
-   const div=document.createElement('div');div.className=`coupon-item ${c.category}`;
-   const d=c.date?new Date(c.date):null;
-   const dateStr=d&&!isNaN(d)?d.toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit',year:'numeric'})+' à '+d.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'}):'Date non définie';
-   if(!locked){
-     if(c.cote)totalCote*=Number(c.cote);
-     div.innerHTML=`<div class="coupon-header-row"><div class="coupon-competition">🏆 ${escapeHtml(c.competition||'Compétition')} • ${escapeHtml(c.country||'Pays')}</div><div class="coupon-date">${dateStr}</div></div>
-     <div class="coupon-match-title">${escapeHtml(c.home)} - ${escapeHtml(c.away)}</div>
-     <div class="coupon-market">${escapeHtml(c.market||'1X2')} : ${escapeHtml(c.prono)}</div>
-     <div class="coupon-footer-row"><div class="coupon-prono">✅ ${escapeHtml(c.prono)}</div><div class="coupon-cote">@ ${escapeHtml(c.cote)}</div></div>`;
-   }else{
-     div.innerHTML=`<div class="coupon-header-row"><div class="coupon-competition">🏆 ${escapeHtml(c.competition||'Compétition')}</div><div class="coupon-date">${dateStr}</div></div>
-     <div class="coupon-match-title">🔒 ${escapeHtml(c.home)} vs ${escapeHtml(c.away)}</div><div class="coupon-locked">${translations[currentLang].locked_msg}</div>`;
-     div.onclick=openLogin;
-   }
-   container.appendChild(div);
- });
- if(allUnlocked&&filtered.length>1)total.innerHTML=`<div class="total-cote-box"><div class="label">${translations[currentLang].total_cote}</div><div class="value">${totalCote.toFixed(3)}</div></div>`;
-}
-
-function escapeHtml(value){
- return String(value??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
-}
-
-function updateDaily(){
- const free=allCoupons.find(c=>c.category==='gratuit');
- document.getElementById('daily-match-info').innerText=free?`${free.home} vs ${free.away}`:'Aucun pronostic gratuit';
- document.getElementById('daily-prono-info').innerText=free?`${free.market||'1X2'} - ${free.prono} @ ${free.cote}`:'—';
-}
-
-function addMatch(){
- // À l'étape Firebase, cette fonction fera addDoc() dans Firestore.
- const fields=['competition','country','home','away','date','market','prono','cote','category'];
- const data={};fields.forEach(k=>data[k]=document.getElementById('admin-'+k).value.trim());
- if(!data.home||!data.away||!data.prono||!data.cote){alert('Veuillez remplir les équipes, le pronostic et la cote.');return}
- data.id='local-'+Date.now();
- allCoupons.push(data);updateDaily();renderCoupons(currentFilter);
- const item=document.createElement('div');item.style.cssText='margin-bottom:5px;padding:8px;background:rgba(212,175,55,.1);border-radius:5px;font-size:12px';
- item.innerText=`✅ [${data.category.toUpperCase()}] ${data.home} vs ${data.away} — ${data.prono} @ ${data.cote}`;
- document.getElementById('admin-match-list').appendChild(item);
- fields.forEach(k=>document.getElementById('admin-'+k).value='');
- alert('Match ajouté localement. La sauvegarde permanente sera activée avec Firebase.');
-}
-
-function openLogin(){document.getElementById('loginModal').classList.add('active')}
-function closeLogin(){document.getElementById('loginModal').classList.remove('active')}
-function startMemberLogin(){
- const phone=document.getElementById('login-phone').value.trim();
- if(!phone){alert('Veuillez entrer votre numéro.');return}
- alert('Le numéro sera utilisé par Firebase Authentication après la configuration. Vous ne devez pas enregistrer de liste de numéros VIP dans le JavaScript.');
-}
-function openAdmin(){
- if(document.getElementById('admin-form').classList.contains('hidden'))document.getElementById('adminLoginModal').classList.add('active');
- else showPage('page-admin');
-}
-function closeAdminLogin(){document.getElementById('adminLoginModal').classList.remove('active')}
-function adminLogout(){
- document.getElementById('admin-form').classList.add('hidden');
- document.getElementById('admin-notice').innerText='Connexion administrateur requise.';
- showPage('page-accueil');
-}
-let currentPaymentMethod='',currentPlan='';
-function openPayment(method,plan){currentPaymentMethod=method;currentPlan=plan;document.getElementById('payment-text').innerText=`Plan ${plan} — ${method}. Le paiement réel sera connecté après configuration.`;document.getElementById('paymentModal').classList.add('active')}
-function closePayment(){document.getElementById('paymentModal').classList.remove('active')}
-function confirmPayment(){alert('Aucun paiement réel n’est effectué dans cette version. Le fournisseur de paiement sera connecté après validation de Firebase.');closePayment()}
-
-updateDaily();renderCoupons();
-</script>
-</body>
-</html>
+function initialiserDonnees(){
+  try{
+    var existant = localStorage.getItem(CLE_COUPONS);
+    if(!existant){
+      var demo = [
+        {
+          id: "c1", categorie: "gratuit", titre: "Coupon découverte du jour",
+          selections: [
+            { ligue:"Bundesliga (Allemagne)", match:"Union Berlin - Elversberg", pronostic:"Corners : +7,5", cote:"1.325", statut:"en_cours", score:"" },
+            { ligue:"Bundesliga (Allemagne)", match:"Hoffenheim - Hambourg", pronostic:"1ère MT : +1,5 but", cote:"2.01", statut:"en_cours", score:"" },
+            { ligue:"Bundesliga (Allemagne)", match:"Mayence - Leverkusen", pronostic:"1X2 : Victoire Leverkusen", cote:"3.14", statut:"en_cours", score:"" },
+            { ligue:"Bund
