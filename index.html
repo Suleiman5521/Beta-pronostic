@@ -4,408 +4,581 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Beta Pronostic</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
-:root{--bn:#0a0f1d;--be:#1e3a8a;--or:#d4af37;--vi:#7c3aed;--ve:#22c55e;--ro:#ef4444;--ja:#eab308;--gr:#94a3b8;--ca:#111827;--bo:#1f2937;}
-*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif;}
-body{background:var(--bn);color:#fff;padding-bottom:90px;}
-header{background:linear-gradient(135deg,#0a0f1d,#1e3a8a);padding:16px;display:flex;align-items:center;gap:12px;border-bottom:2px solid var(--or);position:sticky;top:0;z-index:100;}
-.logo-b{width:48px;height:48px;background:linear-gradient(135deg,#d4af37,#f5d76e,#b8860b);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:bold;color:#0a0f1d;box-shadow:0 4px 20px rgba(212,175,55,.4);cursor:pointer;user-select:none;}
-.titre-app{font-size:18px;font-weight:800;letter-spacing:1px;}
-.titre-app span{color:var(--or);}
-.slogan-header{font-size:10px;color:var(--gr);font-style:italic;margin-top:2px;}
-.badge-admin{position:fixed;top:16px;right:16px;background:var(--or);color:#0a0f1d;padding:4px 10px;border-radius:20px;font-size:10px;font-weight:800;z-index:150;display:none;}
-.btn-admin-secret{position:fixed;bottom:110px;right:12px;width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#d4af37,#f5d76e,#b8860b);color:#0a0f1d;font-weight:900;font-size:14px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(212,175,55,.6);z-index:999;cursor:pointer;font-family:Arial;border:none;}
-nav.tabs{display:flex;background:#0f172a;border-bottom:1px solid var(--bo);overflow-x:auto;}
-nav.tabs button{flex:1;padding:12px 8px;background:none;border:none;color:var(--gr);font-size:11px;font-weight:600;cursor:pointer;white-space:nowrap;border-bottom:3px solid transparent;}
-nav.tabs button.active{color:var(--or);border-bottom-color:var(--or);}
-section{padding:16px;display:none;}
-section.active{display:block;}
-.hero{background:linear-gradient(135deg,#1e3a8a,#0a0f1d);border-radius:16px;padding:20px;text-align:center;margin-bottom:20px;border:1px solid rgba(212,175,55,.3);}
-.hero h2{font-size:20px;margin-bottom:6px;}
-.hero h2 span{color:var(--or);}
-.hero p{color:var(--gr);font-size:13px;margin-bottom:14px;}
-.btn-wa{display:inline-flex;align-items:center;gap:8px;background:#25d366;color:#fff;text-decoration:none;padding:10px 22px;border-radius:50px;font-weight:700;font-size:13px;}
-.section-titre{font-size:15px;font-weight:700;margin:20px 0 12px;display:flex;align-items:center;gap:8px;}
-.section-titre::before{content:'';width:4px;height:16px;background:var(--or);border-radius:2px;}
-.stats-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:16px;}
-.stat-card{background:var(--ca);border:1px solid var(--bo);border-radius:12px;padding:14px 8px;text-align:center;}
-.stat-card .valeur{font-size:22px;font-weight:900;margin-bottom:4px;}
-.stat-card .label{font-size:10px;color:var(--gr);text-transform:uppercase;}
-.stat-card.vert .valeur{color:var(--ve);}
-.stat-card.rouge .valeur{color:var(--ro);}
-.stat-card.or .valeur{color:var(--or);}
-.coupon{background:var(--ca);border:1px solid var(--bo);border-radius:14px;padding:16px;margin-bottom:14px;}
-.coupon.gratuit{border-left:4px solid var(--ve);}
-.coupon.modere{border-left:4px solid #3b82f6;}
-.coupon.risque{border-left:4px solid var(--ro);}
-.coupon.vip{border-left:4px solid var(--vi);}
-.coupon.statut-gagne{background:linear-gradient(135deg,rgba(34,197,94,.12),rgba(17,24,39,.9));border-color:var(--ve);}
-.coupon.statut-perdu{background:linear-gradient(135deg,rgba(239,68,68,.12),rgba(17,24,39,.9));border-color:var(--ro);}
-.coupon-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:6px;}
-.badge{font-size:10px;font-weight:800;padding:4px 10px;border-radius:20px;text-transform:uppercase;}
-.badge.gratuit{background:rgba(34,197,94,.15);color:var(--ve);}
-.badge.modere{background:rgba(59,130,246,.15);color:#3b82f6;}
-.badge.risque{background:rgba(239,68,68,.15);color:var(--ro);}
-.badge.vip{background:rgba(124,58,237,.15);color:var(--vi);}
-.badge.statut-gagne{background:rgba(34,197,94,.25);color:var(--ve);border:1px solid var(--ve);}
-.badge.statut-perdu{background:rgba(239,68,68,.25);color:var(--ro);border:1px solid var(--ro);}
-.badge.statut-encours{background:rgba(234,179,8,.15);color:var(--ja);}
-.coupon h3{font-size:14px;margin-bottom:10px;color:#e2e8f0;}
-.selection{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px dashed #1f2937;font-size:12px;gap:8px;}
-.selection:last-of-type{border-bottom:none;}
-.selection .info{flex:1;min-width:0;}
-.selection .ligue{color:#64748b;font-size:10px;margin-bottom:2px;}
-.selection .match{color:#e2e8f0;font-weight:600;margin-bottom:2px;}
-.selection .pronostic{color:var(--or);font-size:11px;}
-.selection .cote{background:#0f172a;color:#fff;padding:6px 10px;border-radius:8px;font-weight:800;font-size:13px;border:1px solid var(--bo);min-width:56px;text-align:center;}
-.cote-totale{margin-top:12px;padding-top:12px;border-top:2px solid var(--or);display:flex;justify-content:space-between;align-items:center;}
-.cote-totale span:first-child{font-size:12px;color:var(--gr);}
-.cote-totale span:last-child{font-size:22px;font-weight:900;color:var(--or);}
-.btn-affiche{margin-top:12px;width:100%;background:linear-gradient(135deg,#d4af37,#b8860b);color:#0a0f1d;border:none;padding:12px;border-radius:10px;font-weight:800;font-size:13px;cursor:pointer;}
-.vip-verrouille{background:var(--ca);border:1px solid var(--vi);border-radius:14px;padding:20px;text-align:center;position:relative;}
-.vip-verrouille h3{color:var(--vi);font-size:14px;margin-bottom:14px;}
-.match-flou{background:linear-gradient(90deg,#1f2937,#374151,#1f2937);height:14px;border-radius:6px;margin:8px auto;}
-.match-flou.large{width:80%;}
-.match-flou.moyen{width:60%;}
-.match-flou.court{width:40%;}
-.btn-debloquer{margin-top:16px;background:linear-gradient(135deg,#7c3aed,#a855f7);color:#fff;border:none;padding:14px;border-radius:50px;font-weight:800;font-size:14px;cursor:pointer;width:100%;}
-.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#0f172a;border-top:2px solid var(--or);display:flex;justify-content:space-around;padding:8px 0;z-index:200;}
-.bottom-nav a{color:var(--gr);text-decoration:none;font-size:10px;text-align:center;flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;}
-.bottom-nav a.active{color:var(--or);}
-.bottom-nav a .ico{font-size:18px;font-weight:bold;}
-.banniere-info{background:rgba(212,175,55,.1);border:1px solid rgba(212,175,55,.3);border-radius:10px;padding:12px;font-size:12px;color:#fde68a;margin-bottom:16px;text-align:center;}
-.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:300;align-items:center;justify-content:center;padding:20px;overflow-y:auto;}
-.modal.active{display:flex;}
-.modal-content{background:var(--ca);border:2px solid var(--vi);border-radius:16px;padding:24px;max-width:440px;width:100%;max-height:90vh;overflow-y:auto;}
-.modal-content h3{color:var(--vi);margin-bottom:14px;text-align:center;}
-.modal-content input, .modal-content select{width:100%;padding:12px;border-radius:10px;border:1px solid var(--bo);background:#0f172a;color:#fff;font-size:14px;margin-bottom:10px;}
-.modal-content label{font-size:12px;color:var(--gr);display:block;margin-bottom:4px;}
-.modal-content button{width:100%;padding:14px;border:none;border-radius:10px;font-weight:800;font-size:14px;cursor:pointer;margin-bottom:8px;}
-.btn-valider{background:linear-gradient(135deg,#7c3aed,#a855f7);color:#fff;}
-.btn-or{background:linear-gradient(135deg,#d4af37,#b8860b);color:#0a0f1d;}
-.btn-rouge{background:linear-gradient(135deg,#dc2626,#ef4444);color:#fff;}
-.btn-gris{background:transparent;color:var(--gr);border:1px solid var(--bo);}
-.msg-erreur{color:var(--ro);font-size:12px;text-align:center;margin-bottom:8px;}
-.msg-succes{color:var(--ve);font-size:12px;text-align:center;margin-bottom:8px;}
-#affiche-capture{position:fixed;left:-9999px;top:0;}
-.admin-tabs{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;}
-.admin-tabs button{flex:1;min-width:70px;padding:10px 6px;background:#0f172a;color:var(--gr);border:1px solid var(--bo);border-radius:8px;font-size:10px;font-weight:700;cursor:pointer;}
-.admin-tabs button.active{background:var(--or);color:#0a0f1d;border-color:var(--or);}
-.liste-code{background:#0f172a;border:1px solid var(--bo);border-radius:8px;padding:10px;margin-bottom:8px;font-size:12px;}
-.liste-code .code{font-weight:800;color:var(--or);font-size:14px;letter-spacing:1px;margin-bottom:4px;}
-.liste-code .detail{color:var(--gr);font-size:10px;margin-bottom:6px;}
-.liste-code .actions{display:flex;gap:6px;flex-wrap:wrap;}
-.liste-code .actions button{flex:1;min-width:60px;padding:6px;font-size:10px;border-radius:6px;border:none;cursor:pointer;font-weight:700;}
-.btn-copier{background:var(--ve);color:#fff;}
-.btn-suppr{background:var(--ro);color:#fff;}
-.selection-edit{background:#0f172a;border:1px solid var(--bo);border-radius:8px;padding:10px;margin-bottom:8px;position:relative;}
-.selection-edit .btn-x{position:absolute;top:6px;right:6px;background:var(--ro);color:#fff;border:none;width:24px;height:24px;border-radius:50%;cursor:pointer;font-weight:800;}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
+body{background:#0a0f1d;color:#fff;padding-bottom:80px}
+header{background:linear-gradient(135deg,#0a0f1d,#1e3a8a);padding:14px;display:flex;align-items:center;gap:10px;border-bottom:2px solid #d4af37;position:sticky;top:0;z-index:100}
+.logo{width:44px;height:44px;background:linear-gradient(135deg,#d4af37,#f5d76e,#b8860b);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:bold;color:#0a0f1d;font-family:Georgia}
+.titre{font-size:17px;font-weight:800;letter-spacing:1px}
+.titre span{color:#d4af37}
+.slogan{font-size:9px;color:#94a3b8;font-style:italic;margin-top:2px}
+nav{display:flex;background:#0f172a;border-bottom:1px solid #1f2937}
+nav button{flex:1;padding:12px 6px;background:none;border:none;color:#94a3b8;font-size:11px;font-weight:600;cursor:pointer;border-bottom:3px solid transparent}
+nav button.actif{color:#d4af37;border-bottom-color:#d4af37}
+section{padding:16px;display:none}
+section.actif{display:block}
+.hero{background:linear-gradient(135deg,#1e3a8a,#0a0f1d);border-radius:14px;padding:20px;text-align:center;margin-bottom:18px;border:1px solid rgba(212,175,55,.3)}
+.hero h2{font-size:19px;margin-bottom:6px}
+.hero h2 span{color:#d4af37}
+.hero p{color:#94a3b8;font-size:12px;margin-bottom:12px}
+.btn-wa{display:inline-block;background:#25d366;color:#fff;text-decoration:none;padding:10px 20px;border-radius:50px;font-weight:700;font-size:13px}
+.info{background:rgba(212,175,55,.1);border:1px solid rgba(212,175,55,.3);border-radius:10px;padding:12px;font-size:12px;color:#fde68a;margin-bottom:14px;text-align:center}
+.st{font-size:14px;font-weight:700;margin:18px 0 10px;padding-left:10px;border-left:4px solid #d4af37}
+.coupon{background:#111827;border:1px solid #1f2937;border-radius:12px;padding:14px;margin-bottom:12px}
+.coupon.gratuit{border-left:4px solid #22c55e}
+.coupon.vip{border-left:4px solid #7c3aed}
+.coupon.modere{border-left:4px solid #3b82f6}
+.coupon.risque{border-left:4px solid #ef4444}
+.ch{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.b{font-size:10px;font-weight:800;padding:4px 10px;border-radius:20px;text-transform:uppercase}
+.b.gratuit{background:rgba(34,197,94,.15);color:#22c55e}
+.b.vip{background:rgba(124,58,237,.15);color:#7c3aed}
+.b.modere{background:rgba(59,130,246,.15);color:#3b82f6}
+.b.risque{background:rgba(239,68,68,.15);color:#ef4444}
+.coupon h3{font-size:13px;margin-bottom:8px;color:#e2e8f0}
+.sel{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px dashed #1f2937;font-size:12px;gap:6px}
+.sel:last-child{border-bottom:none}
+.sel .m{flex:1;color:#e2e8f0}
+.sel .p{color:#d4af37;font-size:11px}
+.sel .c{background:#0f172a;padding:5px 9px;border-radius:7px;font-weight:800;font-size:12px}
+.ct{margin-top:10px;padding-top:10px;border-top:2px solid #d4af37;display:flex;justify-content:space-between;align-items:center}
+.ct span:first-child{font-size:11px;color:#94a3b8}
+.ct span:last-child{font-size:20px;font-weight:900;color:#d4af37}
+.verrou{background:#111827;border:1px solid #7c3aed;border-radius:12px;padding:18px;text-align:center;margin-bottom:12px}
+.verrou h3{color:#7c3aed;font-size:13px;margin-bottom:12px}
+.flou{background:linear-gradient(90deg,#1f2937,#374151,#1f2937);height:12px;border-radius:6px;margin:6px auto}
+.f80{width:80%}.f60{width:60%}.f40{width:40%}
+.btn-p{background:linear-gradient(135deg,#7c3aed,#a855f7);color:#fff;border:none;padding:12px;border-radius:50px;font-weight:800;font-size:13px;width:100%;cursor:pointer;margin-top:12px}
+.bnav{position:fixed;bottom:0;left:0;right:0;background:#0f172a;border-top:2px solid #d4af37;display:flex;padding:8px 0;z-index:200}
+.bnav a{flex:1;color:#94a3b8;text-decoration:none;font-size:10px;text-align:center;display:flex;flex-direction:column;gap:2px}
+.bnav a span{font-size:16px;font-weight:bold;color:#d4af37}
+.btn-bp{position:fixed;bottom:70px;right:14px;width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#d4af37,#f5d76e,#b8860b);color:#0a0f1d;font-weight:900;font-size:15px;border:none;box-shadow:0 4px 16px rgba(212,175,55,.6);z-index:500;cursor:pointer;font-family:Arial}
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:600;align-items:center;justify-content:center;padding:16px;overflow-y:auto}
+.modal.actif{display:flex}
+.mc{background:#111827;border:2px solid #7c3aed;border-radius:14px;padding:20px;max-width:420px;width:100%;max-height:90vh;overflow-y:auto}
+.mc h3{color:#7c3aed;text-align:center;margin-bottom:14px;font-size:15px}
+.mc input,.mc select{width:100%;padding:12px;border-radius:9px;border:1px solid #1f2937;background:#0f172a;color:#fff;font-size:14px;margin-bottom:10px}
+.mc label{font-size:11px;color:#94a3b8;display:block;margin-bottom:4px}
+.mc button{width:100%;padding:13px;border:none;border-radius:9px;font-weight:800;font-size:13px;cursor:pointer;margin-bottom:6px}
+.bv{background:linear-gradient(135deg,#7c3aed,#a855f7);color:#fff}
+.bo{background:linear-gradient(135deg,#d4af37,#b8860b);color:#0a0f1d}
+.br{background:linear-gradient(135deg,#dc2626,#ef4444);color:#fff}
+.bg{background:transparent;color:#94a3b8;border:1px solid #1f2937}
+.err{color:#ef4444;font-size:12px;text-align:center;margin-bottom:8px}
+.ok{color:#22c55e;font-size:12px;text-align:center;margin-bottom:8px}
+.lc{background:#0f172a;border:1px solid #1f2937;border-radius:8px;padding:10px;margin-bottom:8px;font-size:12px}
+.lc .code{font-weight:800;color:#d4af37;font-size:13px;letter-spacing:1px;margin-bottom:4px}
+.lc .det{color:#94a3b8;font-size:10px;margin-bottom:6px}
+.lc .act{display:flex;gap:6px}
+.lc .act button{flex:1;padding:6px;font-size:10px;border-radius:6px;border:none;cursor:pointer;font-weight:700;background:#ef4444;color:#fff}
+.se{background:#0f172a;border:1px solid #1f2937;border-radius:8px;padding:10px;margin-bottom:8px;position:relative}
+.se .x{position:absolute;top:6px;right:6px;background:#ef4444;color:#fff;border:none;width:22px;height:22px;border-radius:50%;cursor:pointer;font-weight:800}
+.tabs-a{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
+.tabs-a button{flex:1;min-width:70px;padding:9px 5px;background:#0f172a;color:#94a3b8;border:1px solid #1f2937;border-radius:7px;font-size:10px;font-weight:700;cursor:pointer}
+.tabs-a button.actif{background:#d4af37;color:#0a0f1d;border-color:#d4af37}
 </style>
 </head>
 <body>
 
-<span class="badge-admin" id="badge-admin">ADMIN</span>
-<button class="btn-admin-secret" id="btn-admin-secret" onclick="ouvrirLoginAdmin()">BP</button>
-
 <header>
-  <div class="logo-b" id="logo-clic">B</div>
+  <div class="logo">B</div>
   <div>
-    <div class="titre-app">BETA <span>PRONOSTIC</span></div>
-    <div class="slogan-header">Gagnons ensemble avec Beta Pronostic</div>
+    <div class="titre">BETA <span>PRONOSTIC</span></div>
+    <div class="slogan">Gagnons ensemble avec Beta Pronostic</div>
   </div>
 </header>
 
-<nav class="tabs" id="tabs-public">
-  <button class="active" onclick="afficher('accueil',this)">Accueil</button>
-  <button onclick="afficher('coupons',this)">Coupons</button>
-  <button onclick="afficher('historique',this)">Historique</button>
-  <button onclick="afficher('vip',this)">VIP</button>
-  <button onclick="afficher('codes',this)">Mon code</button>
+<nav>
+  <button class="actif" onclick="go('accueil',this)">Accueil</button>
+  <button onclick="go('coupons',this)">Coupons</button>
+  <button onclick="go('vip',this)">VIP</button>
+  <button onclick="go('code',this)">Mon code</button>
 </nav>
 
-<section id="accueil" class="active">
+<section id="accueil" class="actif">
   <div class="hero">
     <h2>Bienvenue sur <span>Beta Pronostic</span></h2>
     <p>Gagnons ensemble avec Beta Pronostic</p>
-    <a href="https://wa.me/245956184838" class="btn-wa" target="_blank">Contacter sur WhatsApp</a>
+    <a href="https://wa.me/245956184838" class="btn-wa">Contacter sur WhatsApp</a>
   </div>
-  <div class="banniere-info">Pronostics gratuits chaque jour - VIP a partir de 5 000 CFA</div>
-  <div class="section-titre">Statistiques</div>
-  <div class="stats-grid" id="zone-stats"></div>
-  <div class="section-titre">Pronostics gratuits du jour</div>
-  <div id="zone-coupons-gratuits"></div>
-  <div class="section-titre">Apercu VIP</div>
-  <div class="vip-verrouille">
+  <div class="info">Pronostics gratuits chaque jour - VIP a partir de 5 000 CFA</div>
+  <div class="st">Pronostics gratuits du jour</div>
+  <div id="z-gratuits"></div>
+  <div class="st">Apercu VIP</div>
+  <div class="verrou">
     <h3>COUPON VIP - ACCES RESERVE</h3>
-    <div class="match-flou large"></div>
-    <div class="match-flou moyen"></div>
-    <div class="match-flou large"></div>
-    <div class="match-flou court"></div>
-    <p style="font-size:11px;color:var(--gr);margin-top:14px;">2 coupons VIP par jour (matin + soir)</p>
-    <button class="btn-debloquer" onclick="ouvrirModalCode()">SAISIR MON CODE VIP</button>
+    <div class="flou f80"></div>
+    <div class="flou f60"></div>
+    <div class="flou f80"></div>
+    <div class="flou f40"></div>
+    <p style="font-size:11px;color:#94a3b8;margin-top:12px">2 coupons VIP par jour</p>
+    <button class="btn-p" onclick="ouvrirCode()">SAISIR MON CODE VIP</button>
   </div>
 </section>
 
 <section id="coupons">
-  <div class="section-titre">Tous les coupons</div>
-  <div id="zone-coupons-tous"></div>
-</section>
-
-<section id="historique">
-  <div class="hero">
-    <h2>Historique</h2>
-    <p>Resultats de nos pronostics passes</p>
-  </div>
-  <div class="stats-grid" id="zone-stats-2"></div>
-  <div class="section-titre">Tous les coupons termines</div>
-  <div id="zone-historique"></div>
+  <div class="st">Tous les coupons</div>
+  <div id="z-tous"></div>
 </section>
 
 <section id="vip">
   <div class="hero">
     <h2>Acces <span>VIP</span></h2>
-    <p>Debloquez les coupons premium avec votre code</p>
+    <p>Debloquez les coupons premium</p>
   </div>
-  <div id="zone-vip-debloquee" style="display:none;">
-    <div class="section-titre">Coupons VIP debloques</div>
-    <div id="zone-coupons-vip"></div>
+  <div id="z-vip-ok" style="display:none">
+    <div class="st">Coupons VIP debloques</div>
+    <div id="z-vip"></div>
   </div>
-  <div id="zone-vip-verrouillee">
-    <div class="vip-verrouille" style="margin-bottom:16px;">
+  <div id="z-vip-lock">
+    <div class="verrou" style="margin-bottom:14px">
       <h3>Coupon VIP du jour</h3>
-      <div class="match-flou large"></div>
-      <div class="match-flou moyen"></div>
-      <div class="match-flou large"></div>
-      <div class="match-flou court"></div>
-      <div class="match-flou moyen"></div>
-      <p style="font-size:11px;color:var(--gr);margin-top:14px;">2 coupons VIP par jour</p>
-      <button class="btn-debloquer" onclick="ouvrirModalCode()">SAISIR MON CODE VIP</button>
+      <div class="flou f80"></div>
+      <div class="flou f60"></div>
+      <div class="flou f80"></div>
+      <button class="btn-p" onclick="ouvrirCode()">SAISIR MON CODE VIP</button>
     </div>
   </div>
-  <div class="section-titre">Nos offres VIP</div>
-  <div class="coupon vip" style="text-align:center;">
-    <h3 style="font-size:16px;">Pack 7 coupons</h3>
-    <p style="color:var(--gr);font-size:12px;margin:8px 0;">Acces a 7 coupons VIP au choix</p>
-    <p style="color:var(--or);font-weight:800;font-size:22px;margin:10px 0;">5 000 CFA</p>
+  <div class="st">Nos offres VIP</div>
+  <div class="coupon vip" style="text-align:center">
+    <h3>Pack 7 coupons</h3>
+    <p style="color:#94a3b8;font-size:12px;margin:8px 0">Acces a 7 coupons VIP</p>
+    <p style="color:#d4af37;font-weight:800;font-size:20px">5 000 CFA</p>
   </div>
-  <div class="coupon vip" style="text-align:center;">
-    <h3 style="font-size:16px;">VIP 1 mois</h3>
-    <p style="color:var(--gr);font-size:12px;margin:8px 0;">Acces a tous les coupons VIP pendant 30 jours</p>
-    <p style="color:var(--or);font-weight:800;font-size:22px;margin:10px 0;">15 000 CFA</p>
+  <div class="coupon vip" style="text-align:center">
+    <h3>VIP 1 mois</h3>
+    <p style="color:#94a3b8;font-size:12px;margin:8px 0">Tous les coupons VIP 30 jours</p>
+    <p style="color:#d4af37;font-weight:800;font-size:20px">15 000 CFA</p>
   </div>
-  <div class="banniere-info" style="margin-top:16px;">
-    Paiement par <strong>Orange Money</strong> ou <strong>Wave</strong><br>
-    Envoyez le paiement puis contactez-nous :<br>
-    <a href="https://wa.me/245956184838" style="color:var(--or);font-weight:700;font-size:14px;">+245 956 184 838</a>
+  <div class="info" style="margin-top:14px">
+    Paiement : <strong>Orange Money</strong> ou <strong>Wave</strong><br>
+    <a href="https://wa.me/245956184838" style="color:#d4af37;font-weight:700">+245 956 184 838</a>
   </div>
 </section>
 
-<section id="codes">
+<section id="code">
   <div class="hero">
     <h2>Mon <span>code VIP</span></h2>
-    <p>Saisissez le code recu pour debloquer l'acces</p>
+    <p>Saisissez le code recu</p>
   </div>
   <div class="coupon">
-    <h3 style="margin-bottom:14px;">Activer mon code</h3>
-    <input type="text" id="input-code-principal" placeholder="BETA-XXXX-XXXX" style="width:100%;padding:14px;border-radius:10px;border:1px solid var(--bo);background:#0f172a;color:#fff;font-size:14px;margin-bottom:10px;text-transform:uppercase;text-align:center;font-weight:700;letter-spacing:2px;">
-    <div id="msg-principal" style="text-align:center;font-size:12px;margin-bottom:10px;"></div>
-    <button class="btn-debloquer" onclick="verifierCode()">Activer mon code</button>
+    <h3 style="margin-bottom:12px">Activer mon code</h3>
+    <input id="code-principal" placeholder="BETA-XXXX-XXXX" style="width:100%;padding:13px;border-radius:9px;border:1px solid #1f2937;background:#0f172a;color:#fff;font-size:14px;text-align:center;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px">
+    <div id="msg-principal" style="text-align:center;font-size:12px;margin-bottom:10px"></div>
+    <button class="btn-p" onclick="verifierCode()">Activer mon code</button>
   </div>
-  <div class="banniere-info">Astuce : cliquez sur le lien que nous vous avons envoye pour activer automatiquement votre code.</div>
 </section>
 
-<div class="bottom-nav">
-  <a href="#" class="active" onclick="afficher('accueil',document.querySelectorAll('.tabs button')[0]);return false;"><span class="ico">A</span>Accueil</a>
-  <a href="#" onclick="afficher('coupons',document.querySelectorAll('.tabs button')[1]);return false;"><span class="ico">C</span>Coupons</a>
-  <a href="#" onclick="afficher('historique',document.querySelectorAll('.tabs button')[2]);return false;"><span class="ico">H</span>Historique</a>
-  <a href="#" onclick="afficher('vip',document.querySelectorAll('.tabs button')[3]);return false;"><span class="ico">V</span>VIP</a>
-  <a href="https://wa.me/245956184838" target="_blank"><span class="ico">W</span>WhatsApp</a>
-    </div>
-    <div class="modal" id="modal-code">
-  <div class="modal-content">
+<div class="bnav">
+  <a href="#" onclick="go('accueil',null);return false"><span>A</span>Accueil</a>
+  <a href="#" onclick="go('coupons',null);return false"><span>C</span>Coupons</a>
+  <a href="#" onclick="go('vip',null);return false"><span>V</span>VIP</a>
+  <a href="https://wa.me/245956184838" target="_blank"><span>W</span>WhatsApp</a>
+</div>
+
+<button class="btn-bp" onclick="demanderAdmin()">BP</button>
+
+<div class="modal" id="m-code">
+  <div class="mc">
     <h3>Saisir un code VIP</h3>
-    <input type="text" id="input-modal" placeholder="BETA-XXXX-XXXX" maxlength="25">
-    <div id="msg-modal" style="text-align:center;font-size:12px;margin-bottom:10px;"></div>
-    <button class="btn-valider" onclick="validerCodeModal()">Valider</button>
-    <button class="btn-gris" onclick="fermerModalCode()">Annuler</button>
+    <input id="code-modal" placeholder="BETA-XXXX-XXXX" maxlength="25">
+    <div id="msg-modal" style="text-align:center;font-size:12px;margin-bottom:10px"></div>
+    <button class="bv" onclick="validerCodeModal()">Valider</button>
+    <button class="bg" onclick="fermer('m-code')">Annuler</button>
   </div>
 </div>
 
-<div class="modal" id="modal-admin-login">
-  <div class="modal-content" style="border-color:var(--or);">
-    <h3 style="color:var(--or);">ACCES ADMIN</h3>
-    <input type="password" id="input-admin-pwd" placeholder="Mot de passe">
-    <div id="msg-admin-login" style="text-align:center;font-size:12px;margin-bottom:10px;"></div>
-    <button class="btn-or" onclick="verifierAdminLogin()">Valider</button>
-    <button class="btn-gris" onclick="document.getElementById('modal-admin-login').classList.remove('active')">Annuler</button>
+<div class="modal" id="m-pwd">
+  <div class="mc" style="border-color:#d4af37">
+    <h3 style="color:#d4af37">ACCES ADMIN</h3>
+    <input id="pwd-input" type="password" placeholder="Mot de passe">
+    <div id="msg-pwd" style="text-align:center;font-size:12px;margin-bottom:10px"></div>
+    <button class="bo" onclick="validerPwd()">Valider</button>
+    <button class="bg" onclick="fermer('m-pwd')">Annuler</button>
   </div>
 </div>
 
-<div class="modal" id="modal-admin-panel">
-  <div class="modal-content" style="border-color:var(--or);max-width:600px;">
-    <h3 style="color:var(--or);">BETA CONTROL</h3>
-    <div class="admin-tabs">
-      <button class="active" onclick="adminTab('creer',this)">Creer</button>
-      <button onclick="adminTab('codes',this)">Codes</button>
-      <button onclick="adminTab('coupons',this)">Coupons</button>
+<div class="modal" id="m-admin">
+  <div class="mc" style="border-color:#d4af37;max-width:560px">
+    <h3 style="color:#d4af37">BETA CONTROL</h3>
+    <div class="tabs-a">
+      <button class="actif" onclick="tabAdmin('creer',this)">+ Creer</button>
+      <button onclick="tabAdmin('codes',this)">Codes</button>
+      <button onclick="tabAdmin('liste',this)">Liste</button>
     </div>
-    <div id="admin-creer">
+    <div id="t-creer">
       <label>Categorie</label>
-      <select id="new-categorie">
+      <select id="nc">
         <option value="gratuit">Gratuit</option>
         <option value="modere">Modere</option>
         <option value="risque">Risque</option>
         <option value="vip" selected>VIP</option>
       </select>
-      <label>Titre du coupon</label>
-      <input type="text" id="new-titre" placeholder="Ex: Coupon VIP du matin">
+      <label>Titre</label>
+      <input id="nt" placeholder="Ex: Coupon VIP du matin">
       <label>Selections</label>
-      <div id="new-selections"></div>
-      <button class="btn-gris" onclick="ajouterSelectionEdit()" style="margin-bottom:14px;">+ Ajouter une selection</button>
-      <div style="background:#0f172a;border:1px solid var(--or);border-radius:8px;padding:12px;margin-bottom:14px;text-align:center;">
-        <div style="font-size:11px;color:var(--gr);">COTE TOTALE</div>
-        <div id="new-cote-totale" style="font-size:26px;font-weight:900;color:var(--or);">1.00</div>
+      <div id="ns"></div>
+      <button class="bg" onclick="ajouterSel()" style="margin-bottom:10px">+ Ajouter une selection</button>
+      <div style="background:#0f172a;border:1px solid #d4af37;border-radius:8px;padding:10px;margin-bottom:10px;text-align:center">
+        <div style="font-size:10px;color:#94a3b8">COTE TOTALE</div>
+        <div id="ncote" style="font-size:22px;font-weight:900;color:#d4af37">1.00</div>
       </div>
-      <button class="btn-or" onclick="enregistrerCoupon()">Enregistrer</button>
+      <button class="bo" onclick="enregistrerCoupon()">Enregistrer</button>
     </div>
-    <div id="admin-codes" style="display:none;">
-      <button class="btn-or" onclick="genererNouveauCode()" style="margin-bottom:14px;">GENERER UN CODE</button>
-      <div id="liste-codes"></div>
+    <div id="t-codes" style="display:none">
+      <button class="bo" onclick="ouvrirGenCode()" style="margin-bottom:12px">GENERER UN CODE</button>
+      <div id="lcodes"></div>
     </div>
-    <div id="admin-coupons" style="display:none;">
-      <div id="liste-coupons"></div>
+    <div id="t-liste" style="display:none">
+      <div id="lcoupons"></div>
     </div>
-    <button class="btn-rouge" onclick="quitterAdmin()" style="margin-top:14px;">Quitter admin</button>
+    <button class="br" onclick="quitterAdmin()" style="margin-top:12px">Quitter admin</button>
   </div>
 </div>
 
-<div class="modal" id="modal-gen-code">
-  <div class="modal-content">
+<div class="modal" id="m-gen">
+  <div class="mc">
     <h3>Nouveau code VIP</h3>
-    <label>Type d'acces</label>
-    <select id="code-type">
+    <label>Type</label>
+    <select id="gt">
       <option value="7jours">7 coupons (5 000 CFA)</option>
       <option value="mois">1 mois (15 000 CFA)</option>
     </select>
-    <label>Date d'expiration</label>
-    <input type="date" id="code-expire">
-    <label>Nom du client</label>
-    <input type="text" id="code-client" placeholder="Optionnel">
-    <button class="btn-or" onclick="creerCode()">Generer</button>
-    <button class="btn-gris" onclick="document.getElementById('modal-gen-code').classList.remove('active')">Annuler</button>
+    <label>Expiration</label>
+    <input id="ge" type="date">
+    <label>Client (optionnel)</label>
+    <input id="gc" placeholder="Nom du client">
+    <button class="bo" onclick="creerCode()">Generer</button>
+    <button class="bg" onclick="fermer('m-gen')">Annuler</button>
   </div>
 </div>
 
-<div class="modal" id="modal-code-genere">
-  <div class="modal-content" style="border-color:var(--ve);">
-    <h3 style="color:var(--ve);">Code genere !</h3>
-    <div style="background:#0f172a;border:2px dashed var(--or);border-radius:10px;padding:20px;text-align:center;margin-bottom:14px;">
-      <div style="font-size:11px;color:var(--gr);margin-bottom:6px;">CODE VIP</div>
-      <div id="code-genere-affichage" style="font-size:24px;font-weight:900;color:var(--or);letter-spacing:2px;"></div>
+<div class="modal" id="m-resultat">
+  <div class="mc" style="border-color:#22c55e">
+    <h3 style="color:#22c55e">Code genere</h3>
+    <div style="background:#0f172a;border:2px dashed #d4af37;border-radius:10px;padding:16px;text-align:center;margin-bottom:12px">
+      <div style="font-size:10px;color:#94a3b8;margin-bottom:4px">CODE VIP</div>
+      <div id="code-gen" style="font-size:20px;font-weight:900;color:#d4af37;letter-spacing:2px"></div>
     </div>
-    <div style="background:#0f172a;border:1px solid var(--bo);border-radius:10px;padding:14px;margin-bottom:14px;">
-      <div style="font-size:11px;color:var(--gr);margin-bottom:8px;">Message WhatsApp :</div>
-      <div id="message-whatsapp" style="font-size:12px;color:#e2e8f0;white-space:pre-wrap;line-height:1.6;"></div>
+    <div style="background:#0f172a;border:1px solid #1f2937;border-radius:10px;padding:12px;margin-bottom:12px">
+      <div style="font-size:10px;color:#94a3b8;margin-bottom:6px">Message WhatsApp :</div>
+      <div id="msg-wa" style="font-size:11px;color:#e2e8f0;white-space:pre-wrap;line-height:1.5"></div>
     </div>
-    <button class="btn-or" onclick="copierMessage()">Copier le message</button>
-    <button class="btn-valider" onclick="copierLien()">Copier le lien</button>
-    <button class="btn-gris" onclick="document.getElementById('modal-code-genere').classList.remove('active')">Fermer</button>
+    <button class="bo" onclick="copierMsg()">Copier le message</button>
+    <button class="bv" onclick="copierLien()">Copier le lien</button>
+    <button class="bg" onclick="fermer('m-resultat')">Fermer</button>
   </div>
 </div>
-
-<div id="affiche-capture"></div>
 
 <script>
-var MOT_DE_PASSE_ADMIN = "F@llou55212";
-var CLE_COUPONS = "beta_coupons_v5";
-var CLE_CODES = "beta_codes_v5";
-var CLE_VIP = "beta_vip_v5";
-var adminConnecte = false;
+var PWD_ADMIN = "F@llou55212";
+var KC = "beta_coupons_v6";
+var KD = "beta_codes_v6";
+var KV = "beta_vip_v6";
+var adminOK = false;
 
-function initialiserDonnees(){
+function go(id, btn){
+  document.querySelectorAll('section').forEach(function(s){ s.classList.remove('actif'); });
+  document.getElementById(id).classList.add('actif');
+  if(btn){
+    document.querySelectorAll('nav button').forEach(function(b){ b.classList.remove('actif'); });
+    btn.classList.add('actif');
+  }
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function ouvrir(id){ document.getElementById(id).classList.add('actif'); }
+function fermer(id){ document.getElementById(id).classList.remove('actif'); }
+
+function init(){
   try{
-    if(!localStorage.getItem(CLE_COUPONS)){
-      var demo = [
+    if(!localStorage.getItem(KC)){
+      var d = [
         { id:"c1", categorie:"gratuit", titre:"Coupon decouverte du jour",
           selections:[
-            { ligue:"Bundesliga", match:"Union Berlin - Elversberg", pronostic:"Corners : +7,5", cote:"1.325", statut:"en_cours" },
-            { ligue:"Bundesliga", match:"Hoffenheim - Hambourg", pronostic:"1ere MT : +1,5 but", cote:"2.01", statut:"en_cours" },
-            { ligue:"Bundesliga", match:"Mayence - Leverkusen", pronostic:"Victoire Leverkusen", cote:"3.14", statut:"en_cours" },
-            { ligue:"Bundesliga", match:"Augsbourg - Bayern", pronostic:"Victoire Bayern", cote:"1.155", statut:"en_cours" }
-          ], date: new Date().toISOString() },
+            { ligue:"Bundesliga", match:"Union Berlin - Elversberg", pronostic:"Corners +7,5", cote:"1.325" },
+            { ligue:"Bundesliga", match:"Hoffenheim - Hambourg", pronostic:"1ere MT +1,5 but", cote:"2.01" },
+            { ligue:"Bundesliga", match:"Mayence - Leverkusen", pronostic:"Victoire Leverkusen", cote:"3.14" },
+            { ligue:"Bundesliga", match:"Augsbourg - Bayern", pronostic:"Victoire Bayern", cote:"1.155" }
+          ] },
         { id:"c2", categorie:"vip", titre:"Coupon VIP du matin",
           selections:[
-            { ligue:"Bundesliga", match:"Mayence - Leverkusen", pronostic:"Victoire Mayence", cote:"3.14", statut:"en_cours" },
-            { ligue:"Bundesliga", match:"Augsbourg - Bayern", pronostic:"Victoire Bayern", cote:"1.155", statut:"en_cours" }
-          ], date: new Date().toISOString() }
+            { ligue:"Bundesliga", match:"Mayence - Leverkusen", pronostic:"Victoire Mayence", cote:"3.14" },
+            { ligue:"Bundesliga", match:"Augsbourg - Bayern", pronostic:"Victoire Bayern", cote:"1.155" }
+          ] }
       ];
-      localStorage.setItem(CLE_COUPONS, JSON.stringify(demo));
+      localStorage.setItem(KC, JSON.stringify(d));
     }
-    if(!localStorage.getItem(CLE_CODES)){
-      localStorage.setItem(CLE_CODES, JSON.stringify([]));
-    }
+    if(!localStorage.getItem(KD)) localStorage.setItem(KD, JSON.stringify([]));
   } catch(e){
-    localStorage.setItem(CLE_COUPONS, JSON.stringify([]));
-    localStorage.setItem(CLE_CODES, JSON.stringify([]));
+    localStorage.setItem(KC, JSON.stringify([]));
+    localStorage.setItem(KD, JSON.stringify([]));
   }
 }
 
-function getCoupons(){
-  try{ return JSON.parse(localStorage.getItem(CLE_COUPONS) || "[]"); } catch(e){ return []; }
-}
-function saveCoupons(c){
-  localStorage.setItem(CLE_COUPONS, JSON.stringify(c));
-  afficherCoupons();
-  afficherListeCoupons();
-}
-function getCodes(){
-  try{ return JSON.parse(localStorage.getItem(CLE_CODES) || "[]"); } catch(e){ return []; }
-}
-function saveCodes(c){
-  localStorage.setItem(CLE_CODES, JSON.stringify(c));
-  afficherListeCodes();
-}
+function getC(){ try{ return JSON.parse(localStorage.getItem(KC)||"[]"); }catch(e){ return []; } }
+function setC(c){ localStorage.setItem(KC, JSON.stringify(c)); rendre(); rendreListeC(); }
+function getD(){ try{ return JSON.parse(localStorage.getItem(KD)||"[]"); }catch(e){ return []; } }
+function setD(c){ localStorage.setItem(KD, JSON.stringify(c)); rendreListeD(); }
 
-function calculerCoteTotale(sel){
+function cote(sel){
   var t = 1;
   sel.forEach(function(s){ t *= parseFloat(s.cote) || 1; });
   return t.toFixed(2);
 }
 
-function calculerStatutGlobal(coupon){
-  var sel = coupon.selections || [];
-  if(sel.length === 0) return "encours";
-  var actives = sel.filter(function(s){ return s.statut !== "reporte"; });
-  if(actives.length === 0) return "encours";
-  if(actives.some(function(s){ return s.statut === "perdu"; })) return "perdu";
-  if(actives.every(function(s){ return s.statut === "gagne"; })) return "gagne";
-  return "encours";
+function htmlCoupon(c){
+  var cat = c.categorie;
+  var id = "cp-" + c.id;
+  var h = '<div class="coupon ' + cat + '" id="' + id + '">';
+  h += '<div class="ch"><span class="b ' + cat + '">' + cat + '</span>';
+  h += '<span style="font-size:10px;color:#94a3b8">' + c.selections.length + ' sel.</span></div>';
+  h += '<h3>' + c.titre + '</h3>';
+  c.selections.forEach(function(s){
+    h += '<div class="sel"><div class="m"><div style="font-size:9px;color:#64748b">' + s.ligue + '</div>';
+    h += '<div>' + s.match + '</div>';
+    h += '<div class="p">' + s.pronostic + '</div></div>';
+    h += '<div class="c">' + s.cote + '</div></div>';
+  });
+  h += '<div class="ct"><span>Cote totale</span><span>' + cote(c.selections) + '</span></div>';
+  h += '</div>';
+  return h;
 }
 
-function iconeStatut(st){
-  if(st === "gagne") return "OK";
-  if(st === "perdu") return "X";
-  if(st === "reporte") return "R";
-  return "...";
+function rendre(){
+  var all = getC();
+  var g = all.filter(function(c){ return c.categorie === "gratuit"; });
+  var t = all.filter(function(c){ return c.categorie !== "vip"; });
+  var v = all.filter(function(c){ return c.categorie === "vip"; });
+  document.getElementById("z-gratuits").innerHTML = g.length ? g.map(htmlCoupon).join("") : '<div class="info">Aucun coupon gratuit</div>';
+  document.getElementById("z-tous").innerHTML = t.length ? t.map(htmlCoupon).join("") : '<div class="info">Aucun coupon</div>';
+  document.getElementById("z-vip").innerHTML = v.length ? v.map(htmlCoupon).join("") : '<div class="info">Aucun VIP</div>';
 }
 
-function genererHTMLCoupon(coupon){
-  var cat = coupon.categorie;
-  var cote = calculerCoteTotale(coupon.selections);
-  var statutG = calculerStatutGlobal(coupon);
-  var classes = "coupon " + cat;
-  if(statutG === "gagne") classes += " statut-gagne";
-  if(statutG === "perdu") classes += " statut-perdu";
-  var id = "coupon-" + coupon.id;
-  var badgeStatut = "";
-  if(statutG === "gagne") badgeStatut = '<span class="badge statut-gagne">GAGNE</span>';
-  else if(statutG === "perdu") badgeStatut = '<span class="badge statut-perdu">PERDU</span>';
-  else badgeStatut = '<span class="badge statut-encours">EN COURS</span>';
+function activerVIP(){
+  document.getElementById("z-vip-lock").style.display = "none";
+  document.getElementById("z-vip-ok").style.display = "block";
+  localStorage.setItem(KV, "oui");
+  rendre();
+}
 
-  var html = '<div class="' + classes + '" id="' + id + '">';
-  html += '<div class="coupon-header">';
-  html += '<span class="badge ' + cat + '">' + cat.toUpperCase() + '</span>';
-  html += badgeStatut;
-  html += '</div>';
-  html += '<h3>' + coupon
+function demanderAdmin(){
+  if(adminOK){ ouvrir('m-admin'); rendreListeD(); rendreListeC(); return; }
+  document.getElementById("pwd-input").value = "";
+  document.getElementById("msg-pwd").innerHTML = "";
+  ouvrir('m-pwd');
+}
+
+function validerPwd(){
+  var p = document.getElementById("pwd-input").value;
+  if(p === PWD_ADMIN){
+    adminOK = true;
+    fermer('m-pwd');
+    ouvrir('m-admin');
+    if(document.getElementById("ns").children.length === 0) ajouterSel();
+    rendreListeD();
+    rendreListeC();
+  } else {
+    document.getElementById("msg-pwd").innerHTML = '<div class="err">Mot de passe incorrect</div>';
+  }
+}
+
+function quitterAdmin(){
+  adminOK = false;
+  fermer('m-admin');
+}
+
+function tabAdmin(t, btn){
+  document.querySelectorAll('.tabs-a button').forEach(function(b){ b.classList.remove('actif'); });
+  btn.classList.add('actif');
+  document.getElementById('t-creer').style.display = t === 'creer' ? 'block' : 'none';
+  document.getElementById('t-codes').style.display = t === 'codes' ? 'block' : 'none';
+  document.getElementById('t-liste').style.display = t === 'liste' ? 'block' : 'none';
+}
+
+function ajouterSel(){
+  var z = document.getElementById("ns");
+  var d = document.createElement("div");
+  d.className = "se";
+  d.innerHTML = '<button class="x" onclick="this.parentElement.remove();calcCote()">x</button>' +
+    '<input type="text" placeholder="Ligue" class="i1" oninput="calcCote()">' +
+    '<input type="text" placeholder="Match" class="i2" oninput="calcCote()">' +
+    '<input type="text" placeholder="Pronostic" class="i3" oninput="calcCote()">' +
+    '<input type="number" step="0.001" placeholder="Cote" class="i4" oninput="calcCote()">';
+  z.appendChild(d);
+}
+
+function calcCote(){
+  var s = document.querySelectorAll("#ns .se");
+  var t = 1, n = 0;
+  s.forEach(function(x){
+    var c = parseFloat(x.querySelector(".i4").value);
+    if(!isNaN(c) && c > 0){ t *= c; n++; }
+  });
+  document.getElementById("ncote").innerText = n > 0 ? t.toFixed(3) : "1.00";
+}
+
+function enregistrerCoupon(){
+  var cat = document.getElementById("nc").value;
+  var titre = document.getElementById("nt").value.trim();
+  if(!titre){ alert("Donne un titre"); return; }
+  var sels = [];
+  document.querySelectorAll("#ns .se").forEach(function(d){
+    var l = d.querySelector(".i1").value.trim() || "International";
+    var m = d.querySelector(".i2").value.trim();
+    var p = d.querySelector(".i3").value.trim();
+    var c = d.querySelector(".i4").value.trim();
+    if(m && p && c) sels.push({ ligue:l, match:m, pronostic:p, cote:c });
+  });
+  if(sels.length === 0){ alert("Ajoute au moins 1 selection"); return; }
+  var all = getC();
+  all.unshift({ id:"c"+Date.now(), categorie:cat, titre:titre, selections:sels });
+  setC(all);
+  alert("Coupon enregistre !");
+  document.getElementById("nt").value = "";
+  document.getElementById("ns").innerHTML = "";
+  ajouterSel();
+  calcCote();
+}
+
+function rendreListeC(){
+  var all = getC();
+  var z = document.getElementById("lcoupons");
+  if(!z) return;
+  if(all.length === 0){ z.innerHTML = '<div class="info">Aucun coupon</div>'; return; }
+  z.innerHTML = all.map(function(c){
+    return '<div class="lc"><div class="code">' + c.titre + '</div>' +
+      '<div class="det">' + c.categorie.toUpperCase() + ' - ' + c.selections.length + ' sel - Cote ' + cote(c.selections) + '</div>' +
+      '<div class="act"><button onclick="supprC(\'' + c.id + '\')">Supprimer</button></div></div>';
+  }).join("");
+}
+
+function supprC(id){
+  if(!confirm("Supprimer ?")) return;
+  setC(getC().filter(function(c){ return c.id !== id; }));
+  rendreListeC();
+}
+
+function ouvrirGenCode(){
+  var d = new Date();
+  d.setDate(d.getDate() + 7);
+  document.getElementById("ge").value = d.toISOString().split("T")[0];
+  document.getElementById("gc").value = "";
+  ouvrir('m-gen');
+}
+
+function creerCode(){
+  var t = document.getElementById("gt").value;
+  var e = document.getElementById("ge").value;
+  var c = document.getElementById("gc").value.trim();
+  if(!e){ alert("Choisis une date"); return; }
+  var ch = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  var code = "BETA-";
+  for(var i=0;i<4;i++) code += ch[Math.floor(Math.random()*ch.length)];
+  code += "-";
+  for(var j=0;j<4;j++) code += ch[Math.floor(Math.random()*ch.length)];
+  var all = getD();
+  all.unshift({ code:code, type:t, expire:e, client:c });
+  setD(all);
+  var lbl = t === "7jours" ? "7 coupons VIP" : "1 mois VIP";
+  var msg = "BETA PRONOSTIC\n\nVotre code VIP :\n\n" + code + "\n\nType : " + lbl + "\nValable jusqu'au : " + e.split("-").reverse().join("/") + "\n\nActivez ici :\n" + location.origin + location.pathname + "?code=" + code + "\n\nGagnons ensemble !";
+  document.getElementById("code-gen").innerText = code;
+  document.getElementById("msg-wa").innerText = msg;
+  fermer('m-gen');
+  ouvrir('m-resultat');
+  rendreListeD();
+}
+
+function rendreListeD(){
+  var all = getD();
+  var z = document.getElementById("lcodes");
+  if(!z) return;
+  if(all.length === 0){ z.innerHTML = '<div class="info">Aucun code</div>'; return; }
+  z.innerHTML = all.map(function(c){
+    return '<div class="lc"><div class="code">' + c.code + '</div>' +
+      '<div class="det">' + (c.type === "7jours" ? "7 coupons" : "1 mois") + ' - expire ' + c.expire.split("-").reverse().join("/") + (c.client ? " - " + c.client : "") + '</div>' +
+      '<div class="act"><button onclick="supprD(\'' + c.code + '\')">Supprimer</button></div></div>';
+  }).join("");
+}
+
+function supprD(code){
+  if(!confirm("Supprimer ?")) return;
+  setD(getD().filter(function(c){ return c.code !== code; }));
+}
+
+function copierMsg(){
+  var m = document.getElementById("msg-wa").innerText;
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(m).then(function(){ alert("Message copie !"); }).catch(function(){ prompt("Copie :", m); });
+  } else prompt("Copie :", m);
+}
+
+function copierLien(){
+  var c = document.getElementById("code-gen").innerText;
+  var l = location.origin + location.pathname + "?code=" + c;
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(l).then(function(){ alert("Lien copie !\n\n" + l); }).catch(function(){ prompt("Copie :", l); });
+  } else prompt("Copie :", l);
+}
+
+function codeOK(code){
+  var d = new Date().toISOString().split("T")[0];
+  var all = getD();
+  for(var i=0;i<all.length;i++){
+    if(all[i].code.toUpperCase() === code.toUpperCase() && all[i].expire >= d) return true;
+  }
+  return false;
+}
+
+function ouvrirCode(){
+  document.getElementById("code-modal").value = "";
+  document.getElementById("msg-modal").innerHTML = "";
+  ouvrir('m-code');
+}
+
+function validerCodeModal(){
+  var c = document.getElementById("code-modal").value.trim();
+  if(!c){ document.getElementById("msg-modal").innerHTML = '<div class="err">Saisissez un code</div>'; return; }
+  if(codeOK(c)){
+    document.getElementById("msg-modal").innerHTML = '<div class="ok">Code valide !</div>';
+    setTimeout(function(){ fermer('m-code'); activerVIP(); go('vip', document.querySelectorAll('nav button')[2]); }, 800);
+  } else {
+    document.getElementById("msg-modal").innerHTML = '<div class="err">Code invalide ou expire</div>';
+  }
+}
+
+function verifierCode(){
+  var c = document.getElementById("code-principal").value.trim();
+  var m = document.getElementById("msg-principal");
+  if(!c){ m.innerHTML = '<div class="err">Saisissez un code</div>'; return; }
+  if(codeOK(c)){
+    m.innerHTML = '<div class="ok">Code valide !</div>';
+    setTimeout(function(){ activerVIP(); go('vip', document.querySelectorAll('nav button')[2]); }, 800);
+  } else {
+    m.innerHTML = '<div class="err">Code invalide ou expire</div>';
+  }
+}
+
+function verifLien(){
+  var p = new URLSearchParams(location.search);
+  var c = p.get("code");
+  if(!c) return;
+  if(codeOK(c)){
+    activerVIP();
+    alert("Code reconnu ! Bienvenue VIP.");
+    history.replaceState({}, "", location.pathname);
+  } else {
+    alert("Ce code est invalide ou expire.");
+  }
+}
+
+window.addEventListener("load", function(){
+  init();
+  rendre();
+  rendreListeD();
+  if(localStorage.getItem(KV) === "oui") activerVIP();
+  verifLien();
+});
+</script>
+</body>
+</html>
