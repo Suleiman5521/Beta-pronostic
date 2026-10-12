@@ -506,3 +506,243 @@ function changeLigue(sel){
 
 function changeMarche(sel){
   var se = sel.closest(".se");
+  var inp = se.querySelector(".i3new");
+  if(sel.value === "__AUTRE__"){
+    inp.style.display = "block";
+    inp.focus();
+  } else {
+    inp.style.display = "none";
+  }
+}
+
+function calcCote(){
+  var s = document.querySelectorAll("#ns .se");
+  var t = 1, n = 0;
+  s.forEach(function(x){
+    var c = parseFloat(x.querySelector(".i4").value);
+    if(!isNaN(c) && c > 0){ t *= c; n++; }
+  });
+  document.getElementById("ncote").innerText = n > 0 ? t.toFixed(3) : "1.00";
+}
+
+function enregistrerCoupon(){
+  var cat = document.getElementById("nc").value;
+  var titre = document.getElementById("nt").value.trim();
+  if(!titre){ alert("Donne un titre"); return; }
+  var sels = [];
+  var nouvellesLigues = [];
+  document.querySelectorAll("#ns .se").forEach(function(d){
+    var selLigue = d.querySelector(".i1");
+    var newLigue = d.querySelector(".i1new").value.trim();
+    var ligue = selLigue.value;
+    if(ligue === "__AUTRE__" && newLigue){
+      ligue = newLigue;
+      nouvellesLigues.push(newLigue);
+    } else if(ligue === "__AUTRE__"){
+      ligue = "International";
+    }
+
+    var selMarche = d.querySelector(".i3");
+    var newMarche = d.querySelector(".i3new").value.trim();
+    var marche = selMarche.value;
+    if(marche === "__AUTRE__" && newMarche) marche = newMarche;
+    else if(marche === "__AUTRE__") marche = "Autre pari";
+
+    var m = d.querySelector(".i2").value.trim();
+    var c = d.querySelector(".i4").value.trim();
+    if(m && c) sels.push({ ligue: ligue, match: m, pronostic: marche, cote: c });
+  });
+  if(sels.length === 0){ alert("Ajoute au moins 1 selection complete"); return; }
+
+  if(nouvellesLigues.length > 0){
+    var l = getLigues();
+    nouvellesLigues.forEach(function(x){ if(l.indexOf(x) === -1) l.push(x); });
+    setLigues(l);
+  }
+
+  var all = getC();
+  all.unshift({ id:"c"+Date.now(), categorie:cat, titre:titre, selections:sels });
+  setC(all);
+  alert("Coupon enregistre !");
+  document.getElementById("nt").value = "";
+  document.getElementById("ns").innerHTML = "";
+  ajouterSel();
+  calcCote();
+  rendreListeL();
+}
+
+function rendreListeC(){
+  var all = getC();
+  var z = document.getElementById("lcoupons");
+  if(!z) return;
+  if(all.length === 0){ z.innerHTML = '<div class="info">Aucun coupon</div>'; return; }
+  z.innerHTML = all.map(function(c){
+    return '<div class="lc"><div class="code">' + c.titre + '</div>' +
+      '<div class="det">' + c.categorie.toUpperCase() + ' - ' + c.selections.length + ' sel - Cote ' + cote(c.selections) + '</div>' +
+      '<div class="act"><button onclick="supprC(\'' + c.id + '\')">Supprimer</button></div></div>';
+  }).join("");
+}
+
+function supprC(id){
+  if(!confirm("Supprimer ?")) return;
+  setC(getC().filter(function(c){ return c.id !== id; }));
+  rendreListeC();
+}
+
+function rendreListeL(){
+  var l = getLigues();
+  var z = document.getElementById("lligues");
+  if(!z) return;
+  var h = '';
+  l.forEach(function(x, i){
+    h += '<div class="lc"><div class="code">' + x + '</div>' +
+      '<div class="act"><button onclick="supprL(' + i + ')">Supprimer</button></div></div>';
+  });
+  h += '<div style="margin-top:10px">' +
+    '<input id="new-ligue" placeholder="Nouvelle ligue" style="width:100%;padding:10px;border-radius:8px;border:1px solid #1f2937;background:#0f172a;color:#fff;font-size:13px;margin-bottom:8px">' +
+    '<button class="bo" onclick="ajouterL()">+ Ajouter une ligue</button>' +
+    '</div>';
+  z.innerHTML = h;
+}
+
+function ajouterL(){
+  var v = document.getElementById("new-ligue").value.trim();
+  if(!v) return;
+  var l = getLigues();
+  if(l.indexOf(v) === -1) l.push(v);
+  setLigues(l);
+  rendreListeL();
+  alert("Ligue ajoutee : " + v);
+}
+
+function supprL(i){
+  if(!confirm("Supprimer cette ligue ?")) return;
+  var l = getLigues();
+  l.splice(i, 1);
+  setLigues(l);
+  rendreListeL();
+}
+
+function ouvrirGenCode(){
+  var d = new Date();
+  d.setDate(d.getDate() + 7);
+  document.getElementById("ge").value = d.toISOString().split("T")[0];
+  document.getElementById("gc").value = "";
+  ouvrir('m-gen');
+}
+
+function creerCode(){
+  var t = document.getElementById("gt").value;
+  var e = document.getElementById("ge").value;
+  var c = document.getElementById("gc").value.trim();
+  if(!e){ alert("Choisis une date"); return; }
+  var ch = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  var code = "BETA-";
+  for(var i=0;i<4;i++) code += ch[Math.floor(Math.random()*ch.length)];
+  code += "-";
+  for(var j=0;j<4;j++) code += ch[Math.floor(Math.random()*ch.length)];
+  var all = getD();
+  all.unshift({ code:code, type:t, expire:e, client:c });
+  setD(all);
+  var lbl = t === "7jours" ? "7 coupons VIP" : "1 mois VIP";
+  var msg = "BETA PRONOSTIC\n\nVotre code VIP :\n\n" + code + "\n\nType : " + lbl + "\nValable jusqu'au : " + e.split("-").reverse().join("/") + "\n\nActivez ici :\n" + location.origin + location.pathname + "?code=" + code + "\n\nGagnons ensemble !";
+  document.getElementById("code-gen").innerText = code;
+  document.getElementById("msg-wa").innerText = msg;
+  fermer('m-gen');
+  ouvrir('m-resultat');
+  rendreListeD();
+}
+
+function rendreListeD(){
+  var all = getD();
+  var z = document.getElementById("lcodes");
+  if(!z) return;
+  if(all.length === 0){ z.innerHTML = '<div class="info">Aucun code</div>'; return; }
+  z.innerHTML = all.map(function(c){
+    return '<div class="lc"><div class="code">' + c.code + '</div>' +
+      '<div class="det">' + (c.type === "7jours" ? "7 coupons" : "1 mois") + ' - expire ' + c.expire.split("-").reverse().join("/") + (c.client ? " - " + c.client : "") + '</div>' +
+      '<div class="act"><button onclick="supprD(\'' + c.code + '\')">Supprimer</button></div></div>';
+  }).join("");
+}
+
+function supprD(code){
+  if(!confirm("Supprimer ?")) return;
+  setD(getD().filter(function(c){ return c.code !== code; }));
+}
+
+function copierMsg(){
+  var m = document.getElementById("msg-wa").innerText;
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(m).then(function(){ alert("Message copie !"); }).catch(function(){ prompt("Copie :", m); });
+  } else prompt("Copie :", m);
+}
+
+function copierLien(){
+  var c = document.getElementById("code-gen").innerText;
+  var l = location.origin + location.pathname + "?code=" + c;
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(l).then(function(){ alert("Lien copie !\n\n" + l); }).catch(function(){ prompt("Copie :", l); });
+  } else prompt("Copie :", l);
+}
+
+function codeOK(code){
+  var d = new Date().toISOString().split("T")[0];
+  var all = getD();
+  for(var i=0;i<all.length;i++){
+    if(all[i].code.toUpperCase() === code.toUpperCase() && all[i].expire >= d) return true;
+  }
+  return false;
+}
+
+function ouvrirCode(){
+  document.getElementById("code-modal").value = "";
+  document.getElementById("msg-modal").innerHTML = "";
+  ouvrir('m-code');
+}
+
+function validerCodeModal(){
+  var c = document.getElementById("code-modal").value.trim();
+  if(!c){ document.getElementById("msg-modal").innerHTML = '<div class="err">Saisissez un code</div>'; return; }
+  if(codeOK(c)){
+    document.getElementById("msg-modal").innerHTML = '<div class="ok">Code valide !</div>';
+    setTimeout(function(){ fermer('m-code'); activerVIP(); go('vip', document.querySelectorAll('nav button')[2]); }, 800);
+  } else {
+    document.getElementById("msg-modal").innerHTML = '<div class="err">Code invalide ou expire</div>';
+  }
+}
+
+function verifierCode(){
+  var c = document.getElementById("code-principal").value.trim();
+  var m = document.getElementById("msg-principal");
+  if(!c){ m.innerHTML = '<div class="err">Saisissez un code</div>'; return; }
+  if(codeOK(c)){
+    m.innerHTML = '<div class="ok">Code valide !</div>';
+    setTimeout(function(){ activerVIP(); go('vip', document.querySelectorAll('nav button')[2]); }, 800);
+  } else {
+    m.innerHTML = '<div class="err">Code invalide ou expire</div>';
+  }
+}
+
+function verifLien(){
+  var p = new URLSearchParams(location.search);
+  var c = p.get("code");
+  if(!c) return;
+  if(codeOK(c)){
+    activerVIP();
+    alert("Code reconnu ! Bienvenue VIP.");
+    history.replaceState({}, "", location.pathname);
+  } else {
+    alert("Ce code est invalide ou expire.");
+  }
+}
+
+window.addEventListener("load", function(){
+  init();
+  rendre();
+  rendreListeD();
+  if(localStorage.getItem(KV) === "oui") activerVIP();
+  verifLien();
+});
+</script>
+</body>
+  </html>
