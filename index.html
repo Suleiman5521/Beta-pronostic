@@ -24,43 +24,68 @@ section.actif{display:block}
 .btn-wa{display:inline-block;background:#25d366;color:#fff;text-decoration:none;padding:10px 20px;border-radius:50px;font-weight:700;font-size:13px}
 .info{background:rgba(212,175,55,.1);border:1px solid rgba(212,175,55,.3);border-radius:10px;padding:12px;font-size:12px;color:#fde68a;margin-bottom:14px;text-align:center}
 .st{font-size:14px;font-weight:700;margin:18px 0 10px;padding-left:10px;border-left:4px solid #d4af37}
-.sep-date{background:rgba(212,175,55,.1);border-left:4px solid #d4af37;padding:8px 12px;margin:20px 0 12px;border-radius:6px}
-.sep-date h4{font-size:13px;color:#d4af37;font-weight:800}
-.sep-date p{font-size:10px;color:#94a3b8;margin-top:2px}
-.coupon{background:#111827;border:1px solid #1f2937;border-radius:12px;padding:14px;margin-bottom:12px}
+
+/* CALENDRIER */
+.cal{display:flex;gap:6px;overflow-x:auto;padding:6px 0;margin-bottom:16px;scrollbar-width:none}
+.cal::-webkit-scrollbar{display:none}
+.cal button{flex-shrink:0;padding:8px 14px;background:#0f172a;border:1px solid #1f2937;color:#94a3b8;border-radius:10px;font-size:11px;font-weight:700;cursor:pointer;min-width:70px;text-align:center}
+.cal button .jour{font-size:9px;color:#64748b;display:block;margin-bottom:2px;font-weight:600}
+.cal button .date{font-size:13px;font-weight:900}
+.cal button.actif{background:linear-gradient(135deg,#d4af37,#b8860b);color:#0a0f1d;border-color:#d4af37}
+.cal button.actif .jour{color:#0a0f1d}
+.cal button.auj{border-color:#d4af37;color:#d4af37}
+
+/* COUPON */
+.coupon{background:#111827;border:1px solid #1f2937;border-radius:14px;padding:0;margin-bottom:14px;overflow:hidden}
 .coupon.gratuit{border-left:4px solid #22c55e}
 .coupon.vip{border-left:4px solid #7c3aed}
 .coupon.modere{border-left:4px solid #3b82f6}
 .coupon.risque{border-left:4px solid #ef4444}
-.ch{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
-.b{font-size:10px;font-weight:800;padding:4px 10px;border-radius:20px;text-transform:uppercase}
-.b.gratuit{background:rgba(34,197,94,.15);color:#22c55e}
-.b.vip{background:rgba(124,58,237,.15);color:#7c3aed}
-.b.modere{background:rgba(59,130,246,.15);color:#3b82f6}
-.b.risque{background:rgba(239,68,68,.15);color:#ef4444}
-.coupon h3{font-size:13px;margin-bottom:8px;color:#e2e8f0}
-.sel{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px dashed #1f2937;font-size:12px;gap:6px}
-.sel:last-child{border-bottom:none}
-.sel .m{flex:1;color:#e2e8f0}
-.sel .p{color:#d4af37;font-size:11px}
-.sel .c{background:#0f172a;padding:5px 9px;border-radius:7px;font-weight:800;font-size:12px}
-.ct{margin-top:10px;padding-top:10px;border-top:2px solid #d4af37;display:flex;justify-content:space-between;align-items:center}
-.ct span:first-child{font-size:11px;color:#94a3b8}
-.ct span:last-child{font-size:20px;font-weight:900;color:#d4af37}
-.verrou{background:#111827;border:1px solid #7c3aed;border-radius:12px;padding:18px;text-align:center;margin-bottom:12px}
-.verrou h3{color:#7c3aed;font-size:13px;margin-bottom:12px}
+.c-head{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:rgba(15,23,42,.6);border-bottom:1px solid #1f2937}
+.c-head .type{font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase}
+.c-head .type.simple{color:#94a3b8}
+.c-head .type.combine{color:#d4af37}
+.c-head .badge{font-size:9px;font-weight:800;padding:3px 9px;border-radius:20px;text-transform:uppercase;letter-spacing:.5px}
+.badge.gratuit{background:rgba(34,197,94,.15);color:#22c55e}
+.badge.vip{background:rgba(124,58,237,.15);color:#7c3aed}
+.badge.modere{background:rgba(59,130,246,.15);color:#3b82f6}
+.badge.risque{background:rgba(239,68,68,.15);color:#ef4444}
+
+/* MATCH */
+.match{padding:12px 14px;border-bottom:1px dashed #1f2937}
+.match:last-child{border-bottom:none}
+.match .comp{font-size:9px;color:#64748b;margin-bottom:3px;text-transform:uppercase;letter-spacing:.3px}
+.match .nom{font-size:13px;font-weight:700;color:#e2e8f0;margin-bottom:3px}
+.match .dh{font-size:10px;color:#64748b;margin-bottom:6px}
+.match .ligne{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.match .pari{font-size:11px;color:#d4af37;flex:1}
+.match .cote{font-size:14px;font-weight:900;color:#fff;background:#0f172a;padding:4px 10px;border-radius:6px;border:1px solid #1f2937}
+
+/* COTE TOTALE */
+.c-total{padding:12px 14px;background:linear-gradient(135deg,rgba(30,58,138,.4),rgba(10,15,29,.9));border-top:2px solid #d4af37;display:flex;justify-content:space-between;align-items:center}
+.c-total .lbl{font-size:11px;color:#94a3b8;font-weight:700;letter-spacing:1px}
+.c-total .val{font-size:24px;font-weight:900;color:#d4af37;text-shadow:0 2px 8px rgba(212,175,55,.3)}
+
+/* VIP VERROUILLE */
+.verrou{background:#111827;border:1px solid #7c3aed;border-radius:14px;padding:20px;text-align:center;margin-bottom:14px}
+.verrou h3{color:#7c3aed;font-size:13px;margin-bottom:14px;font-weight:800}
 .flou{background:linear-gradient(90deg,#1f2937,#374151,#1f2937);height:12px;border-radius:6px;margin:6px auto}
 .f80{width:80%}.f60{width:60%}.f40{width:40%}
-.btn-p{background:linear-gradient(135deg,#7c3aed,#a855f7);color:#fff;border:none;padding:12px;border-radius:50px;font-weight:800;font-size:13px;width:100%;cursor:pointer;margin-top:12px}
+.btn-p{background:linear-gradient(135deg,#7c3aed,#a855f7);color:#fff;border:none;padding:12px;border-radius:50px;font-weight:800;font-size:13px;width:100%;cursor:pointer;margin-top:14px}
+
+/* NAV BAS */
 .bnav{position:fixed;bottom:0;left:0;right:0;background:#0f172a;border-top:2px solid #d4af37;display:flex;padding:8px 0;z-index:200}
 .bnav a{flex:1;color:#94a3b8;text-decoration:none;font-size:10px;text-align:center;display:flex;flex-direction:column;gap:2px}
 .bnav a span{font-size:16px;font-weight:bold;color:#d4af37}
+
 .btn-bp{position:fixed;bottom:70px;right:14px;width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#d4af37,#f5d76e,#b8860b);color:#0a0f1d;font-weight:900;font-size:15px;border:none;box-shadow:0 4px 16px rgba(212,175,55,.6);z-index:500;cursor:pointer;font-family:Arial}
+
+/* MODAL */
 .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:600;align-items:center;justify-content:center;padding:16px;overflow-y:auto}
 .modal.actif{display:flex}
-.mc{background:#111827;border:2px solid #7c3aed;border-radius:14px;padding:20px;max-width:440px;width:100%;max-height:90vh;overflow-y:auto}
+.mc{background:#111827;border:2px solid #7c3aed;border-radius:14px;padding:20px;max-width:460px;width:100%;max-height:90vh;overflow-y:auto}
 .mc h3{color:#7c3aed;text-align:center;margin-bottom:14px;font-size:15px}
-.mc input,.mc select{width:100%;padding:12px;border-radius:9px;border:1px solid #1f2937;background:#0f172a;color:#fff;font-size:14px;margin-bottom:10px}
+.mc input,.mc select{width:100%;padding:11px;border-radius:9px;border:1px solid #1f2937;background:#0f172a;color:#fff;font-size:13px;margin-bottom:10px}
 .mc label{font-size:11px;color:#94a3b8;display:block;margin-bottom:4px}
 .mc button{width:100%;padding:13px;border:none;border-radius:9px;font-weight:800;font-size:13px;cursor:pointer;margin-bottom:6px}
 .bv{background:linear-gradient(135deg,#7c3aed,#a855f7);color:#fff}
@@ -70,15 +95,19 @@ section.actif{display:block}
 .err{color:#ef4444;font-size:12px;text-align:center;margin-bottom:8px}
 .ok{color:#22c55e;font-size:12px;text-align:center;margin-bottom:8px}
 .lc{background:#0f172a;border:1px solid #1f2937;border-radius:8px;padding:10px;margin-bottom:8px;font-size:12px}
-.lc .code{font-weight:800;color:#d4af37;font-size:13px;letter-spacing:1px;margin-bottom:4px}
+.lc .code{font-weight:800;color:#d4af37;font-size:13px;margin-bottom:4px}
 .lc .det{color:#94a3b8;font-size:10px;margin-bottom:6px}
 .lc .act{display:flex;gap:6px}
 .lc .act button{flex:1;padding:6px;font-size:10px;border-radius:6px;border:none;cursor:pointer;font-weight:700;background:#ef4444;color:#fff}
-.se{background:#0f172a;border:1px solid #1f2937;border-radius:8px;padding:10px;margin-bottom:8px;position:relative}
-.se .x{position:absolute;top:6px;right:6px;background:#ef4444;color:#fff;border:none;width:22px;height:22px;border-radius:50%;cursor:pointer;font-weight:800;z-index:2}
+.se{background:#0f172a;border:1px solid #1f2937;border-radius:8px;padding:10px;margin-bottom:10px;position:relative}
+.se .x{position:absolute;top:6px;right:6px;background:#ef4444;color:#fff;border:none;width:24px;height:24px;border-radius:50%;cursor:pointer;font-weight:800;z-index:2}
+.se .row2{display:grid;grid-template-columns:1fr 1fr;gap:6px}
 .tabs-a{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
-.tabs-a button{flex:1;min-width:70px;padding:9px 5px;background:#0f172a;color:#94a3b8;border:1px solid #1f2937;border-radius:7px;font-size:10px;font-weight:700;cursor:pointer}
+.tabs-a button{flex:1;min-width:60px;padding:9px 4px;background:#0f172a;color:#94a3b8;border:1px solid #1f2937;border-radius:7px;font-size:10px;font-weight:700;cursor:pointer}
 .tabs-a button.actif{background:#d4af37;color:#0a0f1d;border-color:#d4af37}
+.type-btns{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:12px}
+.type-btns button{padding:10px;border:1px solid #1f2937;background:#0f172a;color:#94a3b8;border-radius:8px;font-weight:700;font-size:12px;cursor:pointer}
+.type-btns button.actif{background:linear-gradient(135deg,#d4af37,#b8860b);color:#0a0f1d;border-color:#d4af37}
 </style>
 </head>
 <body>
@@ -106,8 +135,9 @@ section.actif{display:block}
     <a href="https://wa.me/245956184838" class="btn-wa">Contacter sur WhatsApp</a>
   </div>
   <div class="info">Pronostics gratuits chaque jour - VIP a partir de 5 000 CFA</div>
-  <div class="st">Pronostics du jour</div>
-  <div id="z-gratuits"></div>
+  <div class="st">Calendrier</div>
+  <div class="cal" id="cal-accueil"></div>
+  <div id="z-jour"></div>
   <div class="st">Apercu VIP</div>
   <div class="verrou">
     <h3>COUPON VIP - ACCES RESERVE</h3>
@@ -115,13 +145,14 @@ section.actif{display:block}
     <div class="flou f60"></div>
     <div class="flou f80"></div>
     <div class="flou f40"></div>
-    <p style="font-size:11px;color:#94a3b8;margin-top:12px">2 coupons VIP par jour</p>
+    <p style="font-size:11px;color:#94a3b8;margin-top:12px">Simple et combine VIP</p>
     <button class="btn-p" onclick="ouvrirCode()">SAISIR MON CODE VIP</button>
   </div>
 </section>
 
 <section id="coupons">
-  <div class="st">Tous les coupons par date</div>
+  <div class="st">Calendrier</div>
+  <div class="cal" id="cal-coupons"></div>
   <div id="z-tous"></div>
 </section>
 
@@ -152,15 +183,15 @@ section.actif{display:block}
     </div>
   </div>
   <div class="st">Nos offres VIP</div>
-  <div class="coupon vip" style="text-align:center">
-    <h3>Pack 7 coupons</h3>
-    <p style="color:#94a3b8;font-size:12px;margin:8px 0">Acces a 7 coupons VIP</p>
-    <p style="color:#d4af37;font-weight:800;font-size:20px">5 000 CFA</p>
+  <div class="coupon vip" style="padding:16px;text-align:center">
+    <h3 style="font-size:15px;color:#fff;margin-bottom:6px">Pack 7 coupons</h3>
+    <p style="color:#94a3b8;font-size:12px;margin:6px 0">Acces a 7 coupons VIP</p>
+    <p style="color:#d4af37;font-weight:800;font-size:22px">5 000 CFA</p>
   </div>
-  <div class="coupon vip" style="text-align:center">
-    <h3>VIP 1 mois</h3>
-    <p style="color:#94a3b8;font-size:12px;margin:8px 0">Tous les coupons VIP 30 jours</p>
-    <p style="color:#d4af37;font-weight:800;font-size:20px">15 000 CFA</p>
+  <div class="coupon vip" style="padding:16px;text-align:center;margin-top:10px">
+    <h3 style="font-size:15px;color:#fff;margin-bottom:6px">VIP 1 mois</h3>
+    <p style="color:#94a3b8;font-size:12px;margin:6px 0">Tous les coupons VIP 30 jours</p>
+    <p style="color:#d4af37;font-weight:800;font-size:22px">15 000 CFA</p>
   </div>
   <div class="info" style="margin-top:14px">
     Paiement : <strong>Orange Money</strong> ou <strong>Wave</strong><br>
@@ -173,8 +204,8 @@ section.actif{display:block}
     <h2>Mon <span>code VIP</span></h2>
     <p>Saisissez le code recu</p>
   </div>
-  <div class="coupon">
-    <h3 style="margin-bottom:12px">Activer mon code</h3>
+  <div class="coupon" style="padding:16px">
+    <h3 style="font-size:14px;color:#fff;margin-bottom:12px">Activer mon code</h3>
     <input id="code-principal" placeholder="BETA-XXXX-XXXX" style="width:100%;padding:13px;border-radius:9px;border:1px solid #1f2937;background:#0f172a;color:#fff;font-size:14px;text-align:center;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px">
     <div id="msg-principal" style="text-align:center;font-size:12px;margin-bottom:10px"></div>
     <button class="btn-p" onclick="verifierCode()">Activer mon code</button>
@@ -212,7 +243,7 @@ section.actif{display:block}
 </div>
 
 <div class="modal" id="m-admin">
-  <div class="mc" style="border-color:#d4af37;max-width:560px">
+  <div class="mc" style="border-color:#d4af37;max-width:600px">
     <h3 style="color:#d4af37">BETA CONTROL</h3>
     <div class="tabs-a">
       <button class="actif" onclick="tabAdmin('creer',this)">+ Creer</button>
@@ -221,7 +252,15 @@ section.actif{display:block}
       <button onclick="tabAdmin('ligues',this)">Ligues</button>
       <button onclick="tabAdmin('nettoyage',this)">Nettoyer</button>
     </div>
+
     <div id="t-creer">
+      <label>Type de coupon</label>
+      <div class="type-btns">
+        <button id="btn-simple" class="actif" onclick="choisirType('simple')">SIMPLE (1 match)</button>
+        <button id="btn-combine" onclick="choisirType('combine')">COMBINE (2+)</button>
+      </div>
+      <label>Date du coupon</label>
+      <input type="date" id="nc-date">
       <label>Categorie</label>
       <select id="nc">
         <option value="gratuit">Gratuit</option>
@@ -229,30 +268,32 @@ section.actif{display:block}
         <option value="risque">Risque</option>
         <option value="vip" selected>VIP</option>
       </select>
-      <label>Titre</label>
-      <input id="nt" placeholder="Ex: Coupon VIP du matin">
-      <label>Selections</label>
+      <label>Match(s)</label>
       <div id="ns"></div>
-      <button class="bg" onclick="ajouterSel()" style="margin-bottom:10px">+ Ajouter une selection</button>
-      <div style="background:#0f172a;border:1px solid #d4af37;border-radius:8px;padding:10px;margin-bottom:10px;text-align:center">
+      <button class="bg" onclick="ajouterSel()" style="margin-bottom:10px">+ Ajouter un match</button>
+      <div style="background:#0f172a;border:1px solid #d4af37;border-radius:8px;padding:12px;margin-bottom:12px;text-align:center">
         <div style="font-size:10px;color:#94a3b8">COTE TOTALE</div>
-        <div id="ncote" style="font-size:22px;font-weight:900;color:#d4af37">1.00</div>
+        <div id="ncote" style="font-size:24px;font-weight:900;color:#d4af37">1.00</div>
       </div>
-      <button class="bo" onclick="enregistrerCoupon()">Enregistrer</button>
+      <button class="bo" onclick="enregistrerCoupon()">Enregistrer le coupon</button>
     </div>
+
     <div id="t-codes" style="display:none">
       <button class="bo" onclick="ouvrirGenCode()" style="margin-bottom:12px">GENERER UN CODE</button>
       <div id="lcodes"></div>
     </div>
+
     <div id="t-liste" style="display:none">
       <div id="lcoupons"></div>
     </div>
+
     <div id="t-ligues" style="display:none">
-      <p style="font-size:11px;color:#94a3b8;margin-bottom:10px;text-align:center">Liste des ligues disponibles</p>
+      <p style="font-size:11px;color:#94a3b8;margin-bottom:10px;text-align:center">Ligues disponibles</p>
       <div id="lligues"></div>
     </div>
+
     <div id="t-nettoyage" style="display:none">
-      <p style="font-size:12px;color:#94a3b8;margin-bottom:12px;text-align:center">Supprimer les coupons anciens d'un coup</p>
+      <p style="font-size:12px;color:#94a3b8;margin-bottom:12px;text-align:center">Supprimer les anciens coupons</p>
       <label>Supprimer les coupons de plus de :</label>
       <select id="sel-nettoyage">
         <option value="1">1 jour</option>
@@ -265,6 +306,7 @@ section.actif{display:block}
       <button class="br" onclick="nettoyer()">Supprimer maintenant</button>
       <div id="msg-nettoyage" style="text-align:center;font-size:12px;margin-top:10px"></div>
     </div>
+
     <button class="br" onclick="quitterAdmin()" style="margin-top:12px">Quitter admin</button>
   </div>
 </div>
@@ -305,27 +347,55 @@ section.actif{display:block}
 
 <script>
 var PWD_ADMIN = "F@llou55212";
-var KC = "beta_coupons_v8";
-var KD = "beta_codes_v8";
-var KL = "beta_ligues_v8";
-var KV = "beta_vip_v8";
+var KC = "beta_coupons_v9";
+var KD = "beta_codes_v9";
+var KL = "beta_ligues_v9";
+var KV = "beta_vip_v9";
 var adminOK = false;
+var typeChoisi = "simple";
+var jourAffiche = "";
 
 var LIGUES_DEFAUT = [
-  "Bundesliga (Allemagne)","Bundesliga 2 (Allemagne)","Premier League (Angleterre)",
-  "Championship (Angleterre)","Liga (Espagne)","Serie A (Italie)","Ligue 1 (France)",
-  "Süper Lig (Turquie)","Ligue des Champions","Europa League","Conference League",
-  "CAN (Coupe d'Afrique)","Liga Portugal","Eredivisie (Pays-Bas)"
+  "Ligue des champions de l'UEFA",
+  "Europa League",
+  "Conference League",
+  "Bundesliga (Allemagne)",
+  "Bundesliga 2 (Allemagne)",
+  "Premier League (Angleterre)",
+  "Championship (Angleterre)",
+  "Liga (Espagne)",
+  "Serie A (Italie)",
+  "Ligue 1 (France)",
+  "Süper Lig (Turquie)",
+  "CAN (Coupe d'Afrique)",
+  "Liga Portugal",
+  "Eredivisie (Pays-Bas)"
 ];
 
 var MARCHES_DEFAUT = [
-  "1X2 : Victoire domicile","1X2 : Match nul","1X2 : Victoire extérieur",
-  "Double chance : 1X","Double chance : X2","Double chance : 12",
-  "Plus de 0,5 but","Plus de 1,5 but","Plus de 2,5 buts","Plus de 3,5 buts",
-  "Moins de 2,5 buts","Les 2 équipes marquent : Oui","Les 2 équipes marquent : Non",
-  "Corners : Plus de 7,5","Corners : Plus de 9,5","Corners : Moins de 9,5",
-  "1ère MT : Plus de 0,5 but","1ère MT : Plus de 1,5 but","1ère MT : 1X2",
-  "Prochain but : Équipe 1","Prochain but : Équipe 2","Autre (champ libre)"
+  "1X2 : V1",
+  "1X2 : X",
+  "1X2 : V2",
+  "Double chance : 1X",
+  "Double chance : X2",
+  "Double chance : 12",
+  "Plus de 0,5 but",
+  "Plus de 1,5 but",
+  "Plus de 2,5 buts",
+  "Plus de 3,5 buts",
+  "Moins de 2,5 buts",
+  "Les 2 equipes marquent : Oui",
+  "Les 2 equipes marquent : Non",
+  "Corners : Plus de 7,5",
+  "Corners : Plus de 9,5",
+  "Corners : Moins de 9,5",
+  "1ere MT : Plus de 0,5 but",
+  "1ere MT : Plus de 1,5 but",
+  "1ere MT : 1X2",
+  "Au moins 1 equipe +1,5 but : Oui",
+  "Prochain but : Equipe 1",
+  "Prochain but : Equipe 2",
+  "Autre (champ libre)"
 ];
 
 function go(id, btn){
@@ -355,38 +425,80 @@ function dateAuj(){
   return d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0") + "-" + String(d.getDate()).padStart(2,"0");
 }
 
-function formaterDate(iso){
-  if(!iso) return "Date inconnue";
+function formaterDateLong(iso){
+  if(!iso) return "";
   var p = iso.split("-");
   var d = new Date(parseInt(p[0]), parseInt(p[1])-1, parseInt(p[2]));
   var jours = ["Dimanche","Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi"];
   var mois = ["Janvier","Fevrier","Mars","Avril","Mai","Juin","Juillet","Aout","Septembre","Octobre","Novembre","Decembre"];
   var auj = dateAuj();
-  var hier = new Date();
-  hier.setDate(hier.getDate() - 1);
+  var hier = new Date(); hier.setDate(hier.getDate() - 1);
+  var demain = new Date(); demain.setDate(demain.getDate() + 1);
   var hierIso = hier.getFullYear() + "-" + String(hier.getMonth()+1).padStart(2,"0") + "-" + String(hier.getDate()).padStart(2,"0");
+  var demainIso = demain.getFullYear() + "-" + String(demain.getMonth()+1).padStart(2,"0") + "-" + String(demain.getDate()).padStart(2,"0");
+  if(iso === auj) return "Aujourd'hui " + d.getDate() + " " + mois[d.getMonth()];
+  if(iso === hierIso) return "Hier " + d.getDate() + " " + mois[d.getMonth()];
+  if(iso === demainIso) return "Demain " + d.getDate() + " " + mois[d.getMonth()];
+  return jours[d.getDay()] + " " + d.getDate() + " " + mois[d.getMonth()];
+}
 
-  if(iso === auj) return "Aujourd'hui - " + jours[d.getDay()] + " " + d.getDate() + " " + mois[d.getMonth()];
-  if(iso === hierIso) return "Hier - " + jours[d.getDay()] + " " + d.getDate() + " " + mois[d.getMonth()];
-  return jours[d.getDay()] + " " + d.getDate() + " " + mois[d.getMonth()] + " " + d.getFullYear();
+function formaterDateCourt(iso){
+  if(!iso) return "";
+  var p = iso.split("-");
+  var mois = ["Jan","Fev","Mar","Avr","Mai","Juin","Juil","Aout","Sep","Oct","Nov","Dec"];
+  return parseInt(p[2]) + " " + mois[parseInt(p[1])-1];
+}
+
+function formaterJourCourt(iso){
+  var p = iso.split("-");
+  var d = new Date(parseInt(p[0]), parseInt(p[1])-1, parseInt(p[2]));
+  var jours = ["Dim","Lun","Mar","Mer","Jeu","Ven","Sam"];
+  return jours[d.getDay()];
+}
+
+function joursDisponibles(){
+  var j = [];
+  for(var i=-3; i<=7; i++){
+    var d = new Date();
+    d.setDate(d.getDate() + i);
+    j.push(d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0") + "-" + String(d.getDate()).padStart(2,"0"));
+  }
+  return j;
+}
+
+function dessinerCalendrier(idZone, dateSelectionnee){
+  var z = document.getElementById(idZone);
+  var jours = joursDisponibles();
+  var auj = dateAuj();
+  var h = '';
+  jours.forEach(function(j){
+    var cls = "cal-btn";
+    if(j === dateSelectionnee) cls = "cal-btn actif";
+    else if(j === auj) cls = "cal-btn auj";
+    var jourNom = formaterJourCourt(j);
+    if(j === auj) jourNom = "Auj";
+    h += '<button class="' + cls + '" onclick="choisirDate(\'' + j + '\')">';
+    h += '<span class="jour">' + jourNom + '</span>';
+    h += '<span class="date">' + formaterDateCourt(j) + '</span>';
+    h += '</button>';
+  });
+  z.innerHTML = h;
+  // Scroll auto vers actif
+  setTimeout(function(){
+    var actif = z.querySelector('.actif');
+    if(actif) actif.scrollIntoView({behavior:"smooth", inline:"center", block:"nearest"});
+  }, 100);
+}
+
+function choisirDate(d){
+  jourAffiche = d;
+  rendre();
 }
 
 function init(){
   try{
     if(!localStorage.getItem(KC)){
-      var auj = dateAuj();
-      var d = [
-        { id:"c1", categorie:"gratuit", titre:"Coupon decouverte du jour", date:auj,
-          selections:[
-            { ligue:"Bundesliga (Allemagne)", match:"Union Berlin - Elversberg", pronostic:"Corners : Plus de 7,5", cote:"1.325" },
-            { ligue:"Bundesliga (Allemagne)", match:"Hoffenheim - Hambourg", pronostic:"1ère MT : Plus de 1,5 but", cote:"2.01" }
-          ] },
-        { id:"c2", categorie:"vip", titre:"Coupon VIP du matin", date:auj,
-          selections:[
-            { ligue:"Bundesliga (Allemagne)", match:"Mayence - Leverkusen", pronostic:"1X2 : Victoire domicile", cote:"3.14" }
-          ] }
-      ];
-      localStorage.setItem(KC, JSON.stringify(d));
+      localStorage.setItem(KC, JSON.stringify([]));
     }
     if(!localStorage.getItem(KD)) localStorage.setItem(KD, JSON.stringify([]));
     if(!localStorage.getItem(KL)) setLigues(LIGUES_DEFAUT.slice());
@@ -395,6 +507,7 @@ function init(){
     localStorage.setItem(KD, JSON.stringify([]));
     setLigues(LIGUES_DEFAUT.slice());
   }
+  jourAffiche = dateAuj();
 }
 
 function getC(){ try{ return JSON.parse(localStorage.getItem(KC)||"[]"); }catch(e){ return []; } }
@@ -408,65 +521,107 @@ function cote(sel){
   return t.toFixed(2);
 }
 
+function typeCoupon(c){
+  return c.selections.length >= 2 ? "combine" : "simple";
+}
+
 function htmlCoupon(c){
   var cat = c.categorie;
   var id = "cp-" + c.id;
+  var type = typeCoupon(c);
+
   var h = '<div class="coupon ' + cat + '" id="' + id + '">';
-  h += '<div class="ch"><span class="b ' + cat + '">' + cat + '</span>';
-  h += '<span style="font-size:10px;color:#94a3b8">' + c.selections.length + ' sel.</span></div>';
-  h += '<h3>' + c.titre + '</h3>';
+
+  // HEADER
+  h += '<div class="c-head">';
+  h += '<span class="type ' + type + '">' + (type === "combine" ? "COMBINE - " + c.selections.length + " matchs" : "SIMPLE") + '</span>';
+  h += '<span class="badge ' + cat + '">' + cat + '</span>';
+  h += '</div>';
+
+  // MATCHS
   c.selections.forEach(function(s){
-    h += '<div class="sel"><div class="m"><div style="font-size:9px;color:#64748b">' + s.ligue + '</div>';
-    h += '<div>' + s.match + '</div>';
-    h += '<div class="p">' + s.pronostic + '</div></div>';
-    h += '<div class="c">' + s.cote + '</div></div>';
+    h += '<div class="match">';
+    h += '<div class="comp">' + (s.ligue || "") + '</div>';
+    h += '<div class="nom">' + s.match + '</div>';
+    if(s.dateheure){
+      h += '<div class="dh">' + s.dateheure + '</div>';
+    }
+    h += '<div class="ligne">';
+    h += '<div class="pari">' + s.pronostic + '</div>';
+    h += '<div class="cote">' + s.cote + '</div>';
+    h += '</div>';
+    h += '</div>';
   });
-  h += '<div class="ct"><span>Cote totale</span><span>' + cote(c.selections) + '</span></div>';
+
+  // COTE TOTALE
+  h += '<div class="c-total">';
+  h += '<span class="lbl">COTE TOTALE</span>';
+  h += '<span class="val">' + cote(c.selections) + '</span>';
+  h += '</div>';
+
   h += '</div>';
   return h;
-}
-
-function grouperParDate(coupons){
-  var groupes = {};
-  coupons.forEach(function(c){
-    var d = c.date || dateAuj();
-    if(!groupes[d]) groupes[d] = [];
-    groupes[d].push(c);
-  });
-  var dates = Object.keys(groupes).sort(function(a,b){ return b.localeCompare(a); });
-  return dates.map(function(d){ return { date:d, coupons:groupes[d] }; });
 }
 
 function rendre(){
   var all = getC();
   var auj = dateAuj();
+  if(!jourAffiche) jourAffiche = auj;
 
-  // ACCUEIL : uniquement coupons du jour
-  var aujCoupons = all.filter(function(c){ return (c.date || auj) === auj; });
-  document.getElementById("z-gratuits").innerHTML = aujCoupons.length
-    ? aujCoupons.map(htmlCoupon).join("")
-    : '<div class="info">Aucun coupon aujourd\'hui</div>';
+  // CALENDRIERS
+  dessinerCalendrier("cal-accueil", jourAffiche);
+  dessinerCalendrier("cal-coupons", jourAffiche);
+
+  // ACCUEIL : coupons du jour sélectionné (par défaut aujourd'hui)
+  var duJour = all.filter(function(c){ return (c.date || auj) === jourAffiche; });
+  var h = '<div class="st">' + formaterDateLong(jourAffiche) + '</div>';
+  if(duJour.length > 0){
+    h += duJour.map(htmlCoupon).join("");
+  } else {
+    h += '<div class="info">Aucun coupon pour cette date</div>';
+  }
+  document.getElementById("z-jour").innerHTML = h;
 
   // ONGLET COUPONS : tous groupés par date
-  var groupes = grouperParDate(all);
-  var h = '';
-  groupes.forEach(function(g){
-    h += '<div class="sep-date"><h4>' + formaterDate(g.date) + '</h4><p>' + g.coupons.length + ' coupon(s)</p></div>';
-    h += g.coupons.map(htmlCoupon).join("");
+  var groupes = {};
+  all.forEach(function(c){
+    var d = c.date || auj;
+    if(!groupes[d]) groupes[d] = [];
+    groupes[d].push(c);
   });
-  document.getElementById("z-tous").innerHTML = h || '<div class="info">Aucun coupon</div>';
+  var dates = Object.keys(groupes).sort(function(a,b){ return b.localeCompare(a); });
+  var hc = '';
+  if(dates.length === 0){
+    hc = '<div class="info">Aucun coupon</div>';
+  } else {
+    dates.forEach(function(d){
+      hc += '<div class="st" style="font-size:12px;margin-top:16px">' + formaterDateLong(d) + '</div>';
+      hc += groupes[d].map(htmlCoupon).join("");
+    });
+  }
+  document.getElementById("z-tous").innerHTML = hc;
 
-  // ONGLET HISTORIQUE : uniquement les jours passes
-  var passes = all.filter(function(c){ return (c.date || auj) !== auj; });
-  var groupesH = grouperParDate(passes);
+  // HISTORIQUE : uniquement les jours passés
+  var passes = all.filter(function(c){ return (c.date || auj) < auj; });
+  var groupesH = {};
+  passes.forEach(function(c){
+    var d = c.date || auj;
+    if(!groupesH[d]) groupesH[d] = [];
+    groupesH[d].push(c);
+  });
+  var datesH = Object.keys(groupesH).sort(function(a,b){ return b.localeCompare(a); });
   var hh = '';
-  groupesH.forEach(function(g){
-    hh += '<div class="sep-date"><h4>' + formaterDate(g.date) + '</h4><p>' + g.coupons.length + ' coupon(s)</p></div>';
-    hh += g.coupons.map(htmlCoupon).join("");
-  });
-  document.getElementById("z-historique").innerHTML = hh || '<div class="info">Aucun ancien coupon</div>';
+  if(datesH.length === 0){
+    hh = '<div class="info">Aucun ancien coupon</div>';
+  } else {
+    datesH.forEach(function(d){
+      hh += '<div class="st" style="font-size:12px;margin-top:16px">' + formaterDateLong(d) + '</div>';
+      hh += groupesH[d].map(htmlCoupon).join("");
+    });
+  }
+  document.getElementById("z-historique").innerHTML = hh;
 
-  // ONGLET VIP
+  // VIP
   var vips = all.filter(function(c){ return c.categorie === "vip"; });
   document.getElementById("z-vip").innerHTML = vips.length ? vips.map(htmlCoupon).join("") : '<div class="info">Aucun VIP</div>';
 }
@@ -491,6 +646,7 @@ function validerPwd(){
     adminOK = true;
     fermer('m-pwd');
     ouvrir('m-admin');
+    document.getElementById("nc-date").value = dateAuj();
     if(document.getElementById("ns").children.length === 0) ajouterSel();
     rendreListeD();
     rendreListeC();
@@ -511,38 +667,81 @@ function tabAdmin(t, btn){
   });
 }
 
+function choisirType(t){
+  typeChoisi = t;
+  document.getElementById("btn-simple").classList.toggle("actif", t === "simple");
+  document.getElementById("btn-combine").classList.toggle("actif", t === "combine");
+  // Adapter le nombre de sélections
+  var zone = document.getElementById("ns");
+  if(t === "simple"){
+    // Ne garder qu'une seule sélection
+    var sels = zone.querySelectorAll(".se");
+    for(var i=1; i<sels.length; i++) sels[i].remove();
+    if(zone.querySelectorAll(".se").length === 0) ajouterSel();
+  } else {
+    // Ajouter une 2e sélection si vide
+    if(zone.querySelectorAll(".se").length < 2){
+      ajouterSel();
+    }
+  }
+}
+
 function optionsLigues(){
   var l = getLigues();
   var h = '';
   l.forEach(function(x){ h += '<option value="' + x + '">' + x + '</option>'; });
-  h += '<option value="__AUTRE__">+ Ajouter une nouvelle ligue...</option>';
+  h += '<option value="__AUTRE__">+ Nouvelle ligue...</option>';
   return h;
 }
 
 function optionsMarches(){
   var h = '';
   MARCHES_DEFAUT.forEach(function(x){ h += '<option value="' + x + '">' + x + '</option>'; });
-  h += '<option value="__AUTRE__">+ Autre (champ libre)</option>';
+  h += '<option value="__AUTRE__">+ Autre pari</option>';
   return h;
 }
 
 function ajouterSel(){
   var z = document.getElementById("ns");
+  var total = z.querySelectorAll(".se").length;
+  if(typeChoisi === "simple" && total >= 1){
+    alert("Un coupon SIMPLE ne contient qu'un seul match. Passe en COMBINE pour ajouter plusieurs matchs.");
+    return;
+  }
   var d = document.createElement("div");
   d.className = "se";
   d.innerHTML =
-    '<button class="x" onclick="this.parentElement.remove();calcCote()">x</button>' +
-    '<label style="font-size:10px;color:#94a3b8;display:block;margin-bottom:2px">Ligue</label>' +
+    '<button class="x" onclick="this.parentElement.remove();calcCote();majBtnAjouter()">x</button>' +
+    '<label style="font-size:10px;color:#94a3b8;display:block;margin-bottom:2px">Competition</label>' +
     '<select class="i1" onchange="changeLigue(this)">' + optionsLigues() + '</select>' +
-    '<input type="text" placeholder="Nom de la nouvelle ligue" class="i1new" style="display:none" oninput="calcCote()">' +
+    '<input type="text" placeholder="Nom de la competition" class="i1new" style="display:none">' +
     '<label style="font-size:10px;color:#94a3b8;display:block;margin:6px 0 2px">Match</label>' +
-    '<input type="text" placeholder="Ex: PSG - Marseille" class="i2" oninput="calcCote()">' +
+    '<input type="text" placeholder="Ex: Arsenal - Lille" class="i2">' +
+    '<div class="row2">' +
+    '<div><label style="font-size:10px;color:#94a3b8;display:block;margin-bottom:2px">Date</label>' +
+    '<input type="date" class="i5"></div>' +
+    '<div><label style="font-size:10px;color:#94a3b8;display:block;margin-bottom:2px">Heure</label>' +
+    '<input type="time" class="i6"></div>' +
+    '</div>' +
     '<label style="font-size:10px;color:#94a3b8;display:block;margin:6px 0 2px">Type de pari</label>' +
     '<select class="i3" onchange="changeMarche(this)">' + optionsMarches() + '</select>' +
-    '<input type="text" placeholder="Precisez le pari" class="i3new" style="display:none" oninput="calcCote()">' +
+    '<input type="text" placeholder="Precisez le pari" class="i3new" style="display:none">' +
     '<label style="font-size:10px;color:#94a3b8;display:block;margin:6px 0 2px">Cote</label>' +
     '<input type="number" step="0.001" placeholder="Ex: 1.85" class="i4" oninput="calcCote()">';
   z.appendChild(d);
+  // Pré-remplir date du jour
+  d.querySelector(".i5").value = document.getElementById("nc-date").value || dateAuj();
+  majBtnAjouter();
+  calcCote();
+}
+
+function majBtnAjouter(){
+  var btns = document.querySelectorAll("#t-creer .bg");
+  btns.forEach(function(b){
+    if(b.innerText.indexOf("Ajouter un match") !== -1){
+      b.style.display = typeChoisi === "simple" ? "none" : "block";
+    }
+  });
 }
 
 function changeLigue(sel){
@@ -568,10 +767,11 @@ function calcCote(){
 
 function enregistrerCoupon(){
   var cat = document.getElementById("nc").value;
-  var titre = document.getElementById("nt").value.trim();
-  if(!titre){ alert("Donne un titre"); return; }
+  var dateCoupon = document.getElementById("nc-date").value || dateAuj();
+
   var sels = [];
   var nouvellesLigues = [];
+
   document.querySelectorAll("#ns .se").forEach(function(d){
     var selLigue = d.querySelector(".i1");
     var newLigue = d.querySelector(".i1new").value.trim();
@@ -586,10 +786,30 @@ function enregistrerCoupon(){
     else if(marche === "__AUTRE__") marche = "Autre pari";
 
     var m = d.querySelector(".i2").value.trim();
+    var dt = d.querySelector(".i5").value;
+    var hr = d.querySelector(".i6").value;
     var c = d.querySelector(".i4").value.trim();
-    if(m && c) sels.push({ ligue: ligue, match: m, pronostic: marche, cote: c });
+    var dh = "";
+    if(dt && hr){
+      var p = dt.split("-");
+      dh = p[2] + "." + p[1] + "." + p[0] + " (" + hr + ")";
+    } else if(dt){
+      var pp = dt.split("-");
+      dh = pp[2] + "." + pp[1] + "." + pp[0];
+    }
+
+    if(m && c) sels.push({ ligue: ligue, match: m, pronostic: marche, cote: c, dateheure: dh });
   });
-  if(sels.length === 0){ alert("Ajoute au moins 1 selection complete"); return; }
+
+  if(sels.length === 0){ alert("Ajoute au moins 1 match complet"); return; }
+  if(typeChoisi === "simple" && sels.length > 1){
+    alert("Un coupon SIMPLE doit avoir 1 seul match. Passe en COMBINE.");
+    return;
+  }
+  if(typeChoisi === "combine" && sels.length < 2){
+    alert("Un coupon COMBINE doit avoir au moins 2 matchs.");
+    return;
+  }
 
   if(nouvellesLigues.length > 0){
     var l = getLigues();
@@ -599,15 +819,14 @@ function enregistrerCoupon(){
 
   var all = getC();
   all.unshift({
-    id:"c"+Date.now(),
-    categorie:cat,
-    titre:titre,
-    selections:sels,
-    date: dateAuj()
+    id: "c" + Date.now(),
+    categorie: cat,
+    selections: sels,
+    date: dateCoupon
   });
   setC(all);
-  alert("Coupon enregistre pour aujourd'hui !");
-  document.getElementById("nt").value = "";
+  alert((typeChoisi === "simple" ? "Coupon SIMPLE" : "Coupon COMBINE") + " enregistre !");
+
   document.getElementById("ns").innerHTML = "";
   ajouterSel();
   calcCote();
@@ -619,15 +838,24 @@ function rendreListeC(){
   var z = document.getElementById("lcoupons");
   if(!z) return;
   if(all.length === 0){ z.innerHTML = '<div class="info">Aucun coupon</div>'; return; }
-  var groupes = grouperParDate(all);
+  var auj = dateAuj();
+  var groupes = {};
+  all.forEach(function(c){
+    var d = c.date || auj;
+    if(!groupes[d]) groupes[d] = [];
+    groupes[d].push(c);
+  });
+  var dates = Object.keys(groupes).sort(function(a,b){ return b.localeCompare(a); });
   var h = '';
-  groupes.forEach(function(g){
-    h += '<div class="sep-date" style="margin:10px 0 8px"><h4 style="font-size:11px">' + formaterDate(g.date) + '</h4></div>';
-    h += g.coupons.map(function(c){
-      return '<div class="lc"><div class="code">' + c.titre + '</div>' +
-        '<div class="det">' + c.categorie.toUpperCase() + ' - ' + c.selections.length + ' sel - Cote ' + cote(c.selections) + '</div>' +
-        '<div class="act"><button onclick="supprC(\'' + c.id + '\')">Supprimer</button></div></div>';
-    }).join("");
+  dates.forEach(function(d){
+    h += '<div class="st" style="font-size:11px;margin:12px 0 8px">' + formaterDateLong(d) + '</div>';
+    groupes[d].forEach(function(c){
+      var type = typeCoupon(c);
+      var label = type === "combine" ? "COMBINE " + c.selections.length + " matchs" : "SIMPLE";
+      h += '<div class="lc"><div class="code">' + label + ' - ' + c.categorie.toUpperCase() + '</div>';
+      h += '<div class="det">' + c.selections.length + ' match(s) - Cote ' + cote(c.selections) + '</div>';
+      h += '<div class="act"><button onclick="supprC(\'' + c.id + '\')">Supprimer</button></div></div>';
+    });
   });
   z.innerHTML = h;
 }
@@ -648,8 +876,8 @@ function rendreListeL(){
       '<div class="act"><button onclick="supprL(' + i + ')">Supprimer</button></div></div>';
   });
   h += '<div style="margin-top:10px">' +
-    '<input id="new-ligue" placeholder="Nouvelle ligue" style="width:100%;padding:10px;border-radius:8px;border:1px solid #1f2937;background:#0f172a;color:#fff;font-size:13px;margin-bottom:8px">' +
-    '<button class="bo" onclick="ajouterL()">+ Ajouter une ligue</button></div>';
+    '<input id="new-ligue" placeholder="Nouvelle competition" style="width:100%;padding:10px;border-radius:8px;border:1px solid #1f2937;background:#0f172a;color:#fff;font-size:13px;margin-bottom:8px">' +
+    '<button class="bo" onclick="ajouterL()">+ Ajouter</button></div>';
   z.innerHTML = h;
 }
 
@@ -660,11 +888,11 @@ function ajouterL(){
   if(l.indexOf(v) === -1) l.push(v);
   setLigues(l);
   rendreListeL();
-  alert("Ligue ajoutee : " + v);
+  alert("Ajoute : " + v);
 }
 
 function supprL(i){
-  if(!confirm("Supprimer cette ligue ?")) return;
+  if(!confirm("Supprimer ?")) return;
   var l = getLigues();
   l.splice(i, 1);
   setLigues(l);
@@ -675,25 +903,19 @@ function nettoyer(){
   var jours = parseInt(document.getElementById("sel-nettoyage").value);
   var msg = document.getElementById("msg-nettoyage");
   var all = getC();
-  if(all.length === 0){ msg.innerHTML = '<div class="err">Aucun coupon a supprimer</div>'; return; }
+  if(all.length === 0){ msg.innerHTML = '<div class="err">Aucun coupon</div>'; return; }
 
-  var limite = new Date();
-  limite.setDate(limite.getDate() - jours);
-  var limiteIso = limite.getFullYear() + "-" + String(limite.getMonth()+1).padStart(2,"0") + "-" + String(limite.getDate()).padStart(2,"0");
   var auj = dateAuj();
-
-  var avant = all.length;
   var gardes;
   if(jours === 999){
     gardes = all.filter(function(c){ return (c.date || auj) === auj; });
   } else {
-    gardes = all.filter(function(c){
-      var d = c.date || auj;
-      return d >= limiteIso;
-    });
+    var limite = new Date();
+    limite.setDate(limite.getDate() - jours);
+    var limiteIso = limite.getFullYear() + "-" + String(limite.getMonth()+1).padStart(2,"0") + "-" + String(limite.getDate()).padStart(2,"0");
+    gardes = all.filter(function(c){ return (c.date || auj) >= limiteIso; });
   }
-  var apres = gardes.length;
-  var supprimes = avant - apres;
+  var supprimes = all.length - gardes.length;
 
   if(supprimes === 0){ msg.innerHTML = '<div class="err">Aucun coupon a supprimer</div>'; return; }
   if(!confirm("Supprimer " + supprimes + " coupon(s) ?")) return;
@@ -822,6 +1044,7 @@ window.addEventListener("load", function(){
   rendreListeD();
   if(localStorage.getItem(KV) === "oui") activerVIP();
   verifLien();
+  majBtnAjouter();
 });
 </script>
 </body>
