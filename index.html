@@ -72,10 +72,14 @@ section.actif{display:block}
 .lc .act{display:flex;gap:6px}
 .lc .act button{flex:1;padding:6px;font-size:10px;border-radius:6px;border:none;cursor:pointer;font-weight:700;background:#ef4444;color:#fff}
 .se{background:#0f172a;border:1px solid #1f2937;border-radius:8px;padding:10px;margin-bottom:8px;position:relative}
-.se .x{position:absolute;top:6px;right:6px;background:#ef4444;color:#fff;border:none;width:22px;height:22px;border-radius:50%;cursor:pointer;font-weight:800}
+.se .x{position:absolute;top:6px;right:6px;background:#ef4444;color:#fff;border:none;width:22px;height:22px;border-radius:50%;cursor:pointer;font-weight:800;z-index:2}
 .tabs-a{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
 .tabs-a button{flex:1;min-width:70px;padding:9px 5px;background:#0f172a;color:#94a3b8;border:1px solid #1f2937;border-radius:7px;font-size:10px;font-weight:700;cursor:pointer}
 .tabs-a button.actif{background:#d4af37;color:#0a0f1d;border-color:#d4af37}
+.ajout{display:none;margin-top:6px}
+.ajout.actif{display:block}
+.ajout input{margin-bottom:6px}
+.ajout button{background:#22c55e;color:#fff;padding:8px;font-size:11px;margin-bottom:0}
 </style>
 </head>
 <body>
@@ -205,6 +209,7 @@ section.actif{display:block}
       <button class="actif" onclick="tabAdmin('creer',this)">+ Creer</button>
       <button onclick="tabAdmin('codes',this)">Codes</button>
       <button onclick="tabAdmin('liste',this)">Liste</button>
+      <button onclick="tabAdmin('ligues',this)">Ligues</button>
     </div>
     <div id="t-creer">
       <label>Categorie</label>
@@ -231,6 +236,10 @@ section.actif{display:block}
     </div>
     <div id="t-liste" style="display:none">
       <div id="lcoupons"></div>
+    </div>
+    <div id="t-ligues" style="display:none">
+      <p style="font-size:11px;color:#94a3b8;margin-bottom:10px;text-align:center">Liste des ligues disponibles</p>
+      <div id="lligues"></div>
     </div>
     <button class="br" onclick="quitterAdmin()" style="margin-top:12px">Quitter admin</button>
   </div>
@@ -272,10 +281,53 @@ section.actif{display:block}
 
 <script>
 var PWD_ADMIN = "F@llou55212";
-var KC = "beta_coupons_v6";
-var KD = "beta_codes_v6";
-var KV = "beta_vip_v6";
+var KC = "beta_coupons_v7";
+var KD = "beta_codes_v7";
+var KL = "beta_ligues_v7";
+var KV = "beta_vip_v7";
 var adminOK = false;
+
+var LIGUES_DEFAUT = [
+  "Bundesliga (Allemagne)",
+  "Bundesliga 2 (Allemagne)",
+  "Premier League (Angleterre)",
+  "Championship (Angleterre)",
+  "Liga (Espagne)",
+  "Serie A (Italie)",
+  "Ligue 1 (France)",
+  "Süper Lig (Turquie)",
+  "Ligue des Champions",
+  "Europa League",
+  "Conference League",
+  "CAN (Coupe d'Afrique)",
+  "Liga Portugal",
+  "Eredivisie (Pays-Bas)"
+];
+
+var MARCHES_DEFAUT = [
+  "1X2 : Victoire domicile",
+  "1X2 : Match nul",
+  "1X2 : Victoire extérieur",
+  "Double chance : 1X",
+  "Double chance : X2",
+  "Double chance : 12",
+  "Plus de 0,5 but",
+  "Plus de 1,5 but",
+  "Plus de 2,5 buts",
+  "Plus de 3,5 buts",
+  "Moins de 2,5 buts",
+  "Les 2 équipes marquent : Oui",
+  "Les 2 équipes marquent : Non",
+  "Corners : Plus de 7,5",
+  "Corners : Plus de 9,5",
+  "Corners : Moins de 9,5",
+  "1ère MT : Plus de 0,5 but",
+  "1ère MT : Plus de 1,5 but",
+  "1ère MT : 1X2",
+  "Prochain but : Équipe 1",
+  "Prochain but : Équipe 2",
+  "Autre (champ libre)"
+];
 
 function go(id, btn){
   document.querySelectorAll('section').forEach(function(s){ s.classList.remove('actif'); });
@@ -290,29 +342,38 @@ function go(id, btn){
 function ouvrir(id){ document.getElementById(id).classList.add('actif'); }
 function fermer(id){ document.getElementById(id).classList.remove('actif'); }
 
+function getLigues(){
+  try{
+    var d = JSON.parse(localStorage.getItem(KL));
+    if(Array.isArray(d) && d.length > 0) return d;
+  }catch(e){}
+  return LIGUES_DEFAUT.slice();
+}
+function setLigues(l){ localStorage.setItem(KL, JSON.stringify(l)); }
+
 function init(){
   try{
     if(!localStorage.getItem(KC)){
       var d = [
         { id:"c1", categorie:"gratuit", titre:"Coupon decouverte du jour",
           selections:[
-            { ligue:"Bundesliga", match:"Union Berlin - Elversberg", pronostic:"Corners +7,5", cote:"1.325" },
-            { ligue:"Bundesliga", match:"Hoffenheim - Hambourg", pronostic:"1ere MT +1,5 but", cote:"2.01" },
-            { ligue:"Bundesliga", match:"Mayence - Leverkusen", pronostic:"Victoire Leverkusen", cote:"3.14" },
-            { ligue:"Bundesliga", match:"Augsbourg - Bayern", pronostic:"Victoire Bayern", cote:"1.155" }
+            { ligue:"Bundesliga (Allemagne)", match:"Union Berlin - Elversberg", pronostic:"Corners : Plus de 7,5", cote:"1.325" },
+            { ligue:"Bundesliga (Allemagne)", match:"Hoffenheim - Hambourg", pronostic:"1ère MT : Plus de 1,5 but", cote:"2.01" }
           ] },
         { id:"c2", categorie:"vip", titre:"Coupon VIP du matin",
           selections:[
-            { ligue:"Bundesliga", match:"Mayence - Leverkusen", pronostic:"Victoire Mayence", cote:"3.14" },
-            { ligue:"Bundesliga", match:"Augsbourg - Bayern", pronostic:"Victoire Bayern", cote:"1.155" }
+            { ligue:"Bundesliga (Allemagne)", match:"Mayence - Leverkusen", pronostic:"1X2 : Victoire domicile", cote:"3.14" },
+            { ligue:"Bundesliga (Allemagne)", match:"Augsbourg - Bayern", pronostic:"1X2 : Victoire extérieur", cote:"1.155" }
           ] }
       ];
       localStorage.setItem(KC, JSON.stringify(d));
     }
     if(!localStorage.getItem(KD)) localStorage.setItem(KD, JSON.stringify([]));
+    if(!localStorage.getItem(KL)) setLigues(LIGUES_DEFAUT.slice());
   } catch(e){
     localStorage.setItem(KC, JSON.stringify([]));
     localStorage.setItem(KD, JSON.stringify([]));
+    setLigues(LIGUES_DEFAUT.slice());
   }
 }
 
@@ -363,7 +424,7 @@ function activerVIP(){
 }
 
 function demanderAdmin(){
-  if(adminOK){ ouvrir('m-admin'); rendreListeD(); rendreListeC(); return; }
+  if(adminOK){ ouvrir('m-admin'); rendreListeD(); rendreListeC(); rendreListeL(); return; }
   document.getElementById("pwd-input").value = "";
   document.getElementById("msg-pwd").innerHTML = "";
   ouvrir('m-pwd');
@@ -378,6 +439,7 @@ function validerPwd(){
     if(document.getElementById("ns").children.length === 0) ajouterSel();
     rendreListeD();
     rendreListeC();
+    rendreListeL();
   } else {
     document.getElementById("msg-pwd").innerHTML = '<div class="err">Mot de passe incorrect</div>';
   }
@@ -394,191 +456,53 @@ function tabAdmin(t, btn){
   document.getElementById('t-creer').style.display = t === 'creer' ? 'block' : 'none';
   document.getElementById('t-codes').style.display = t === 'codes' ? 'block' : 'none';
   document.getElementById('t-liste').style.display = t === 'liste' ? 'block' : 'none';
+  document.getElementById('t-ligues').style.display = t === 'ligues' ? 'block' : 'none';
+}
+
+function optionsLigues(){
+  var l = getLigues();
+  var h = '';
+  l.forEach(function(x){ h += '<option value="' + x + '">' + x + '</option>'; });
+  h += '<option value="__AUTRE__">+ Ajouter une nouvelle ligue...</option>';
+  return h;
+}
+
+function optionsMarches(){
+  var h = '';
+  MARCHES_DEFAUT.forEach(function(x){ h += '<option value="' + x + '">' + x + '</option>'; });
+  h += '<option value="__AUTRE__">+ Autre (champ libre)</option>';
+  return h;
 }
 
 function ajouterSel(){
   var z = document.getElementById("ns");
   var d = document.createElement("div");
   d.className = "se";
-  d.innerHTML = '<button class="x" onclick="this.parentElement.remove();calcCote()">x</button>' +
-    '<input type="text" placeholder="Ligue" class="i1" oninput="calcCote()">' +
-    '<input type="text" placeholder="Match" class="i2" oninput="calcCote()">' +
-    '<input type="text" placeholder="Pronostic" class="i3" oninput="calcCote()">' +
-    '<input type="number" step="0.001" placeholder="Cote" class="i4" oninput="calcCote()">';
+  d.innerHTML =
+    '<button class="x" onclick="this.parentElement.remove();calcCote()">x</button>' +
+    '<label style="font-size:10px;color:#94a3b8;display:block;margin-bottom:2px">Ligue</label>' +
+    '<select class="i1" onchange="changeLigue(this)">' + optionsLigues() + '</select>' +
+    '<input type="text" placeholder="Nom de la nouvelle ligue" class="i1new" style="display:none" oninput="calcCote()">' +
+    '<label style="font-size:10px;color:#94a3b8;display:block;margin:6px 0 2px">Match</label>' +
+    '<input type="text" placeholder="Ex: PSG - Marseille" class="i2" oninput="calcCote()">' +
+    '<label style="font-size:10px;color:#94a3b8;display:block;margin:6px 0 2px">Type de pari</label>' +
+    '<select class="i3" onchange="changeMarche(this)">' + optionsMarches() + '</select>' +
+    '<input type="text" placeholder="Precisez le pari" class="i3new" style="display:none" oninput="calcCote()">' +
+    '<label style="font-size:10px;color:#94a3b8;display:block;margin:6px 0 2px">Cote</label>' +
+    '<input type="number" step="0.001" placeholder="Ex: 1.85" class="i4" oninput="calcCote()">';
   z.appendChild(d);
 }
 
-function calcCote(){
-  var s = document.querySelectorAll("#ns .se");
-  var t = 1, n = 0;
-  s.forEach(function(x){
-    var c = parseFloat(x.querySelector(".i4").value);
-    if(!isNaN(c) && c > 0){ t *= c; n++; }
-  });
-  document.getElementById("ncote").innerText = n > 0 ? t.toFixed(3) : "1.00";
-}
-
-function enregistrerCoupon(){
-  var cat = document.getElementById("nc").value;
-  var titre = document.getElementById("nt").value.trim();
-  if(!titre){ alert("Donne un titre"); return; }
-  var sels = [];
-  document.querySelectorAll("#ns .se").forEach(function(d){
-    var l = d.querySelector(".i1").value.trim() || "International";
-    var m = d.querySelector(".i2").value.trim();
-    var p = d.querySelector(".i3").value.trim();
-    var c = d.querySelector(".i4").value.trim();
-    if(m && p && c) sels.push({ ligue:l, match:m, pronostic:p, cote:c });
-  });
-  if(sels.length === 0){ alert("Ajoute au moins 1 selection"); return; }
-  var all = getC();
-  all.unshift({ id:"c"+Date.now(), categorie:cat, titre:titre, selections:sels });
-  setC(all);
-  alert("Coupon enregistre !");
-  document.getElementById("nt").value = "";
-  document.getElementById("ns").innerHTML = "";
-  ajouterSel();
-  calcCote();
-}
-
-function rendreListeC(){
-  var all = getC();
-  var z = document.getElementById("lcoupons");
-  if(!z) return;
-  if(all.length === 0){ z.innerHTML = '<div class="info">Aucun coupon</div>'; return; }
-  z.innerHTML = all.map(function(c){
-    return '<div class="lc"><div class="code">' + c.titre + '</div>' +
-      '<div class="det">' + c.categorie.toUpperCase() + ' - ' + c.selections.length + ' sel - Cote ' + cote(c.selections) + '</div>' +
-      '<div class="act"><button onclick="supprC(\'' + c.id + '\')">Supprimer</button></div></div>';
-  }).join("");
-}
-
-function supprC(id){
-  if(!confirm("Supprimer ?")) return;
-  setC(getC().filter(function(c){ return c.id !== id; }));
-  rendreListeC();
-}
-
-function ouvrirGenCode(){
-  var d = new Date();
-  d.setDate(d.getDate() + 7);
-  document.getElementById("ge").value = d.toISOString().split("T")[0];
-  document.getElementById("gc").value = "";
-  ouvrir('m-gen');
-}
-
-function creerCode(){
-  var t = document.getElementById("gt").value;
-  var e = document.getElementById("ge").value;
-  var c = document.getElementById("gc").value.trim();
-  if(!e){ alert("Choisis une date"); return; }
-  var ch = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-  var code = "BETA-";
-  for(var i=0;i<4;i++) code += ch[Math.floor(Math.random()*ch.length)];
-  code += "-";
-  for(var j=0;j<4;j++) code += ch[Math.floor(Math.random()*ch.length)];
-  var all = getD();
-  all.unshift({ code:code, type:t, expire:e, client:c });
-  setD(all);
-  var lbl = t === "7jours" ? "7 coupons VIP" : "1 mois VIP";
-  var msg = "BETA PRONOSTIC\n\nVotre code VIP :\n\n" + code + "\n\nType : " + lbl + "\nValable jusqu'au : " + e.split("-").reverse().join("/") + "\n\nActivez ici :\n" + location.origin + location.pathname + "?code=" + code + "\n\nGagnons ensemble !";
-  document.getElementById("code-gen").innerText = code;
-  document.getElementById("msg-wa").innerText = msg;
-  fermer('m-gen');
-  ouvrir('m-resultat');
-  rendreListeD();
-}
-
-function rendreListeD(){
-  var all = getD();
-  var z = document.getElementById("lcodes");
-  if(!z) return;
-  if(all.length === 0){ z.innerHTML = '<div class="info">Aucun code</div>'; return; }
-  z.innerHTML = all.map(function(c){
-    return '<div class="lc"><div class="code">' + c.code + '</div>' +
-      '<div class="det">' + (c.type === "7jours" ? "7 coupons" : "1 mois") + ' - expire ' + c.expire.split("-").reverse().join("/") + (c.client ? " - " + c.client : "") + '</div>' +
-      '<div class="act"><button onclick="supprD(\'' + c.code + '\')">Supprimer</button></div></div>';
-  }).join("");
-}
-
-function supprD(code){
-  if(!confirm("Supprimer ?")) return;
-  setD(getD().filter(function(c){ return c.code !== code; }));
-}
-
-function copierMsg(){
-  var m = document.getElementById("msg-wa").innerText;
-  if(navigator.clipboard){
-    navigator.clipboard.writeText(m).then(function(){ alert("Message copie !"); }).catch(function(){ prompt("Copie :", m); });
-  } else prompt("Copie :", m);
-}
-
-function copierLien(){
-  var c = document.getElementById("code-gen").innerText;
-  var l = location.origin + location.pathname + "?code=" + c;
-  if(navigator.clipboard){
-    navigator.clipboard.writeText(l).then(function(){ alert("Lien copie !\n\n" + l); }).catch(function(){ prompt("Copie :", l); });
-  } else prompt("Copie :", l);
-}
-
-function codeOK(code){
-  var d = new Date().toISOString().split("T")[0];
-  var all = getD();
-  for(var i=0;i<all.length;i++){
-    if(all[i].code.toUpperCase() === code.toUpperCase() && all[i].expire >= d) return true;
-  }
-  return false;
-}
-
-function ouvrirCode(){
-  document.getElementById("code-modal").value = "";
-  document.getElementById("msg-modal").innerHTML = "";
-  ouvrir('m-code');
-}
-
-function validerCodeModal(){
-  var c = document.getElementById("code-modal").value.trim();
-  if(!c){ document.getElementById("msg-modal").innerHTML = '<div class="err">Saisissez un code</div>'; return; }
-  if(codeOK(c)){
-    document.getElementById("msg-modal").innerHTML = '<div class="ok">Code valide !</div>';
-    setTimeout(function(){ fermer('m-code'); activerVIP(); go('vip', document.querySelectorAll('nav button')[2]); }, 800);
+function changeLigue(sel){
+  var se = sel.closest(".se");
+  var inp = se.querySelector(".i1new");
+  if(sel.value === "__AUTRE__"){
+    inp.style.display = "block";
+    inp.focus();
   } else {
-    document.getElementById("msg-modal").innerHTML = '<div class="err">Code invalide ou expire</div>';
+    inp.style.display = "none";
   }
 }
 
-function verifierCode(){
-  var c = document.getElementById("code-principal").value.trim();
-  var m = document.getElementById("msg-principal");
-  if(!c){ m.innerHTML = '<div class="err">Saisissez un code</div>'; return; }
-  if(codeOK(c)){
-    m.innerHTML = '<div class="ok">Code valide !</div>';
-    setTimeout(function(){ activerVIP(); go('vip', document.querySelectorAll('nav button')[2]); }, 800);
-  } else {
-    m.innerHTML = '<div class="err">Code invalide ou expire</div>';
-  }
-}
-
-function verifLien(){
-  var p = new URLSearchParams(location.search);
-  var c = p.get("code");
-  if(!c) return;
-  if(codeOK(c)){
-    activerVIP();
-    alert("Code reconnu ! Bienvenue VIP.");
-    history.replaceState({}, "", location.pathname);
-  } else {
-    alert("Ce code est invalide ou expire.");
-  }
-}
-
-window.addEventListener("load", function(){
-  init();
-  rendre();
-  rendreListeD();
-  if(localStorage.getItem(KV) === "oui") activerVIP();
-  verifLien();
-});
-</script>
-</body>
-</html>
+function changeMarche(sel){
+  var se = sel.closest(".se");
