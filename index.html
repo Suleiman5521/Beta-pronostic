@@ -24,8 +24,6 @@ section.actif{display:block}
 .btn-wa{display:inline-block;background:#25d366;color:#fff;text-decoration:none;padding:10px 20px;border-radius:50px;font-weight:700;font-size:13px}
 .info{background:rgba(212,175,55,.1);border:1px solid rgba(212,175,55,.3);border-radius:10px;padding:12px;font-size:12px;color:#fde68a;margin-bottom:14px;text-align:center}
 .st{font-size:14px;font-weight:700;margin:18px 0 10px;padding-left:10px;border-left:4px solid #d4af37}
-
-/* CALENDRIER */
 .cal{display:flex;gap:6px;overflow-x:auto;padding:6px 0;margin-bottom:16px;scrollbar-width:none}
 .cal::-webkit-scrollbar{display:none}
 .cal button{flex-shrink:0;padding:8px 14px;background:#0f172a;border:1px solid #1f2937;color:#94a3b8;border-radius:10px;font-size:11px;font-weight:700;cursor:pointer;min-width:70px;text-align:center}
@@ -34,8 +32,6 @@ section.actif{display:block}
 .cal button.actif{background:linear-gradient(135deg,#d4af37,#b8860b);color:#0a0f1d;border-color:#d4af37}
 .cal button.actif .jour{color:#0a0f1d}
 .cal button.auj{border-color:#d4af37;color:#d4af37}
-
-/* COUPON */
 .coupon{background:#111827;border:1px solid #1f2937;border-radius:14px;padding:0;margin-bottom:14px;overflow:hidden}
 .coupon.gratuit{border-left:4px solid #22c55e}
 .coupon.vip{border-left:4px solid #7c3aed}
@@ -50,8 +46,6 @@ section.actif{display:block}
 .badge.vip{background:rgba(124,58,237,.15);color:#7c3aed}
 .badge.modere{background:rgba(59,130,246,.15);color:#3b82f6}
 .badge.risque{background:rgba(239,68,68,.15);color:#ef4444}
-
-/* MATCH */
 .match{padding:12px 14px;border-bottom:1px dashed #1f2937}
 .match:last-child{border-bottom:none}
 .match .comp{font-size:9px;color:#64748b;margin-bottom:3px;text-transform:uppercase;letter-spacing:.3px}
@@ -60,27 +54,18 @@ section.actif{display:block}
 .match .ligne{display:flex;justify-content:space-between;align-items:center;gap:8px}
 .match .pari{font-size:11px;color:#d4af37;flex:1}
 .match .cote{font-size:14px;font-weight:900;color:#fff;background:#0f172a;padding:4px 10px;border-radius:6px;border:1px solid #1f2937}
-
-/* COTE TOTALE */
 .c-total{padding:12px 14px;background:linear-gradient(135deg,rgba(30,58,138,.4),rgba(10,15,29,.9));border-top:2px solid #d4af37;display:flex;justify-content:space-between;align-items:center}
 .c-total .lbl{font-size:11px;color:#94a3b8;font-weight:700;letter-spacing:1px}
 .c-total .val{font-size:24px;font-weight:900;color:#d4af37;text-shadow:0 2px 8px rgba(212,175,55,.3)}
-
-/* VIP VERROUILLE */
 .verrou{background:#111827;border:1px solid #7c3aed;border-radius:14px;padding:20px;text-align:center;margin-bottom:14px}
 .verrou h3{color:#7c3aed;font-size:13px;margin-bottom:14px;font-weight:800}
 .flou{background:linear-gradient(90deg,#1f2937,#374151,#1f2937);height:12px;border-radius:6px;margin:6px auto}
 .f80{width:80%}.f60{width:60%}.f40{width:40%}
 .btn-p{background:linear-gradient(135deg,#7c3aed,#a855f7);color:#fff;border:none;padding:12px;border-radius:50px;font-weight:800;font-size:13px;width:100%;cursor:pointer;margin-top:14px}
-
-/* NAV BAS */
 .bnav{position:fixed;bottom:0;left:0;right:0;background:#0f172a;border-top:2px solid #d4af37;display:flex;padding:8px 0;z-index:200}
 .bnav a{flex:1;color:#94a3b8;text-decoration:none;font-size:10px;text-align:center;display:flex;flex-direction:column;gap:2px}
 .bnav a span{font-size:16px;font-weight:bold;color:#d4af37}
-
 .btn-bp{position:fixed;bottom:70px;right:14px;width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#d4af37,#f5d76e,#b8860b);color:#0a0f1d;font-weight:900;font-size:15px;border:none;box-shadow:0 4px 16px rgba(212,175,55,.6);z-index:500;cursor:pointer;font-family:Arial}
-
-/* MODAL */
 .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:600;align-items:center;justify-content:center;padding:16px;overflow-y:auto}
 .modal.actif{display:flex}
 .mc{background:#111827;border:2px solid #7c3aed;border-radius:14px;padding:20px;max-width:460px;width:100%;max-height:90vh;overflow-y:auto}
@@ -270,7 +255,7 @@ section.actif{display:block}
       </select>
       <label>Match(s)</label>
       <div id="ns"></div>
-      <button class="bg" onclick="ajouterSel()" style="margin-bottom:10px">+ Ajouter un match</button>
+      <button class="bg" id="btn-ajout-sel" onclick="ajouterSel()" style="margin-bottom:10px">+ Ajouter un match</button>
       <div style="background:#0f172a;border:1px solid #d4af37;border-radius:8px;padding:12px;margin-bottom:12px;text-align:center">
         <div style="font-size:10px;color:#94a3b8">COTE TOTALE</div>
         <div id="ncote" style="font-size:24px;font-weight:900;color:#d4af37">1.00</div>
@@ -347,10 +332,10 @@ section.actif{display:block}
 
 <script>
 var PWD_ADMIN = "F@llou55212";
-var KC = "beta_coupons_v9";
-var KD = "beta_codes_v9";
-var KL = "beta_ligues_v9";
-var KV = "beta_vip_v9";
+var KC = "beta_coupons_v10";
+var KD = "beta_codes_v10";
+var KL = "beta_ligues_v10";
+var KV = "beta_vip_v10";
 var adminOK = false;
 var typeChoisi = "simple";
 var jourAffiche = "";
@@ -394,8 +379,7 @@ var MARCHES_DEFAUT = [
   "1ere MT : 1X2",
   "Au moins 1 equipe +1,5 but : Oui",
   "Prochain but : Equipe 1",
-  "Prochain but : Equipe 2",
-  "Autre (champ libre)"
+  "Prochain but : Equipe 2"
 ];
 
 function go(id, btn){
@@ -468,13 +452,14 @@ function joursDisponibles(){
 
 function dessinerCalendrier(idZone, dateSelectionnee){
   var z = document.getElementById(idZone);
+  if(!z) return;
   var jours = joursDisponibles();
   var auj = dateAuj();
   var h = '';
   jours.forEach(function(j){
-    var cls = "cal-btn";
-    if(j === dateSelectionnee) cls = "cal-btn actif";
-    else if(j === auj) cls = "cal-btn auj";
+    var cls = "";
+    if(j === dateSelectionnee) cls = "actif";
+    else if(j === auj) cls = "auj";
     var jourNom = formaterJourCourt(j);
     if(j === auj) jourNom = "Auj";
     h += '<button class="' + cls + '" onclick="choisirDate(\'' + j + '\')">';
@@ -483,11 +468,6 @@ function dessinerCalendrier(idZone, dateSelectionnee){
     h += '</button>';
   });
   z.innerHTML = h;
-  // Scroll auto vers actif
-  setTimeout(function(){
-    var actif = z.querySelector('.actif');
-    if(actif) actif.scrollIntoView({behavior:"smooth", inline:"center", block:"nearest"});
-  }, 100);
 }
 
 function choisirDate(d){
@@ -497,9 +477,7 @@ function choisirDate(d){
 
 function init(){
   try{
-    if(!localStorage.getItem(KC)){
-      localStorage.setItem(KC, JSON.stringify([]));
-    }
+    if(!localStorage.getItem(KC)) localStorage.setItem(KC, JSON.stringify([]));
     if(!localStorage.getItem(KD)) localStorage.setItem(KD, JSON.stringify([]));
     if(!localStorage.getItem(KL)) setLigues(LIGUES_DEFAUT.slice());
   } catch(e){
@@ -532,13 +510,11 @@ function htmlCoupon(c){
 
   var h = '<div class="coupon ' + cat + '" id="' + id + '">';
 
-  // HEADER
   h += '<div class="c-head">';
   h += '<span class="type ' + type + '">' + (type === "combine" ? "COMBINE - " + c.selections.length + " matchs" : "SIMPLE") + '</span>';
   h += '<span class="badge ' + cat + '">' + cat + '</span>';
   h += '</div>';
 
-  // MATCHS
   c.selections.forEach(function(s){
     h += '<div class="match">';
     h += '<div class="comp">' + (s.ligue || "") + '</div>';
@@ -553,7 +529,6 @@ function htmlCoupon(c){
     h += '</div>';
   });
 
-  // COTE TOTALE
   h += '<div class="c-total">';
   h += '<span class="lbl">COTE TOTALE</span>';
   h += '<span class="val">' + cote(c.selections) + '</span>';
@@ -568,12 +543,13 @@ function rendre(){
   var auj = dateAuj();
   if(!jourAffiche) jourAffiche = auj;
 
-  // CALENDRIERS
   dessinerCalendrier("cal-accueil", jourAffiche);
   dessinerCalendrier("cal-coupons", jourAffiche);
 
-  // ACCUEIL : coupons du jour sélectionné (par défaut aujourd'hui)
-  var duJour = all.filter(function(c){ return (c.date || auj) === jourAffiche; });
+  // ACCUEIL : uniquement coupons NON VIP du jour sélectionné
+  var duJour = all.filter(function(c){
+    return (c.date || auj) === jourAffiche && c.categorie !== "vip";
+  });
   var h = '<div class="st">' + formaterDateLong(jourAffiche) + '</div>';
   if(duJour.length > 0){
     h += duJour.map(htmlCoupon).join("");
@@ -582,9 +558,10 @@ function rendre(){
   }
   document.getElementById("z-jour").innerHTML = h;
 
-  // ONGLET COUPONS : tous groupés par date
+  // COUPONS : tous SAUF VIP, groupés par date
+  var nonVip = all.filter(function(c){ return c.categorie !== "vip"; });
   var groupes = {};
-  all.forEach(function(c){
+  nonVip.forEach(function(c){
     var d = c.date || auj;
     if(!groupes[d]) groupes[d] = [];
     groupes[d].push(c);
@@ -601,8 +578,10 @@ function rendre(){
   }
   document.getElementById("z-tous").innerHTML = hc;
 
-  // HISTORIQUE : uniquement les jours passés
-  var passes = all.filter(function(c){ return (c.date || auj) < auj; });
+  // HISTORIQUE : SAUF VIP, jours passés
+  var passes = all.filter(function(c){
+    return (c.date || auj) < auj && c.categorie !== "vip";
+  });
   var groupesH = {};
   passes.forEach(function(c){
     var d = c.date || auj;
@@ -621,9 +600,12 @@ function rendre(){
   }
   document.getElementById("z-historique").innerHTML = hh;
 
-  // VIP
+  // VIP : uniquement dans l'onglet VIP
   var vips = all.filter(function(c){ return c.categorie === "vip"; });
-  document.getElementById("z-vip").innerHTML = vips.length ? vips.map(htmlCoupon).join("") : '<div class="info">Aucun VIP</div>';
+  var zVip = document.getElementById("z-vip");
+  if(zVip){
+    zVip.innerHTML = vips.length ? vips.map(htmlCoupon).join("") : '<div class="info">Aucun VIP</div>';
+  }
 }
 
 function activerVIP(){
@@ -671,33 +653,36 @@ function choisirType(t){
   typeChoisi = t;
   document.getElementById("btn-simple").classList.toggle("actif", t === "simple");
   document.getElementById("btn-combine").classList.toggle("actif", t === "combine");
-  // Adapter le nombre de sélections
   var zone = document.getElementById("ns");
   if(t === "simple"){
-    // Ne garder qu'une seule sélection
     var sels = zone.querySelectorAll(".se");
     for(var i=1; i<sels.length; i++) sels[i].remove();
     if(zone.querySelectorAll(".se").length === 0) ajouterSel();
   } else {
-    // Ajouter une 2e sélection si vide
     if(zone.querySelectorAll(".se").length < 2){
       ajouterSel();
     }
   }
+  majBtnAjouter();
+}
+
+function majBtnAjouter(){
+  var b = document.getElementById("btn-ajout-sel");
+  if(b) b.style.display = typeChoisi === "simple" ? "none" : "block";
 }
 
 function optionsLigues(){
   var l = getLigues();
   var h = '';
   l.forEach(function(x){ h += '<option value="' + x + '">' + x + '</option>'; });
-  h += '<option value="__AUTRE__">+ Nouvelle ligue...</option>';
+  h += '<option value="__AUTRE__">+ Nouvelle competition...</option>';
   return h;
 }
 
 function optionsMarches(){
   var h = '';
   MARCHES_DEFAUT.forEach(function(x){ h += '<option value="' + x + '">' + x + '</option>'; });
-  h += '<option value="__AUTRE__">+ Autre pari</option>';
+  h += '<option value="__AUTRE__">+ Autre pari (champ libre)</option>';
   return h;
 }
 
@@ -729,19 +714,9 @@ function ajouterSel(){
     '<label style="font-size:10px;color:#94a3b8;display:block;margin:6px 0 2px">Cote</label>' +
     '<input type="number" step="0.001" placeholder="Ex: 1.85" class="i4" oninput="calcCote()">';
   z.appendChild(d);
-  // Pré-remplir date du jour
   d.querySelector(".i5").value = document.getElementById("nc-date").value || dateAuj();
   majBtnAjouter();
   calcCote();
-}
-
-function majBtnAjouter(){
-  var btns = document.querySelectorAll("#t-creer .bg");
-  btns.forEach(function(b){
-    if(b.innerText.indexOf("Ajouter un match") !== -1){
-      b.style.display = typeChoisi === "simple" ? "none" : "block";
-    }
-  });
 }
 
 function changeLigue(sel){
@@ -753,6 +728,7 @@ function changeMarche(sel){
   var se = sel.closest(".se");
   var inp = se.querySelector(".i3new");
   inp.style.display = sel.value === "__AUTRE__" ? "block" : "none";
+  if(sel.value === "__AUTRE__") inp.focus();
 }
 
 function calcCote(){
@@ -771,19 +747,27 @@ function enregistrerCoupon(){
 
   var sels = [];
   var nouvellesLigues = [];
+  var erreur = false;
 
-  document.querySelectorAll("#ns .se").forEach(function(d){
+  var tousLesSe = document.querySelectorAll("#ns .se");
+  tousLesSe.forEach(function(d){
+    if(erreur) return;
+
     var selLigue = d.querySelector(".i1");
     var newLigue = d.querySelector(".i1new").value.trim();
     var ligue = selLigue.value;
-    if(ligue === "__AUTRE__" && newLigue){ ligue = newLigue; nouvellesLigues.push(newLigue); }
-    else if(ligue === "__AUTRE__") ligue = "International";
+    if(ligue === "__AUTRE__"){
+      if(newLigue){ ligue = newLigue; nouvellesLigues.push(newLigue); }
+      else { ligue = "International"; }
+    }
 
     var selMarche = d.querySelector(".i3");
     var newMarche = d.querySelector(".i3new").value.trim();
     var marche = selMarche.value;
-    if(marche === "__AUTRE__" && newMarche) marche = newMarche;
-    else if(marche === "__AUTRE__") marche = "Autre pari";
+    if(marche === "__AUTRE__"){
+      if(newMarche){ marche = newMarche; }
+      else { alert("Ecris le nom du pari dans le champ 'Precisez le pari'"); erreur = true; return; }
+    }
 
     var m = d.querySelector(".i2").value.trim();
     var dt = d.querySelector(".i5").value;
@@ -801,6 +785,7 @@ function enregistrerCoupon(){
     if(m && c) sels.push({ ligue: ligue, match: m, pronostic: marche, cote: c, dateheure: dh });
   });
 
+  if(erreur) return;
   if(sels.length === 0){ alert("Ajoute au moins 1 match complet"); return; }
   if(typeChoisi === "simple" && sels.length > 1){
     alert("Un coupon SIMPLE doit avoir 1 seul match. Passe en COMBINE.");
