@@ -12,8 +12,8 @@ header{background:linear-gradient(135deg,#0a0f1d,#1e3a8a);padding:14px;display:f
 .titre{font-size:17px;font-weight:800;letter-spacing:1px}
 .titre span{color:#d4af37}
 .slogan{font-size:9px;color:#94a3b8;font-style:italic;margin-top:2px}
-nav{display:flex;background:#0f172a;border-bottom:1px solid #1f2937}
-nav button{flex:1;padding:12px 6px;background:none;border:none;color:#94a3b8;font-size:11px;font-weight:600;cursor:pointer;border-bottom:3px solid transparent}
+nav{display:flex;background:#0f172a;border-bottom:1px solid #1f2937;overflow-x:auto}
+nav button{flex:1;padding:12px 4px;background:none;border:none;color:#94a3b8;font-size:10px;font-weight:600;cursor:pointer;border-bottom:3px solid transparent;white-space:nowrap}
 nav button.actif{color:#d4af37;border-bottom-color:#d4af37}
 section{padding:16px;display:none}
 section.actif{display:block}
@@ -24,6 +24,9 @@ section.actif{display:block}
 .btn-wa{display:inline-block;background:#25d366;color:#fff;text-decoration:none;padding:10px 20px;border-radius:50px;font-weight:700;font-size:13px}
 .info{background:rgba(212,175,55,.1);border:1px solid rgba(212,175,55,.3);border-radius:10px;padding:12px;font-size:12px;color:#fde68a;margin-bottom:14px;text-align:center}
 .st{font-size:14px;font-weight:700;margin:18px 0 10px;padding-left:10px;border-left:4px solid #d4af37}
+.sep-date{background:rgba(212,175,55,.1);border-left:4px solid #d4af37;padding:8px 12px;margin:20px 0 12px;border-radius:6px}
+.sep-date h4{font-size:13px;color:#d4af37;font-weight:800}
+.sep-date p{font-size:10px;color:#94a3b8;margin-top:2px}
 .coupon{background:#111827;border:1px solid #1f2937;border-radius:12px;padding:14px;margin-bottom:12px}
 .coupon.gratuit{border-left:4px solid #22c55e}
 .coupon.vip{border-left:4px solid #7c3aed}
@@ -55,7 +58,7 @@ section.actif{display:block}
 .btn-bp{position:fixed;bottom:70px;right:14px;width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#d4af37,#f5d76e,#b8860b);color:#0a0f1d;font-weight:900;font-size:15px;border:none;box-shadow:0 4px 16px rgba(212,175,55,.6);z-index:500;cursor:pointer;font-family:Arial}
 .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:600;align-items:center;justify-content:center;padding:16px;overflow-y:auto}
 .modal.actif{display:flex}
-.mc{background:#111827;border:2px solid #7c3aed;border-radius:14px;padding:20px;max-width:420px;width:100%;max-height:90vh;overflow-y:auto}
+.mc{background:#111827;border:2px solid #7c3aed;border-radius:14px;padding:20px;max-width:440px;width:100%;max-height:90vh;overflow-y:auto}
 .mc h3{color:#7c3aed;text-align:center;margin-bottom:14px;font-size:15px}
 .mc input,.mc select{width:100%;padding:12px;border-radius:9px;border:1px solid #1f2937;background:#0f172a;color:#fff;font-size:14px;margin-bottom:10px}
 .mc label{font-size:11px;color:#94a3b8;display:block;margin-bottom:4px}
@@ -76,10 +79,6 @@ section.actif{display:block}
 .tabs-a{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
 .tabs-a button{flex:1;min-width:70px;padding:9px 5px;background:#0f172a;color:#94a3b8;border:1px solid #1f2937;border-radius:7px;font-size:10px;font-weight:700;cursor:pointer}
 .tabs-a button.actif{background:#d4af37;color:#0a0f1d;border-color:#d4af37}
-.ajout{display:none;margin-top:6px}
-.ajout.actif{display:block}
-.ajout input{margin-bottom:6px}
-.ajout button{background:#22c55e;color:#fff;padding:8px;font-size:11px;margin-bottom:0}
 </style>
 </head>
 <body>
@@ -95,6 +94,7 @@ section.actif{display:block}
 <nav>
   <button class="actif" onclick="go('accueil',this)">Accueil</button>
   <button onclick="go('coupons',this)">Coupons</button>
+  <button onclick="go('historique',this)">Historique</button>
   <button onclick="go('vip',this)">VIP</button>
   <button onclick="go('code',this)">Mon code</button>
 </nav>
@@ -106,7 +106,7 @@ section.actif{display:block}
     <a href="https://wa.me/245956184838" class="btn-wa">Contacter sur WhatsApp</a>
   </div>
   <div class="info">Pronostics gratuits chaque jour - VIP a partir de 5 000 CFA</div>
-  <div class="st">Pronostics gratuits du jour</div>
+  <div class="st">Pronostics du jour</div>
   <div id="z-gratuits"></div>
   <div class="st">Apercu VIP</div>
   <div class="verrou">
@@ -121,8 +121,16 @@ section.actif{display:block}
 </section>
 
 <section id="coupons">
-  <div class="st">Tous les coupons</div>
+  <div class="st">Tous les coupons par date</div>
   <div id="z-tous"></div>
+</section>
+
+<section id="historique">
+  <div class="hero">
+    <h2>Historique</h2>
+    <p>Tous les coupons passes</p>
+  </div>
+  <div id="z-historique"></div>
 </section>
 
 <section id="vip">
@@ -176,6 +184,7 @@ section.actif{display:block}
 <div class="bnav">
   <a href="#" onclick="go('accueil',null);return false"><span>A</span>Accueil</a>
   <a href="#" onclick="go('coupons',null);return false"><span>C</span>Coupons</a>
+  <a href="#" onclick="go('historique',null);return false"><span>H</span>Historique</a>
   <a href="#" onclick="go('vip',null);return false"><span>V</span>VIP</a>
   <a href="https://wa.me/245956184838" target="_blank"><span>W</span>WhatsApp</a>
 </div>
@@ -210,6 +219,7 @@ section.actif{display:block}
       <button onclick="tabAdmin('codes',this)">Codes</button>
       <button onclick="tabAdmin('liste',this)">Liste</button>
       <button onclick="tabAdmin('ligues',this)">Ligues</button>
+      <button onclick="tabAdmin('nettoyage',this)">Nettoyer</button>
     </div>
     <div id="t-creer">
       <label>Categorie</label>
@@ -240,6 +250,20 @@ section.actif{display:block}
     <div id="t-ligues" style="display:none">
       <p style="font-size:11px;color:#94a3b8;margin-bottom:10px;text-align:center">Liste des ligues disponibles</p>
       <div id="lligues"></div>
+    </div>
+    <div id="t-nettoyage" style="display:none">
+      <p style="font-size:12px;color:#94a3b8;margin-bottom:12px;text-align:center">Supprimer les coupons anciens d'un coup</p>
+      <label>Supprimer les coupons de plus de :</label>
+      <select id="sel-nettoyage">
+        <option value="1">1 jour</option>
+        <option value="3">3 jours</option>
+        <option value="7" selected>7 jours</option>
+        <option value="14">14 jours</option>
+        <option value="30">30 jours</option>
+        <option value="999">TOUT supprimer</option>
+      </select>
+      <button class="br" onclick="nettoyer()">Supprimer maintenant</button>
+      <div id="msg-nettoyage" style="text-align:center;font-size:12px;margin-top:10px"></div>
     </div>
     <button class="br" onclick="quitterAdmin()" style="margin-top:12px">Quitter admin</button>
   </div>
@@ -281,52 +305,27 @@ section.actif{display:block}
 
 <script>
 var PWD_ADMIN = "F@llou55212";
-var KC = "beta_coupons_v7";
-var KD = "beta_codes_v7";
-var KL = "beta_ligues_v7";
-var KV = "beta_vip_v7";
+var KC = "beta_coupons_v8";
+var KD = "beta_codes_v8";
+var KL = "beta_ligues_v8";
+var KV = "beta_vip_v8";
 var adminOK = false;
 
 var LIGUES_DEFAUT = [
-  "Bundesliga (Allemagne)",
-  "Bundesliga 2 (Allemagne)",
-  "Premier League (Angleterre)",
-  "Championship (Angleterre)",
-  "Liga (Espagne)",
-  "Serie A (Italie)",
-  "Ligue 1 (France)",
-  "Süper Lig (Turquie)",
-  "Ligue des Champions",
-  "Europa League",
-  "Conference League",
-  "CAN (Coupe d'Afrique)",
-  "Liga Portugal",
-  "Eredivisie (Pays-Bas)"
+  "Bundesliga (Allemagne)","Bundesliga 2 (Allemagne)","Premier League (Angleterre)",
+  "Championship (Angleterre)","Liga (Espagne)","Serie A (Italie)","Ligue 1 (France)",
+  "Süper Lig (Turquie)","Ligue des Champions","Europa League","Conference League",
+  "CAN (Coupe d'Afrique)","Liga Portugal","Eredivisie (Pays-Bas)"
 ];
 
 var MARCHES_DEFAUT = [
-  "1X2 : Victoire domicile",
-  "1X2 : Match nul",
-  "1X2 : Victoire extérieur",
-  "Double chance : 1X",
-  "Double chance : X2",
-  "Double chance : 12",
-  "Plus de 0,5 but",
-  "Plus de 1,5 but",
-  "Plus de 2,5 buts",
-  "Plus de 3,5 buts",
-  "Moins de 2,5 buts",
-  "Les 2 équipes marquent : Oui",
-  "Les 2 équipes marquent : Non",
-  "Corners : Plus de 7,5",
-  "Corners : Plus de 9,5",
-  "Corners : Moins de 9,5",
-  "1ère MT : Plus de 0,5 but",
-  "1ère MT : Plus de 1,5 but",
-  "1ère MT : 1X2",
-  "Prochain but : Équipe 1",
-  "Prochain but : Équipe 2",
-  "Autre (champ libre)"
+  "1X2 : Victoire domicile","1X2 : Match nul","1X2 : Victoire extérieur",
+  "Double chance : 1X","Double chance : X2","Double chance : 12",
+  "Plus de 0,5 but","Plus de 1,5 but","Plus de 2,5 buts","Plus de 3,5 buts",
+  "Moins de 2,5 buts","Les 2 équipes marquent : Oui","Les 2 équipes marquent : Non",
+  "Corners : Plus de 7,5","Corners : Plus de 9,5","Corners : Moins de 9,5",
+  "1ère MT : Plus de 0,5 but","1ère MT : Plus de 1,5 but","1ère MT : 1X2",
+  "Prochain but : Équipe 1","Prochain but : Équipe 2","Autre (champ libre)"
 ];
 
 function go(id, btn){
@@ -351,19 +350,40 @@ function getLigues(){
 }
 function setLigues(l){ localStorage.setItem(KL, JSON.stringify(l)); }
 
+function dateAuj(){
+  var d = new Date();
+  return d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0") + "-" + String(d.getDate()).padStart(2,"0");
+}
+
+function formaterDate(iso){
+  if(!iso) return "Date inconnue";
+  var p = iso.split("-");
+  var d = new Date(parseInt(p[0]), parseInt(p[1])-1, parseInt(p[2]));
+  var jours = ["Dimanche","Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi"];
+  var mois = ["Janvier","Fevrier","Mars","Avril","Mai","Juin","Juillet","Aout","Septembre","Octobre","Novembre","Decembre"];
+  var auj = dateAuj();
+  var hier = new Date();
+  hier.setDate(hier.getDate() - 1);
+  var hierIso = hier.getFullYear() + "-" + String(hier.getMonth()+1).padStart(2,"0") + "-" + String(hier.getDate()).padStart(2,"0");
+
+  if(iso === auj) return "Aujourd'hui - " + jours[d.getDay()] + " " + d.getDate() + " " + mois[d.getMonth()];
+  if(iso === hierIso) return "Hier - " + jours[d.getDay()] + " " + d.getDate() + " " + mois[d.getMonth()];
+  return jours[d.getDay()] + " " + d.getDate() + " " + mois[d.getMonth()] + " " + d.getFullYear();
+}
+
 function init(){
   try{
     if(!localStorage.getItem(KC)){
+      var auj = dateAuj();
       var d = [
-        { id:"c1", categorie:"gratuit", titre:"Coupon decouverte du jour",
+        { id:"c1", categorie:"gratuit", titre:"Coupon decouverte du jour", date:auj,
           selections:[
             { ligue:"Bundesliga (Allemagne)", match:"Union Berlin - Elversberg", pronostic:"Corners : Plus de 7,5", cote:"1.325" },
             { ligue:"Bundesliga (Allemagne)", match:"Hoffenheim - Hambourg", pronostic:"1ère MT : Plus de 1,5 but", cote:"2.01" }
           ] },
-        { id:"c2", categorie:"vip", titre:"Coupon VIP du matin",
+        { id:"c2", categorie:"vip", titre:"Coupon VIP du matin", date:auj,
           selections:[
-            { ligue:"Bundesliga (Allemagne)", match:"Mayence - Leverkusen", pronostic:"1X2 : Victoire domicile", cote:"3.14" },
-            { ligue:"Bundesliga (Allemagne)", match:"Augsbourg - Bayern", pronostic:"1X2 : Victoire extérieur", cote:"1.155" }
+            { ligue:"Bundesliga (Allemagne)", match:"Mayence - Leverkusen", pronostic:"1X2 : Victoire domicile", cote:"3.14" }
           ] }
       ];
       localStorage.setItem(KC, JSON.stringify(d));
@@ -406,343 +426,46 @@ function htmlCoupon(c){
   return h;
 }
 
+function grouperParDate(coupons){
+  var groupes = {};
+  coupons.forEach(function(c){
+    var d = c.date || dateAuj();
+    if(!groupes[d]) groupes[d] = [];
+    groupes[d].push(c);
+  });
+  var dates = Object.keys(groupes).sort(function(a,b){ return b.localeCompare(a); });
+  return dates.map(function(d){ return { date:d, coupons:groupes[d] }; });
+}
+
 function rendre(){
   var all = getC();
-  var g = all.filter(function(c){ return c.categorie === "gratuit"; });
-  var t = all.filter(function(c){ return c.categorie !== "vip"; });
-  var v = all.filter(function(c){ return c.categorie === "vip"; });
-  document.getElementById("z-gratuits").innerHTML = g.length ? g.map(htmlCoupon).join("") : '<div class="info">Aucun coupon gratuit</div>';
-  document.getElementById("z-tous").innerHTML = t.length ? t.map(htmlCoupon).join("") : '<div class="info">Aucun coupon</div>';
-  document.getElementById("z-vip").innerHTML = v.length ? v.map(htmlCoupon).join("") : '<div class="info">Aucun VIP</div>';
-}
+  var auj = dateAuj();
 
-function activerVIP(){
-  document.getElementById("z-vip-lock").style.display = "none";
-  document.getElementById("z-vip-ok").style.display = "block";
-  localStorage.setItem(KV, "oui");
-  rendre();
-}
+  // ACCUEIL : uniquement coupons du jour
+  var aujCoupons = all.filter(function(c){ return (c.date || auj) === auj; });
+  document.getElementById("z-gratuits").innerHTML = aujCoupons.length
+    ? aujCoupons.map(htmlCoupon).join("")
+    : '<div class="info">Aucun coupon aujourd\'hui</div>';
 
-function demanderAdmin(){
-  if(adminOK){ ouvrir('m-admin'); rendreListeD(); rendreListeC(); rendreListeL(); return; }
-  document.getElementById("pwd-input").value = "";
-  document.getElementById("msg-pwd").innerHTML = "";
-  ouvrir('m-pwd');
-}
-
-function validerPwd(){
-  var p = document.getElementById("pwd-input").value;
-  if(p === PWD_ADMIN){
-    adminOK = true;
-    fermer('m-pwd');
-    ouvrir('m-admin');
-    if(document.getElementById("ns").children.length === 0) ajouterSel();
-    rendreListeD();
-    rendreListeC();
-    rendreListeL();
-  } else {
-    document.getElementById("msg-pwd").innerHTML = '<div class="err">Mot de passe incorrect</div>';
-  }
-}
-
-function quitterAdmin(){
-  adminOK = false;
-  fermer('m-admin');
-}
-
-function tabAdmin(t, btn){
-  document.querySelectorAll('.tabs-a button').forEach(function(b){ b.classList.remove('actif'); });
-  btn.classList.add('actif');
-  document.getElementById('t-creer').style.display = t === 'creer' ? 'block' : 'none';
-  document.getElementById('t-codes').style.display = t === 'codes' ? 'block' : 'none';
-  document.getElementById('t-liste').style.display = t === 'liste' ? 'block' : 'none';
-  document.getElementById('t-ligues').style.display = t === 'ligues' ? 'block' : 'none';
-}
-
-function optionsLigues(){
-  var l = getLigues();
+  // ONGLET COUPONS : tous groupés par date
+  var groupes = grouperParDate(all);
   var h = '';
-  l.forEach(function(x){ h += '<option value="' + x + '">' + x + '</option>'; });
-  h += '<option value="__AUTRE__">+ Ajouter une nouvelle ligue...</option>';
-  return h;
-}
-
-function optionsMarches(){
-  var h = '';
-  MARCHES_DEFAUT.forEach(function(x){ h += '<option value="' + x + '">' + x + '</option>'; });
-  h += '<option value="__AUTRE__">+ Autre (champ libre)</option>';
-  return h;
-}
-
-function ajouterSel(){
-  var z = document.getElementById("ns");
-  var d = document.createElement("div");
-  d.className = "se";
-  d.innerHTML =
-    '<button class="x" onclick="this.parentElement.remove();calcCote()">x</button>' +
-    '<label style="font-size:10px;color:#94a3b8;display:block;margin-bottom:2px">Ligue</label>' +
-    '<select class="i1" onchange="changeLigue(this)">' + optionsLigues() + '</select>' +
-    '<input type="text" placeholder="Nom de la nouvelle ligue" class="i1new" style="display:none" oninput="calcCote()">' +
-    '<label style="font-size:10px;color:#94a3b8;display:block;margin:6px 0 2px">Match</label>' +
-    '<input type="text" placeholder="Ex: PSG - Marseille" class="i2" oninput="calcCote()">' +
-    '<label style="font-size:10px;color:#94a3b8;display:block;margin:6px 0 2px">Type de pari</label>' +
-    '<select class="i3" onchange="changeMarche(this)">' + optionsMarches() + '</select>' +
-    '<input type="text" placeholder="Precisez le pari" class="i3new" style="display:none" oninput="calcCote()">' +
-    '<label style="font-size:10px;color:#94a3b8;display:block;margin:6px 0 2px">Cote</label>' +
-    '<input type="number" step="0.001" placeholder="Ex: 1.85" class="i4" oninput="calcCote()">';
-  z.appendChild(d);
-}
-
-function changeLigue(sel){
-  var se = sel.closest(".se");
-  var inp = se.querySelector(".i1new");
-  if(sel.value === "__AUTRE__"){
-    inp.style.display = "block";
-    inp.focus();
-  } else {
-    inp.style.display = "none";
-  }
-}
-
-function changeMarche(sel){
-  var se = sel.closest(".se");
-  var inp = se.querySelector(".i3new");
-  if(sel.value === "__AUTRE__"){
-    inp.style.display = "block";
-    inp.focus();
-  } else {
-    inp.style.display = "none";
-  }
-}
-
-function calcCote(){
-  var s = document.querySelectorAll("#ns .se");
-  var t = 1, n = 0;
-  s.forEach(function(x){
-    var c = parseFloat(x.querySelector(".i4").value);
-    if(!isNaN(c) && c > 0){ t *= c; n++; }
+  groupes.forEach(function(g){
+    h += '<div class="sep-date"><h4>' + formaterDate(g.date) + '</h4><p>' + g.coupons.length + ' coupon(s)</p></div>';
+    h += g.coupons.map(htmlCoupon).join("");
   });
-  document.getElementById("ncote").innerText = n > 0 ? t.toFixed(3) : "1.00";
-}
+  document.getElementById("z-tous").innerHTML = h || '<div class="info">Aucun coupon</div>';
 
-function enregistrerCoupon(){
-  var cat = document.getElementById("nc").value;
-  var titre = document.getElementById("nt").value.trim();
-  if(!titre){ alert("Donne un titre"); return; }
-  var sels = [];
-  var nouvellesLigues = [];
-  document.querySelectorAll("#ns .se").forEach(function(d){
-    var selLigue = d.querySelector(".i1");
-    var newLigue = d.querySelector(".i1new").value.trim();
-    var ligue = selLigue.value;
-    if(ligue === "__AUTRE__" && newLigue){
-      ligue = newLigue;
-      nouvellesLigues.push(newLigue);
-    } else if(ligue === "__AUTRE__"){
-      ligue = "International";
-    }
-
-    var selMarche = d.querySelector(".i3");
-    var newMarche = d.querySelector(".i3new").value.trim();
-    var marche = selMarche.value;
-    if(marche === "__AUTRE__" && newMarche) marche = newMarche;
-    else if(marche === "__AUTRE__") marche = "Autre pari";
-
-    var m = d.querySelector(".i2").value.trim();
-    var c = d.querySelector(".i4").value.trim();
-    if(m && c) sels.push({ ligue: ligue, match: m, pronostic: marche, cote: c });
+  // ONGLET HISTORIQUE : uniquement les jours passes
+  var passes = all.filter(function(c){ return (c.date || auj) !== auj; });
+  var groupesH = grouperParDate(passes);
+  var hh = '';
+  groupesH.forEach(function(g){
+    hh += '<div class="sep-date"><h4>' + formaterDate(g.date) + '</h4><p>' + g.coupons.length + ' coupon(s)</p></div>';
+    hh += g.coupons.map(htmlCoupon).join("");
   });
-  if(sels.length === 0){ alert("Ajoute au moins 1 selection complete"); return; }
+  document.getElementById("z-historique").innerHTML = hh || '<div class="info">Aucun ancien coupon</div>';
 
-  if(nouvellesLigues.length > 0){
-    var l = getLigues();
-    nouvellesLigues.forEach(function(x){ if(l.indexOf(x) === -1) l.push(x); });
-    setLigues(l);
-  }
-
-  var all = getC();
-  all.unshift({ id:"c"+Date.now(), categorie:cat, titre:titre, selections:sels });
-  setC(all);
-  alert("Coupon enregistre !");
-  document.getElementById("nt").value = "";
-  document.getElementById("ns").innerHTML = "";
-  ajouterSel();
-  calcCote();
-  rendreListeL();
-}
-
-function rendreListeC(){
-  var all = getC();
-  var z = document.getElementById("lcoupons");
-  if(!z) return;
-  if(all.length === 0){ z.innerHTML = '<div class="info">Aucun coupon</div>'; return; }
-  z.innerHTML = all.map(function(c){
-    return '<div class="lc"><div class="code">' + c.titre + '</div>' +
-      '<div class="det">' + c.categorie.toUpperCase() + ' - ' + c.selections.length + ' sel - Cote ' + cote(c.selections) + '</div>' +
-      '<div class="act"><button onclick="supprC(\'' + c.id + '\')">Supprimer</button></div></div>';
-  }).join("");
-}
-
-function supprC(id){
-  if(!confirm("Supprimer ?")) return;
-  setC(getC().filter(function(c){ return c.id !== id; }));
-  rendreListeC();
-}
-
-function rendreListeL(){
-  var l = getLigues();
-  var z = document.getElementById("lligues");
-  if(!z) return;
-  var h = '';
-  l.forEach(function(x, i){
-    h += '<div class="lc"><div class="code">' + x + '</div>' +
-      '<div class="act"><button onclick="supprL(' + i + ')">Supprimer</button></div></div>';
-  });
-  h += '<div style="margin-top:10px">' +
-    '<input id="new-ligue" placeholder="Nouvelle ligue" style="width:100%;padding:10px;border-radius:8px;border:1px solid #1f2937;background:#0f172a;color:#fff;font-size:13px;margin-bottom:8px">' +
-    '<button class="bo" onclick="ajouterL()">+ Ajouter une ligue</button>' +
-    '</div>';
-  z.innerHTML = h;
-}
-
-function ajouterL(){
-  var v = document.getElementById("new-ligue").value.trim();
-  if(!v) return;
-  var l = getLigues();
-  if(l.indexOf(v) === -1) l.push(v);
-  setLigues(l);
-  rendreListeL();
-  alert("Ligue ajoutee : " + v);
-}
-
-function supprL(i){
-  if(!confirm("Supprimer cette ligue ?")) return;
-  var l = getLigues();
-  l.splice(i, 1);
-  setLigues(l);
-  rendreListeL();
-}
-
-function ouvrirGenCode(){
-  var d = new Date();
-  d.setDate(d.getDate() + 7);
-  document.getElementById("ge").value = d.toISOString().split("T")[0];
-  document.getElementById("gc").value = "";
-  ouvrir('m-gen');
-}
-
-function creerCode(){
-  var t = document.getElementById("gt").value;
-  var e = document.getElementById("ge").value;
-  var c = document.getElementById("gc").value.trim();
-  if(!e){ alert("Choisis une date"); return; }
-  var ch = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-  var code = "BETA-";
-  for(var i=0;i<4;i++) code += ch[Math.floor(Math.random()*ch.length)];
-  code += "-";
-  for(var j=0;j<4;j++) code += ch[Math.floor(Math.random()*ch.length)];
-  var all = getD();
-  all.unshift({ code:code, type:t, expire:e, client:c });
-  setD(all);
-  var lbl = t === "7jours" ? "7 coupons VIP" : "1 mois VIP";
-  var msg = "BETA PRONOSTIC\n\nVotre code VIP :\n\n" + code + "\n\nType : " + lbl + "\nValable jusqu'au : " + e.split("-").reverse().join("/") + "\n\nActivez ici :\n" + location.origin + location.pathname + "?code=" + code + "\n\nGagnons ensemble !";
-  document.getElementById("code-gen").innerText = code;
-  document.getElementById("msg-wa").innerText = msg;
-  fermer('m-gen');
-  ouvrir('m-resultat');
-  rendreListeD();
-}
-
-function rendreListeD(){
-  var all = getD();
-  var z = document.getElementById("lcodes");
-  if(!z) return;
-  if(all.length === 0){ z.innerHTML = '<div class="info">Aucun code</div>'; return; }
-  z.innerHTML = all.map(function(c){
-    return '<div class="lc"><div class="code">' + c.code + '</div>' +
-      '<div class="det">' + (c.type === "7jours" ? "7 coupons" : "1 mois") + ' - expire ' + c.expire.split("-").reverse().join("/") + (c.client ? " - " + c.client : "") + '</div>' +
-      '<div class="act"><button onclick="supprD(\'' + c.code + '\')">Supprimer</button></div></div>';
-  }).join("");
-}
-
-function supprD(code){
-  if(!confirm("Supprimer ?")) return;
-  setD(getD().filter(function(c){ return c.code !== code; }));
-}
-
-function copierMsg(){
-  var m = document.getElementById("msg-wa").innerText;
-  if(navigator.clipboard){
-    navigator.clipboard.writeText(m).then(function(){ alert("Message copie !"); }).catch(function(){ prompt("Copie :", m); });
-  } else prompt("Copie :", m);
-}
-
-function copierLien(){
-  var c = document.getElementById("code-gen").innerText;
-  var l = location.origin + location.pathname + "?code=" + c;
-  if(navigator.clipboard){
-    navigator.clipboard.writeText(l).then(function(){ alert("Lien copie !\n\n" + l); }).catch(function(){ prompt("Copie :", l); });
-  } else prompt("Copie :", l);
-}
-
-function codeOK(code){
-  var d = new Date().toISOString().split("T")[0];
-  var all = getD();
-  for(var i=0;i<all.length;i++){
-    if(all[i].code.toUpperCase() === code.toUpperCase() && all[i].expire >= d) return true;
-  }
-  return false;
-}
-
-function ouvrirCode(){
-  document.getElementById("code-modal").value = "";
-  document.getElementById("msg-modal").innerHTML = "";
-  ouvrir('m-code');
-}
-
-function validerCodeModal(){
-  var c = document.getElementById("code-modal").value.trim();
-  if(!c){ document.getElementById("msg-modal").innerHTML = '<div class="err">Saisissez un code</div>'; return; }
-  if(codeOK(c)){
-    document.getElementById("msg-modal").innerHTML = '<div class="ok">Code valide !</div>';
-    setTimeout(function(){ fermer('m-code'); activerVIP(); go('vip', document.querySelectorAll('nav button')[2]); }, 800);
-  } else {
-    document.getElementById("msg-modal").innerHTML = '<div class="err">Code invalide ou expire</div>';
-  }
-}
-
-function verifierCode(){
-  var c = document.getElementById("code-principal").value.trim();
-  var m = document.getElementById("msg-principal");
-  if(!c){ m.innerHTML = '<div class="err">Saisissez un code</div>'; return; }
-  if(codeOK(c)){
-    m.innerHTML = '<div class="ok">Code valide !</div>';
-    setTimeout(function(){ activerVIP(); go('vip', document.querySelectorAll('nav button')[2]); }, 800);
-  } else {
-    m.innerHTML = '<div class="err">Code invalide ou expire</div>';
-  }
-}
-
-function verifLien(){
-  var p = new URLSearchParams(location.search);
-  var c = p.get("code");
-  if(!c) return;
-  if(codeOK(c)){
-    activerVIP();
-    alert("Code reconnu ! Bienvenue VIP.");
-    history.replaceState({}, "", location.pathname);
-  } else {
-    alert("Ce code est invalide ou expire.");
-  }
-}
-
-window.addEventListener("load", function(){
-  init();
-  rendre();
-  rendreListeD();
-  if(localStorage.getItem(KV) === "oui") activerVIP();
-  verifLien();
-});
-</script>
-</body>
-  </html>
+  // ONGLET VIP
+  var vips = all.filter(function(c){ return c.categorie === "vip"; });
+  document.getElementById("z-vip").innerHTML = vips.length ? vips.map(htmlCoupon).join("") : '<div
