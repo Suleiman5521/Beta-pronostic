@@ -93,6 +93,7 @@ section.actif{display:block}
 .type-btns{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:12px}
 .type-btns button{padding:10px;border:1px solid #1f2937;background:#0f172a;color:#94a3b8;border-radius:8px;font-weight:700;font-size:12px;cursor:pointer}
 .type-btns button.actif{background:linear-gradient(135deg,#d4af37,#b8860b);color:#0a0f1d;border-color:#d4af37}
+.info-box{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.3);border-radius:8px;padding:10px;font-size:11px;color:#86efac;margin-bottom:12px;text-align:center}
 </style>
 </head>
 <body>
@@ -244,7 +245,10 @@ section.actif{display:block}
         <button id="btn-simple" class="actif" onclick="choisirType('simple')">SIMPLE (1 match)</button>
         <button id="btn-combine" onclick="choisirType('combine')">COMBINE (2+)</button>
       </div>
-      <label>Date du coupon</label>
+      <div class="info-box">
+        📅 La date du coupon = <strong>la date du match</strong>. Le coupon s'affichera automatiquement ce jour-la.
+      </div>
+      <label>Date du match (début)</label>
       <input type="date" id="nc-date">
       <label>Categorie</label>
       <select id="nc">
@@ -279,14 +283,14 @@ section.actif{display:block}
 
     <div id="t-nettoyage" style="display:none">
       <p style="font-size:12px;color:#94a3b8;margin-bottom:12px;text-align:center">Supprimer les anciens coupons</p>
-      <label>Supprimer les coupons de plus de :</label>
+      <label>Supprimer les coupons dont la date est anterieure a :</label>
       <select id="sel-nettoyage">
-        <option value="1">1 jour</option>
-        <option value="3">3 jours</option>
-        <option value="7" selected>7 jours</option>
-        <option value="14">14 jours</option>
-        <option value="30">30 jours</option>
-        <option value="999">TOUT supprimer</option>
+        <option value="1">1 jour en arriere</option>
+        <option value="3">3 jours en arriere</option>
+        <option value="7" selected>7 jours en arriere</option>
+        <option value="14">14 jours en arriere</option>
+        <option value="30">30 jours en arriere</option>
+        <option value="999">TOUT supprimer (garde aujourd'hui + futurs)</option>
       </select>
       <button class="br" onclick="nettoyer()">Supprimer maintenant</button>
       <div id="msg-nettoyage" style="text-align:center;font-size:12px;margin-top:10px"></div>
@@ -332,10 +336,10 @@ section.actif{display:block}
 
 <script>
 var PWD_ADMIN = "F@llou55212";
-var KC = "beta_coupons_v10";
-var KD = "beta_codes_v10";
-var KL = "beta_ligues_v10";
-var KV = "beta_vip_v10";
+var KC = "beta_coupons_v11";
+var KD = "beta_codes_v11";
+var KL = "beta_ligues_v11";
+var KV = "beta_vip_v11";
 var adminOK = false;
 var typeChoisi = "simple";
 var jourAffiche = "";
@@ -440,9 +444,10 @@ function formaterJourCourt(iso){
   return jours[d.getDay()];
 }
 
+// Calendrier : 2 jours en arriere + 7 jours en avant
 function joursDisponibles(){
   var j = [];
-  for(var i=-3; i<=7; i++){
+  for(var i=-2; i<=7; i++){
     var d = new Date();
     d.setDate(d.getDate() + i);
     j.push(d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0") + "-" + String(d.getDate()).padStart(2,"0"));
@@ -509,7 +514,6 @@ function htmlCoupon(c){
   var type = typeCoupon(c);
 
   var h = '<div class="coupon ' + cat + '" id="' + id + '">';
-
   h += '<div class="c-head">';
   h += '<span class="type ' + type + '">' + (type === "combine" ? "COMBINE - " + c.selections.length + " matchs" : "SIMPLE") + '</span>';
   h += '<span class="badge ' + cat + '">' + cat + '</span>';
@@ -533,7 +537,6 @@ function htmlCoupon(c){
   h += '<span class="lbl">COTE TOTALE</span>';
   h += '<span class="val">' + cote(c.selections) + '</span>';
   h += '</div>';
-
   h += '</div>';
   return h;
 }
@@ -546,7 +549,7 @@ function rendre(){
   dessinerCalendrier("cal-accueil", jourAffiche);
   dessinerCalendrier("cal-coupons", jourAffiche);
 
-  // ACCUEIL : uniquement coupons NON VIP du jour sélectionné
+  // === ACCUEIL : coupons NON VIP dont la date == jour selectionne ===
   var duJour = all.filter(function(c){
     return (c.date || auj) === jourAffiche && c.categorie !== "vip";
   });
@@ -558,18 +561,20 @@ function rendre(){
   }
   document.getElementById("z-jour").innerHTML = h;
 
-  // COUPONS : tous SAUF VIP, groupés par date
-  var nonVip = all.filter(function(c){ return c.categorie !== "vip"; });
+  // === COUPONS : tous NON VIP, groupes par date (futur + aujourd'hui) ===
+  var nonVip = all.filter(function(c){
+    return c.categorie !== "vip" && (c.date || auj) >= auj;
+  });
   var groupes = {};
   nonVip.forEach(function(c){
     var d = c.date || auj;
     if(!groupes[d]) groupes[d] = [];
     groupes[d].push(c);
   });
-  var dates = Object.keys(groupes).sort(function(a,b){ return b.localeCompare(a); });
+  var dates = Object.keys(groupes).sort();
   var hc = '';
   if(dates.length === 0){
-    hc = '<div class="info">Aucun coupon</div>';
+    hc = '<div class="info">Aucun coupon a venir</div>';
   } else {
     dates.forEach(function(d){
       hc += '<div class="st" style="font-size:12px;margin-top:16px">' + formaterDateLong(d) + '</div>';
@@ -578,9 +583,9 @@ function rendre(){
   }
   document.getElementById("z-tous").innerHTML = hc;
 
-  // HISTORIQUE : SAUF VIP, jours passés
+  // === HISTORIQUE : coupons NON VIP dont la date est passee ===
   var passes = all.filter(function(c){
-    return (c.date || auj) < auj && c.categorie !== "vip";
+    return c.categorie !== "vip" && (c.date || auj) < auj;
   });
   var groupesH = {};
   passes.forEach(function(c){
@@ -600,11 +605,27 @@ function rendre(){
   }
   document.getElementById("z-historique").innerHTML = hh;
 
-  // VIP : uniquement dans l'onglet VIP
+  // === VIP : tous les VIP, groupés par date (uniquement si code valide) ===
   var vips = all.filter(function(c){ return c.categorie === "vip"; });
   var zVip = document.getElementById("z-vip");
   if(zVip){
-    zVip.innerHTML = vips.length ? vips.map(htmlCoupon).join("") : '<div class="info">Aucun VIP</div>';
+    if(vips.length === 0){
+      zVip.innerHTML = '<div class="info">Aucun VIP</div>';
+    } else {
+      var groupesV = {};
+      vips.forEach(function(c){
+        var d = c.date || auj;
+        if(!groupesV[d]) groupesV[d] = [];
+        groupesV[d].push(c);
+      });
+      var datesV = Object.keys(groupesV).sort(function(a,b){ return b.localeCompare(a); });
+      var hv = '';
+      datesV.forEach(function(d){
+        hv += '<div class="st" style="font-size:12px;margin-top:16px">' + formaterDateLong(d) + '</div>';
+        hv += groupesV[d].map(htmlCoupon).join("");
+      });
+      zVip.innerHTML = hv;
+    }
   }
 }
 
@@ -810,7 +831,7 @@ function enregistrerCoupon(){
     date: dateCoupon
   });
   setC(all);
-  alert((typeChoisi === "simple" ? "Coupon SIMPLE" : "Coupon COMBINE") + " enregistre !");
+  alert((typeChoisi === "simple" ? "Coupon SIMPLE" : "Coupon COMBINE") + " enregistre !\n\nIl s'affichera le " + dateCoupon.split("-").reverse().join("/"));
 
   document.getElementById("ns").innerHTML = "";
   ajouterSel();
@@ -893,7 +914,7 @@ function nettoyer(){
   var auj = dateAuj();
   var gardes;
   if(jours === 999){
-    gardes = all.filter(function(c){ return (c.date || auj) === auj; });
+    gardes = all.filter(function(c){ return (c.date || auj) >= auj; });
   } else {
     var limite = new Date();
     limite.setDate(limite.getDate() - jours);
@@ -1033,4 +1054,4 @@ window.addEventListener("load", function(){
 });
 </script>
 </body>
-  </html>
+    </html>
